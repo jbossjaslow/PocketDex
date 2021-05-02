@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,7 @@
 		393C6284263F023D00EBE6B4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 393C6283263F023D00EBE6B4 /* Preview Assets.xcassets */; };
 		393C628F263F023D00EBE6B4 /* PocketDexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C628E263F023D00EBE6B4 /* PocketDexTests.swift */; };
 		393C629A263F023D00EBE6B4 /* PocketDexUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C6299263F023D00EBE6B4 /* PocketDexUITests.swift */; };
+		393C62A9263F030100EBE6B4 /* PokeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 393C62A8263F030100EBE6B4 /* PokeSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				393C62A9263F030100EBE6B4 /* PokeSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,6 +148,9 @@
 			dependencies = (
 			);
 			name = PocketDex;
+			packageProductDependencies = (
+				393C62A8263F030100EBE6B4 /* PokeSwift */,
+			);
 			productName = PocketDex;
 			productReference = 393C6279263F023A00EBE6B4 /* PocketDex.app */;
 			productType = "com.apple.product-type.application";
@@ -217,6 +222,9 @@
 				Base,
 			);
 			mainGroup = 393C6270263F023A00EBE6B4;
+			packageReferences = (
+				393C62A7263F030100EBE6B4 /* XCRemoteSwiftPackageReference "PokeSwift" */,
+			);
 			productRefGroup = 393C627A263F023A00EBE6B4 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -580,6 +588,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		393C62A7263F030100EBE6B4 /* XCRemoteSwiftPackageReference "PokeSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:jbossjaslow/PokeSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		393C62A8263F030100EBE6B4 /* PokeSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 393C62A7263F030100EBE6B4 /* XCRemoteSwiftPackageReference "PokeSwift" */;
+			productName = PokeSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 393C6271263F023A00EBE6B4 /* Project object */;
 }

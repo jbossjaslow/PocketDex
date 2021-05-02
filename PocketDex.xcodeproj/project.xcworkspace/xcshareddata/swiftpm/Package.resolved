@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "PokeSwift",
+        "repositoryURL": "git@github.com:jbossjaslow/PokeSwift.git",
+        "state": {
+          "branch": null,
+          "revision": "aa18a83f1ef30c9485d58262a59da81cb7778497",
+          "version": "1.0.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
