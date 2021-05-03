@@ -594,8 +594,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "git@github.com:jbossjaslow/PokeSwift.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				branch = main;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
