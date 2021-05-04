@@ -14,6 +14,7 @@
 		393C628F263F023D00EBE6B4 /* PocketDexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C628E263F023D00EBE6B4 /* PocketDexTests.swift */; };
 		393C629A263F023D00EBE6B4 /* PocketDexUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C6299263F023D00EBE6B4 /* PocketDexUITests.swift */; };
 		393C62A9263F030100EBE6B4 /* PokeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 393C62A8263F030100EBE6B4 /* PokeSwift */; };
+		39D31B3F2640E54300BB3DD9 /* RemoteImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D31B3E2640E54300BB3DD9 /* RemoteImageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		393C6295263F023D00EBE6B4 /* PocketDexUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PocketDexUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		393C6299263F023D00EBE6B4 /* PocketDexUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PocketDexUITests.swift; sourceTree = "<group>"; };
 		393C629B263F023D00EBE6B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		39D31B3E2640E54300BB3DD9 /* RemoteImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 				393C6280263F023D00EBE6B4 /* Assets.xcassets */,
 				393C6285263F023D00EBE6B4 /* Info.plist */,
 				393C6282263F023D00EBE6B4 /* Preview Content */,
+				39D31B3E2640E54300BB3DD9 /* RemoteImageView.swift */,
 			);
 			path = PocketDex;
 			sourceTree = "<group>";
@@ -268,6 +271,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				393C627F263F023A00EBE6B4 /* ContentView.swift in Sources */,
+				39D31B3F2640E54300BB3DD9 /* RemoteImageView.swift in Sources */,
 				393C627D263F023A00EBE6B4 /* PocketDexApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

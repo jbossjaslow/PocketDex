@@ -12,6 +12,7 @@ struct ContentView: View {
 	@State var makingRequest: Bool = false
 	@State var pokemonName: String = "Pokemon Name"
 	@State var pokemonGenus: String = "Pokemon Genus"
+	@State var pokemonFrontSprite: String = ""
 	
     var body: some View {
 		VStack {
@@ -32,6 +33,8 @@ struct ContentView: View {
 					}
 				}
 			)
+			
+			RemoteImageView(url: $pokemonFrontSprite)
 			
 			Button {
 				getRandomPokemon()
@@ -58,6 +61,10 @@ struct ContentView: View {
 			
 			pokemonName = name
 			getPokemonSpecies(pokemon: pokemon)
+			
+			if let sprite = pokemon.sprites?.frontDefault {
+				pokemonFrontSprite = sprite
+			}
 			
 			makingRequest = false
 		}
