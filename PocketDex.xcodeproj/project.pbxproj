@@ -16,6 +16,8 @@
 		393C62A9263F030100EBE6B4 /* PokeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 393C62A8263F030100EBE6B4 /* PokeSwift */; };
 		39A5B27126475CC8007F55C3 /* TypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A5B27026475CC8007F55C3 /* TypeView.swift */; };
 		39A5B27426476299007F55C3 /* TypeMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A5B27326476299007F55C3 /* TypeMappings.swift */; };
+		39CA6890264D99DB00F005C5 /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = 39CA688F264D99DB00F005C5 /* swiftgen.yml */; };
+		39CA6892264D9AC500F005C5 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CA6891264D9AC500F005C5 /* Assets.swift */; };
 		39D31B3F2640E54300BB3DD9 /* RemoteImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D31B3E2640E54300BB3DD9 /* RemoteImageView.swift */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +53,8 @@
 		393C629B263F023D00EBE6B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		39A5B27026475CC8007F55C3 /* TypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeView.swift; sourceTree = "<group>"; };
 		39A5B27326476299007F55C3 /* TypeMappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeMappings.swift; sourceTree = "<group>"; };
+		39CA688F264D99DB00F005C5 /* swiftgen.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
+		39CA6891264D9AC500F005C5 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		39D31B3E2640E54300BB3DD9 /* RemoteImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -83,6 +87,7 @@
 		393C6270263F023A00EBE6B4 = {
 			isa = PBXGroup;
 			children = (
+				39CA688F264D99DB00F005C5 /* swiftgen.yml */,
 				393C627B263F023A00EBE6B4 /* PocketDex */,
 				393C628D263F023D00EBE6B4 /* PocketDexTests */,
 				393C6298263F023D00EBE6B4 /* PocketDexUITests */,
@@ -167,6 +172,7 @@
 		39A5B26E26475C08007F55C3 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				39CA688C264D968C00F005C5 /* Static */,
 				393C6280263F023D00EBE6B4 /* Assets.xcassets */,
 				393C6282263F023D00EBE6B4 /* Preview Content */,
 			);
@@ -189,6 +195,22 @@
 			path = DataModels;
 			sourceTree = "<group>";
 		};
+		39CA688C264D968C00F005C5 /* Static */ = {
+			isa = PBXGroup;
+			children = (
+				39CA688D264D969200F005C5 /* SwiftGen */,
+			);
+			path = Static;
+			sourceTree = "<group>";
+		};
+		39CA688D264D969200F005C5 /* SwiftGen */ = {
+			isa = PBXGroup;
+			children = (
+				39CA6891264D9AC500F005C5 /* Assets.swift */,
+			);
+			path = SwiftGen;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -196,6 +218,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 393C629E263F023D00EBE6B4 /* Build configuration list for PBXNativeTarget "PocketDex" */;
 			buildPhases = (
+				39CA688E264D973B00F005C5 /* SwiftGen */,
 				393C6275263F023A00EBE6B4 /* Sources */,
 				393C6276263F023A00EBE6B4 /* Frameworks */,
 				393C6277263F023A00EBE6B4 /* Resources */,
@@ -300,6 +323,7 @@
 			files = (
 				393C6284263F023D00EBE6B4 /* Preview Assets.xcassets in Resources */,
 				393C6281263F023D00EBE6B4 /* Assets.xcassets in Resources */,
+				39CA6890264D99DB00F005C5 /* swiftgen.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,6 +343,27 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		39CA688E264D973B00F005C5 /* SwiftGen */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftGen;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftgen >/dev/null; then\n  swiftgen\nelse\n  echo \"warning: SwiftGen not installed, download it from https://github.com/SwiftGen/SwiftGen\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		393C6275263F023A00EBE6B4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -326,6 +371,7 @@
 			files = (
 				39A5B27426476299007F55C3 /* TypeMappings.swift in Sources */,
 				393C627F263F023A00EBE6B4 /* ContentView.swift in Sources */,
+				39CA6892264D9AC500F005C5 /* Assets.swift in Sources */,
 				39D31B3F2640E54300BB3DD9 /* RemoteImageView.swift in Sources */,
 				393C627D263F023A00EBE6B4 /* PocketDexApp.swift in Sources */,
 				39A5B27126475CC8007F55C3 /* TypeView.swift in Sources */,
