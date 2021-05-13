@@ -14,6 +14,8 @@
 		393C628F263F023D00EBE6B4 /* PocketDexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C628E263F023D00EBE6B4 /* PocketDexTests.swift */; };
 		393C629A263F023D00EBE6B4 /* PocketDexUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C6299263F023D00EBE6B4 /* PocketDexUITests.swift */; };
 		393C62A9263F030100EBE6B4 /* PokeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 393C62A8263F030100EBE6B4 /* PokeSwift */; };
+		39A5B27126475CC8007F55C3 /* TypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A5B27026475CC8007F55C3 /* TypeView.swift */; };
+		39A5B27426476299007F55C3 /* TypeMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A5B27326476299007F55C3 /* TypeMappings.swift */; };
 		39D31B3F2640E54300BB3DD9 /* RemoteImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D31B3E2640E54300BB3DD9 /* RemoteImageView.swift */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +49,8 @@
 		393C6295263F023D00EBE6B4 /* PocketDexUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PocketDexUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		393C6299263F023D00EBE6B4 /* PocketDexUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PocketDexUITests.swift; sourceTree = "<group>"; };
 		393C629B263F023D00EBE6B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		39A5B27026475CC8007F55C3 /* TypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeView.swift; sourceTree = "<group>"; };
+		39A5B27326476299007F55C3 /* TypeMappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeMappings.swift; sourceTree = "<group>"; };
 		39D31B3E2640E54300BB3DD9 /* RemoteImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -99,12 +103,11 @@
 		393C627B263F023A00EBE6B4 /* PocketDex */ = {
 			isa = PBXGroup;
 			children = (
-				393C627C263F023A00EBE6B4 /* PocketDexApp.swift */,
-				393C627E263F023A00EBE6B4 /* ContentView.swift */,
-				393C6280263F023D00EBE6B4 /* Assets.xcassets */,
-				393C6285263F023D00EBE6B4 /* Info.plist */,
-				393C6282263F023D00EBE6B4 /* Preview Content */,
-				39D31B3E2640E54300BB3DD9 /* RemoteImageView.swift */,
+				39A5B27226476289007F55C3 /* DataModels */,
+				39A5B26D26475BF2007F55C3 /* Important */,
+				39A5B26E26475C08007F55C3 /* Resources */,
+				39A5B26C26475BD7007F55C3 /* ViewModels */,
+				39A5B26B26475BD2007F55C3 /* Views */,
 			);
 			path = PocketDex;
 			sourceTree = "<group>";
@@ -133,6 +136,57 @@
 				393C629B263F023D00EBE6B4 /* Info.plist */,
 			);
 			path = PocketDexUITests;
+			sourceTree = "<group>";
+		};
+		39A5B26B26475BD2007F55C3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				39A5B26F26475C92007F55C3 /* Type */,
+				393C627E263F023A00EBE6B4 /* ContentView.swift */,
+				39D31B3E2640E54300BB3DD9 /* RemoteImageView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		39A5B26C26475BD7007F55C3 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		39A5B26D26475BF2007F55C3 /* Important */ = {
+			isa = PBXGroup;
+			children = (
+				393C6285263F023D00EBE6B4 /* Info.plist */,
+				393C627C263F023A00EBE6B4 /* PocketDexApp.swift */,
+			);
+			path = Important;
+			sourceTree = "<group>";
+		};
+		39A5B26E26475C08007F55C3 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				393C6280263F023D00EBE6B4 /* Assets.xcassets */,
+				393C6282263F023D00EBE6B4 /* Preview Content */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		39A5B26F26475C92007F55C3 /* Type */ = {
+			isa = PBXGroup;
+			children = (
+				39A5B27026475CC8007F55C3 /* TypeView.swift */,
+			);
+			path = Type;
+			sourceTree = "<group>";
+		};
+		39A5B27226476289007F55C3 /* DataModels */ = {
+			isa = PBXGroup;
+			children = (
+				39A5B27326476299007F55C3 /* TypeMappings.swift */,
+			);
+			path = DataModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -270,9 +324,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39A5B27426476299007F55C3 /* TypeMappings.swift in Sources */,
 				393C627F263F023A00EBE6B4 /* ContentView.swift in Sources */,
 				39D31B3F2640E54300BB3DD9 /* RemoteImageView.swift in Sources */,
 				393C627D263F023A00EBE6B4 /* PocketDexApp.swift in Sources */,
+				39A5B27126475CC8007F55C3 /* TypeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,10 +486,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"PocketDex/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"PocketDex/Resources/Preview Content\"";
 				DEVELOPMENT_TEAM = E5AAHWL9DL;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = PocketDex/Info.plist;
+				INFOPLIST_FILE = PocketDex/Important/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -452,10 +508,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"PocketDex/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"PocketDex/Resources/Preview Content\"";
 				DEVELOPMENT_TEAM = E5AAHWL9DL;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = PocketDex/Info.plist;
+				INFOPLIST_FILE = PocketDex/Important/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
