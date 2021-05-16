@@ -25,6 +25,7 @@ enum TypeRelationship: String {
 }
 
 struct TypeRelationView: View {
+	@EnvironmentObject var viewModel: TypeViewModel
 //	var typeRelations: [NamedAPIResource<Type>]
 	@State var typeRelations: [String]
 	
@@ -58,6 +59,8 @@ struct TypeRelationView: View {
 		}
 	}
 	
+	@State var selectedType: String? = nil
+	
 	var body: some View {
 		HStack(spacing: 5) {
 			VStack {
@@ -81,6 +84,7 @@ struct TypeRelationView: View {
 									.frame(width: 75)
 									.overlay(Circle().strokeBorder(Color.white, lineWidth: 2))
 							}
+							.disabled(typeName == viewModel.typeMap?.name)
 						}
 					}
 				} else {
@@ -93,24 +97,32 @@ struct TypeRelationView: View {
 }
 
 struct TypeRelationView_Previews: PreviewProvider {
+	static var normalType = TypeMap(color: Asset.PokemonType.Color.normal.color,
+									iconCircular: Asset.PokemonType.Icons.normalCircular.image,
+									iconRectangular: Asset.PokemonType.Icons.normalRectangular.image,
+									name: "normal")
+	
 	static var previews: some View {
 		NavigationView {
 			VStack {
 				TypeRelationView(typeRelations: ["rock",
 												 "steel"],
 								 typeRelationship: .halfDamageTo)
+					.environmentObject(TypeViewModel(typeMap: normalType))
 				
 				TypeRelationView(typeRelations: ["electric",
 												 "grass",
-												 "dragon"],
+												 "dragon",
+												 "normal"],
 								 typeRelationship: .doubleDamageTo)
+					.environmentObject(TypeViewModel(typeMap: normalType))
 				
 				TypeRelationView(typeRelations: [],
 								 typeRelationship: .noDamageFrom)
+					.environmentObject(TypeViewModel(typeMap: normalType))
 	//				.scaleEffect(0.75)
 			}
 			.navigationBarHidden(true)
-			.background(Color.black)
 		}
 	}
 }
