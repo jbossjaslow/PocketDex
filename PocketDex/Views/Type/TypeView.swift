@@ -30,7 +30,7 @@ struct TypeView_Previews: PreviewProvider {
 	static func normalType() -> Type? {
 		var type: Type? = nil
 		
-		Type.request(using: .string("normal")) { (_ result: Type?) in
+		Type.request(using: .name("normal")) { (_ result: Type?) in
 			if let normalType = result {
 				type = normalType
 			}

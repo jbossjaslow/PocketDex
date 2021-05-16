@@ -51,7 +51,7 @@ struct ContentView: View {
 		makingRequest = true
 		let rand = Int.random(in: 1...898)
 		print(rand)
-		Pokemon.request(using: .int(rand)) { (_ result: Pokemon?) in
+		Pokemon.request(using: .id(rand)) { (_ result: Pokemon?) in
 			guard let pokemon = result,
 				  let name = pokemon.name else {
 				print("Error, check input")
@@ -71,7 +71,7 @@ struct ContentView: View {
 	}
 	
 	func getPokemonSpecies(pokemon: Pokemon) {
-		pokemon.species?.request() { (_ result: PokemonSpecies?) in
+		pokemon.species?.request { result in
 			guard let species = result,
 				  let genusList = species.genera else {
 				print("Error, check input")

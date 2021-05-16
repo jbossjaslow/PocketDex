@@ -10,87 +10,112 @@ import SwiftUI
 
 extension Type {
 	func mapAdditionalInfo() -> TypeMap? {
-		switch name {
+		Type.mapAdditionalInfo(self.name ?? "")
+	}
+	
+	static func mapAdditionalInfo(_ typeName: String) -> TypeMap? {
+		switch typeName {
 			case "normal":
 				return TypeMap(color: Asset.PokemonType.Color.normal.color,
-							   iconCircular: Asset.PokemonType.CircularIcons.normal.image,
-							   iconRectangular: Asset.PokemonType.RectangularIcons.normal.image)
+							   iconCircular: Asset.PokemonType.Icons.normalCircular.image,
+							   iconRectangular: Asset.PokemonType.Icons.normalRectangular.image,
+							   name: typeName)
 			case "fighting":
 				return TypeMap(color: Asset.PokemonType.Color.fighting.color,
-							   iconCircular: Asset.PokemonType.CircularIcons.fighting.image,
-							   iconRectangular: Asset.PokemonType.RectangularIcons.fighting.image)
+							   iconCircular: Asset.PokemonType.Icons.fightingCircular.image,
+							   iconRectangular: Asset.PokemonType.Icons.fightingRectangular.image,
+							   name: typeName)
 			case "flying":
 				return TypeMap(color: Asset.PokemonType.Color.flying.color,
-							   iconCircular: Asset.PokemonType.CircularIcons.flying.image,
-							   iconRectangular: Asset.PokemonType.RectangularIcons.flying.image)
+							   iconCircular: Asset.PokemonType.Icons.flyingCircular.image,
+							   iconRectangular: Asset.PokemonType.Icons.flyingRectangular.image,
+							   name: typeName)
 			case "poison":
 				return TypeMap(color: Asset.PokemonType.Color.poison.color,
-							   iconCircular: Asset.PokemonType.CircularIcons.poison.image,
-							   iconRectangular: Asset.PokemonType.RectangularIcons.poison.image)
+							   iconCircular: Asset.PokemonType.Icons.poisonCircular.image,
+							   iconRectangular: Asset.PokemonType.Icons.poisonRectangular.image,
+							   name: typeName)
 			case "ground":
 				return TypeMap(color: Asset.PokemonType.Color.ground.color,
-							   iconCircular: Asset.PokemonType.CircularIcons.ground.image,
-							   iconRectangular: Asset.PokemonType.RectangularIcons.ground.image)
+							   iconCircular: Asset.PokemonType.Icons.groundCircular.image,
+							   iconRectangular: Asset.PokemonType.Icons.groundRectangular.image,
+							   name: typeName)
 			case "rock":
 				return TypeMap(color: Asset.PokemonType.Color.rock.color,
-							   iconCircular: Asset.PokemonType.CircularIcons.rock.image,
-							   iconRectangular: Asset.PokemonType.RectangularIcons.rock.image)
+							   iconCircular: Asset.PokemonType.Icons.rockCircular.image,
+							   iconRectangular: Asset.PokemonType.Icons.rockRectangular.image,
+							   name: typeName)
 			case "bug":
 				return TypeMap(color: Asset.PokemonType.Color.bug.color,
-							   iconCircular: Asset.PokemonType.CircularIcons.bug.image,
-							   iconRectangular: Asset.PokemonType.RectangularIcons.bug.image)
+							   iconCircular: Asset.PokemonType.Icons.bugCircular.image,
+							   iconRectangular: Asset.PokemonType.Icons.bugRectangular.image,
+							   name: typeName)
 			case "ghost":
 				return TypeMap(color: Asset.PokemonType.Color.ghost.color,
-							   iconCircular: Asset.PokemonType.CircularIcons.ghost.image,
-							   iconRectangular: Asset.PokemonType.RectangularIcons.ghost.image)
+							   iconCircular: Asset.PokemonType.Icons.ghostCircular.image,
+							   iconRectangular: Asset.PokemonType.Icons.ghostRectangular.image,
+							   name: typeName)
 			case "steel":
 				return TypeMap(color: Asset.PokemonType.Color.steel.color,
-							   iconCircular: Asset.PokemonType.CircularIcons.steel.image,
-							   iconRectangular: Asset.PokemonType.RectangularIcons.steel.image)
+							   iconCircular: Asset.PokemonType.Icons.steelCircular.image,
+							   iconRectangular: Asset.PokemonType.Icons.steelRectangular.image,
+							   name: typeName)
 			case "fire":
 				return TypeMap(color: Asset.PokemonType.Color.fire.color,
-							   iconCircular: Asset.PokemonType.CircularIcons.fire.image,
-							   iconRectangular: Asset.PokemonType.RectangularIcons.fire.image)
+							   iconCircular: Asset.PokemonType.Icons.fireCircular.image,
+							   iconRectangular: Asset.PokemonType.Icons.fireRectangular.image,
+							   name: typeName)
 			case "water":
 				return TypeMap(color: Asset.PokemonType.Color.water.color,
-							   iconCircular: Asset.PokemonType.CircularIcons.water.image,
-							   iconRectangular: Asset.PokemonType.RectangularIcons.water.image)
+							   iconCircular: Asset.PokemonType.Icons.waterCircular.image,
+							   iconRectangular: Asset.PokemonType.Icons.waterRectangular.image,
+							   name: typeName)
 			case "grass":
 				return TypeMap(color: Asset.PokemonType.Color.grass.color,
-							   iconCircular: Asset.PokemonType.CircularIcons.grass.image,
-							   iconRectangular: Asset.PokemonType.RectangularIcons.grass.image)
+							   iconCircular: Asset.PokemonType.Icons.grassCircular.image,
+							   iconRectangular: Asset.PokemonType.Icons.grassRectangular.image,
+							   name: typeName)
 			case "electric":
 				return TypeMap(color: Asset.PokemonType.Color.electric.color,
-							   iconCircular: Asset.PokemonType.CircularIcons.electric.image,
-							   iconRectangular: Asset.PokemonType.RectangularIcons.electric.image)
+							   iconCircular: Asset.PokemonType.Icons.electricCircular.image,
+							   iconRectangular: Asset.PokemonType.Icons.electricRectangular.image,
+							   name: typeName)
 			case "psychic":
 				return TypeMap(color: Asset.PokemonType.Color.psychic.color,
-							   iconCircular: Asset.PokemonType.CircularIcons.psychic.image,
-							   iconRectangular: Asset.PokemonType.RectangularIcons.psychic.image)
+							   iconCircular: Asset.PokemonType.Icons.psychicCircular.image,
+							   iconRectangular: Asset.PokemonType.Icons.psychicRectangular.image,
+							   name: typeName)
 			case "ice":
 				return TypeMap(color: Asset.PokemonType.Color.ice.color,
-							   iconCircular: Asset.PokemonType.CircularIcons.ice.image,
-							   iconRectangular: Asset.PokemonType.RectangularIcons.ice.image)
+							   iconCircular: Asset.PokemonType.Icons.iceCircular.image,
+							   iconRectangular: Asset.PokemonType.Icons.iceRectangular.image,
+							   name: typeName)
 			case "dragon":
 				return TypeMap(color: Asset.PokemonType.Color.dragon.color,
-							   iconCircular: Asset.PokemonType.CircularIcons.dragon.image,
-							   iconRectangular: Asset.PokemonType.RectangularIcons.dragon.image)
+							   iconCircular: Asset.PokemonType.Icons.dragonCircular.image,
+							   iconRectangular: Asset.PokemonType.Icons.dragonRectangular.image,
+							   name: typeName)
 			case "dark":
 				return TypeMap(color: Asset.PokemonType.Color.dark.color,
-							   iconCircular: Asset.PokemonType.CircularIcons.dark.image,
-							   iconRectangular: Asset.PokemonType.RectangularIcons.dark.image)
+							   iconCircular: Asset.PokemonType.Icons.darkCircular.image,
+							   iconRectangular: Asset.PokemonType.Icons.darkRectangular.image,
+							   name: typeName)
 			case "fairy":
 				return TypeMap(color: Asset.PokemonType.Color.fairy.color,
-							   iconCircular: Asset.PokemonType.CircularIcons.fairy.image,
-							   iconRectangular: Asset.PokemonType.RectangularIcons.fairy.image)
+							   iconCircular: Asset.PokemonType.Icons.fairyCircular.image,
+							   iconRectangular: Asset.PokemonType.Icons.fairyRectangular.image,
+							   name: typeName)
 			default:
 				return nil
 		}
 	}
 }
 
-struct TypeMap {
+struct TypeMap: Identifiable {
+	var id = UUID()
+	
 	var color: UIColor
 	var iconCircular: UIImage
 	var iconRectangular: UIImage
+	var name: String
 }

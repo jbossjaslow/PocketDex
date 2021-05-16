@@ -11,7 +11,7 @@ import SwiftUI
 struct PocketDexApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+			TypeList()
         }
     }
 }

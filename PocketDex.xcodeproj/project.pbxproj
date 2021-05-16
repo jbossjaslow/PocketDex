@@ -18,6 +18,14 @@
 		39A5B27426476299007F55C3 /* TypeMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A5B27326476299007F55C3 /* TypeMappings.swift */; };
 		39CA6890264D99DB00F005C5 /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = 39CA688F264D99DB00F005C5 /* swiftgen.yml */; };
 		39CA6892264D9AC500F005C5 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CA6891264D9AC500F005C5 /* Assets.swift */; };
+		39CA6897264F46D200F005C5 /* TypeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CA6896264F46D200F005C5 /* TypeTest.swift */; };
+		39CA689B26501E8F00F005C5 /* StringEntensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CA689A26501E8F00F005C5 /* StringEntensions.swift */; };
+		39CA689D265031D400F005C5 /* DamageRelations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CA689C265031D400F005C5 /* DamageRelations.swift */; };
+		39CA689F26503BFF00F005C5 /* TypeRelationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CA689E26503BFF00F005C5 /* TypeRelationView.swift */; };
+		39CA68A12651810900F005C5 /* TypeList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CA68A02651810900F005C5 /* TypeList.swift */; };
+		39CA68A326519ED200F005C5 /* TypeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CA68A226519ED200F005C5 /* TypeViewModel.swift */; };
+		39CA68A52651A4C900F005C5 /* MovesWithThisType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CA68A42651A4C900F005C5 /* MovesWithThisType.swift */; };
+		39CA68A72651A5BB00F005C5 /* PokemonWithThisType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CA68A62651A5BB00F005C5 /* PokemonWithThisType.swift */; };
 		39D31B3F2640E54300BB3DD9 /* RemoteImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D31B3E2640E54300BB3DD9 /* RemoteImageView.swift */; };
 /* End PBXBuildFile section */
 
@@ -55,6 +63,14 @@
 		39A5B27326476299007F55C3 /* TypeMappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeMappings.swift; sourceTree = "<group>"; };
 		39CA688F264D99DB00F005C5 /* swiftgen.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
 		39CA6891264D9AC500F005C5 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
+		39CA6896264F46D200F005C5 /* TypeTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeTest.swift; sourceTree = "<group>"; };
+		39CA689A26501E8F00F005C5 /* StringEntensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringEntensions.swift; sourceTree = "<group>"; };
+		39CA689C265031D400F005C5 /* DamageRelations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DamageRelations.swift; sourceTree = "<group>"; };
+		39CA689E26503BFF00F005C5 /* TypeRelationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeRelationView.swift; sourceTree = "<group>"; };
+		39CA68A02651810900F005C5 /* TypeList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeList.swift; sourceTree = "<group>"; };
+		39CA68A226519ED200F005C5 /* TypeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeViewModel.swift; sourceTree = "<group>"; };
+		39CA68A42651A4C900F005C5 /* MovesWithThisType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovesWithThisType.swift; sourceTree = "<group>"; };
+		39CA68A62651A5BB00F005C5 /* PokemonWithThisType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonWithThisType.swift; sourceTree = "<group>"; };
 		39D31B3E2640E54300BB3DD9 /* RemoteImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -109,9 +125,11 @@
 			isa = PBXGroup;
 			children = (
 				39A5B27226476289007F55C3 /* DataModels */,
+				39CA689926501E7000F005C5 /* Extensions */,
 				39A5B26D26475BF2007F55C3 /* Important */,
 				39A5B26E26475C08007F55C3 /* Resources */,
-				39A5B26C26475BD7007F55C3 /* ViewModels */,
+				39A5B26C26475BD7007F55C3 /* View Models */,
+				39CA689826501E4B00F005C5 /* View Modifiers */,
 				39A5B26B26475BD2007F55C3 /* Views */,
 			);
 			path = PocketDex;
@@ -153,11 +171,12 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		39A5B26C26475BD7007F55C3 /* ViewModels */ = {
+		39A5B26C26475BD7007F55C3 /* View Models */ = {
 			isa = PBXGroup;
 			children = (
+				39CA68A226519ED200F005C5 /* TypeViewModel.swift */,
 			);
-			path = ViewModels;
+			path = "View Models";
 			sourceTree = "<group>";
 		};
 		39A5B26D26475BF2007F55C3 /* Important */ = {
@@ -182,7 +201,13 @@
 		39A5B26F26475C92007F55C3 /* Type */ = {
 			isa = PBXGroup;
 			children = (
+				39CA689C265031D400F005C5 /* DamageRelations.swift */,
+				39CA68A02651810900F005C5 /* TypeList.swift */,
+				39CA689E26503BFF00F005C5 /* TypeRelationView.swift */,
+				39CA6896264F46D200F005C5 /* TypeTest.swift */,
 				39A5B27026475CC8007F55C3 /* TypeView.swift */,
+				39CA68A42651A4C900F005C5 /* MovesWithThisType.swift */,
+				39CA68A62651A5BB00F005C5 /* PokemonWithThisType.swift */,
 			);
 			path = Type;
 			sourceTree = "<group>";
@@ -209,6 +234,21 @@
 				39CA6891264D9AC500F005C5 /* Assets.swift */,
 			);
 			path = SwiftGen;
+			sourceTree = "<group>";
+		};
+		39CA689826501E4B00F005C5 /* View Modifiers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "View Modifiers";
+			sourceTree = "<group>";
+		};
+		39CA689926501E7000F005C5 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				39CA689A26501E8F00F005C5 /* StringEntensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -370,10 +410,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				39A5B27426476299007F55C3 /* TypeMappings.swift in Sources */,
+				39CA6897264F46D200F005C5 /* TypeTest.swift in Sources */,
 				393C627F263F023A00EBE6B4 /* ContentView.swift in Sources */,
+				39CA689D265031D400F005C5 /* DamageRelations.swift in Sources */,
 				39CA6892264D9AC500F005C5 /* Assets.swift in Sources */,
+				39CA68A72651A5BB00F005C5 /* PokemonWithThisType.swift in Sources */,
 				39D31B3F2640E54300BB3DD9 /* RemoteImageView.swift in Sources */,
 				393C627D263F023A00EBE6B4 /* PocketDexApp.swift in Sources */,
+				39CA68A52651A4C900F005C5 /* MovesWithThisType.swift in Sources */,
+				39CA689B26501E8F00F005C5 /* StringEntensions.swift in Sources */,
+				39CA68A326519ED200F005C5 /* TypeViewModel.swift in Sources */,
+				39CA68A12651810900F005C5 /* TypeList.swift in Sources */,
+				39CA689F26503BFF00F005C5 /* TypeRelationView.swift in Sources */,
 				39A5B27126475CC8007F55C3 /* TypeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
