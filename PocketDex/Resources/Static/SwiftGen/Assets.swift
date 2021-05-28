@@ -21,6 +21,10 @@ internal typealias AssetImageTypeAlias = ImageAsset.Image
 
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 internal enum Asset {
+  internal enum Pokeball {
+    internal static let pokeballMinimalistic = ImageAsset(name: "Pokeball-Minimalistic")
+    internal static let pokeballSimple = ImageAsset(name: "Pokeball-Simple")
+  }
   internal enum PokemonType {
     internal enum Color {
       internal static let bug = ColorAsset(name: "Bug")

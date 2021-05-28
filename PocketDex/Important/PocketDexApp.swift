@@ -12,6 +12,7 @@ struct PocketDexApp: App {
     var body: some Scene {
         WindowGroup {
 			TypeList()
+//			ContentView()
         }
     }
 }
