@@ -1,5 +1,5 @@
 //
-//  Ty[eTest.swift
+//  TypeDetail.swift
 //  PocketDex
 //
 //  Created by Josh Jaslow on 5/14/21.
@@ -8,7 +8,7 @@
 import SwiftUI
 import PokeSwift
 
-struct TypeTest: View {
+struct TypeDetail: View {
 	@EnvironmentObject var viewModel: TypeViewModel
 	
     var body: some View {
@@ -77,7 +77,7 @@ struct TypeTest_Previews: PreviewProvider {
 									name: "normal")
 	
     static var previews: some View {
-        TypeTest()
+        TypeDetail()
 			.environmentObject(TypeViewModel(typeMap: normalType))
     }
 }

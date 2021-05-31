@@ -77,7 +77,7 @@ struct TypeRelationView: View {
 				if typeRelations.count > 0 {
 					HStack(spacing: 5) {
 						ForEach(typeRelations, id: \.self) { typeName in
-							NavigationLink(destination: TypeTest().environmentObject(TypeViewModel(typeName: typeName))) {
+							NavigationLink(destination: TypeDetail().environmentObject(TypeViewModel(typeName: typeName))) {
 								Image(uiImage: Type.mapAdditionalInfo(typeName)!.iconCircular)
 									.resizable()
 									.aspectRatio(contentMode: .fit)

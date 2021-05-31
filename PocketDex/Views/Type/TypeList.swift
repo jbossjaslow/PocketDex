@@ -12,22 +12,20 @@ struct TypeList: View {
 	@State var typeMapList: [TypeMap] = []
 	@State var makingRequest: Bool = false
 	
-    var body: some View {
+	var body: some View {
 		NavigationView {
 			if !makingRequest {
-//				ScrollView(.vertical) {
-					List {
-						ForEach(typeMapList) { typeMap in
-							NavigationLink(
-								destination: TypeTest().environmentObject(TypeViewModel(typeMap: typeMap))) {
-								Image(uiImage: typeMap.iconRectangular)
-									.resizable()
-									.aspectRatio(contentMode: .fit)
-									.padding(.horizontal)
-							}
+				List {
+					ForEach(typeMapList) { typeMap in
+						NavigationLink(
+							destination: TypeDetail().environmentObject(TypeViewModel(typeMap: typeMap))) {
+							Image(uiImage: typeMap.iconRectangular)
+								.resizable()
+								.aspectRatio(contentMode: .fit)
+								.padding(.horizontal)
 						}
 					}
-//				}
+				}
 				.navigationBarHidden(true)
 			} else {
 				ProgressView()
@@ -38,7 +36,7 @@ struct TypeList: View {
 		.onAppear {
 			requestTypes()
 		}
-    }
+	}
 	
 	func requestTypes() {
 		makingRequest = true
@@ -64,7 +62,7 @@ struct TypeList: View {
 }
 
 struct TypeList_Previews: PreviewProvider {
-    static var previews: some View {
-        TypeList()
-    }
+	static var previews: some View {
+		TypeList()
+	}
 }

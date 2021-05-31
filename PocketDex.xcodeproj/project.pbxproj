@@ -14,11 +14,11 @@
 		393C628F263F023D00EBE6B4 /* PocketDexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C628E263F023D00EBE6B4 /* PocketDexTests.swift */; };
 		393C629A263F023D00EBE6B4 /* PocketDexUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C6299263F023D00EBE6B4 /* PocketDexUITests.swift */; };
 		393C62A9263F030100EBE6B4 /* PokeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 393C62A8263F030100EBE6B4 /* PokeSwift */; };
-		39A5B27126475CC8007F55C3 /* TypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A5B27026475CC8007F55C3 /* TypeView.swift */; };
+		399BD61C266582E3001CA60C /* DynamicList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399BD61B266582E3001CA60C /* DynamicList.swift */; };
 		39A5B27426476299007F55C3 /* TypeMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A5B27326476299007F55C3 /* TypeMappings.swift */; };
 		39CA6890264D99DB00F005C5 /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = 39CA688F264D99DB00F005C5 /* swiftgen.yml */; };
 		39CA6892264D9AC500F005C5 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CA6891264D9AC500F005C5 /* Assets.swift */; };
-		39CA6897264F46D200F005C5 /* TypeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CA6896264F46D200F005C5 /* TypeTest.swift */; };
+		39CA6897264F46D200F005C5 /* TypeDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CA6896264F46D200F005C5 /* TypeDetail.swift */; };
 		39CA689B26501E8F00F005C5 /* StringEntensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CA689A26501E8F00F005C5 /* StringEntensions.swift */; };
 		39CA689D265031D400F005C5 /* DamageRelations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CA689C265031D400F005C5 /* DamageRelations.swift */; };
 		39CA689F26503BFF00F005C5 /* TypeRelationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CA689E26503BFF00F005C5 /* TypeRelationView.swift */; };
@@ -59,11 +59,11 @@
 		393C6295263F023D00EBE6B4 /* PocketDexUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PocketDexUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		393C6299263F023D00EBE6B4 /* PocketDexUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PocketDexUITests.swift; sourceTree = "<group>"; };
 		393C629B263F023D00EBE6B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		39A5B27026475CC8007F55C3 /* TypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeView.swift; sourceTree = "<group>"; };
+		399BD61B266582E3001CA60C /* DynamicList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicList.swift; sourceTree = "<group>"; };
 		39A5B27326476299007F55C3 /* TypeMappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeMappings.swift; sourceTree = "<group>"; };
 		39CA688F264D99DB00F005C5 /* swiftgen.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
 		39CA6891264D9AC500F005C5 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
-		39CA6896264F46D200F005C5 /* TypeTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeTest.swift; sourceTree = "<group>"; };
+		39CA6896264F46D200F005C5 /* TypeDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeDetail.swift; sourceTree = "<group>"; };
 		39CA689A26501E8F00F005C5 /* StringEntensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringEntensions.swift; sourceTree = "<group>"; };
 		39CA689C265031D400F005C5 /* DamageRelations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DamageRelations.swift; sourceTree = "<group>"; };
 		39CA689E26503BFF00F005C5 /* TypeRelationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeRelationView.swift; sourceTree = "<group>"; };
@@ -161,9 +161,18 @@
 			path = PocketDexUITests;
 			sourceTree = "<group>";
 		};
+		399BD61A266582CA001CA60C /* Dynamic List */ = {
+			isa = PBXGroup;
+			children = (
+				399BD61B266582E3001CA60C /* DynamicList.swift */,
+			);
+			path = "Dynamic List";
+			sourceTree = "<group>";
+		};
 		39A5B26B26475BD2007F55C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				399BD61A266582CA001CA60C /* Dynamic List */,
 				39A5B26F26475C92007F55C3 /* Type */,
 				393C627E263F023A00EBE6B4 /* ContentView.swift */,
 				39D31B3E2640E54300BB3DD9 /* RemoteImageView.swift */,
@@ -202,12 +211,11 @@
 			isa = PBXGroup;
 			children = (
 				39CA689C265031D400F005C5 /* DamageRelations.swift */,
-				39CA68A02651810900F005C5 /* TypeList.swift */,
-				39CA689E26503BFF00F005C5 /* TypeRelationView.swift */,
-				39CA6896264F46D200F005C5 /* TypeTest.swift */,
-				39A5B27026475CC8007F55C3 /* TypeView.swift */,
 				39CA68A42651A4C900F005C5 /* MovesWithThisType.swift */,
 				39CA68A62651A5BB00F005C5 /* PokemonWithThisType.swift */,
+				39CA68A02651810900F005C5 /* TypeList.swift */,
+				39CA689E26503BFF00F005C5 /* TypeRelationView.swift */,
+				39CA6896264F46D200F005C5 /* TypeDetail.swift */,
 			);
 			path = Type;
 			sourceTree = "<group>";
@@ -410,7 +418,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				39A5B27426476299007F55C3 /* TypeMappings.swift in Sources */,
-				39CA6897264F46D200F005C5 /* TypeTest.swift in Sources */,
+				399BD61C266582E3001CA60C /* DynamicList.swift in Sources */,
+				39CA6897264F46D200F005C5 /* TypeDetail.swift in Sources */,
 				393C627F263F023A00EBE6B4 /* ContentView.swift in Sources */,
 				39CA689D265031D400F005C5 /* DamageRelations.swift in Sources */,
 				39CA6892264D9AC500F005C5 /* Assets.swift in Sources */,
@@ -422,7 +431,6 @@
 				39CA68A326519ED200F005C5 /* TypeViewModel.swift in Sources */,
 				39CA68A12651810900F005C5 /* TypeList.swift in Sources */,
 				39CA689F26503BFF00F005C5 /* TypeRelationView.swift in Sources */,
-				39A5B27126475CC8007F55C3 /* TypeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
