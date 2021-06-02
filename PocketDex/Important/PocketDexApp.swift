@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import PokeSwift
 
 @main
 struct PocketDexApp: App {
     var body: some Scene {
         WindowGroup {
-			TypeList()
+			DynamicList<Pokemon>()
+//			TypeList()
 //			ContentView()
         }
     }

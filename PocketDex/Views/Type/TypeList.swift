@@ -40,9 +40,9 @@ struct TypeList: View {
 	
 	func requestTypes() {
 		makingRequest = true
-		Type.requestList { (_ result: [NamedAPIResource<Type>]?) in
+		Type.requestList { (_ result: PagedList<Type>?) in
 			DispatchQueue.main.async {
-				guard let resourceList = result else {
+				guard let resourceList = result?.results else {
 					self.makingRequest = false
 					return
 				}
