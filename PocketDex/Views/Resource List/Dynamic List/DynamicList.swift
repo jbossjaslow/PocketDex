@@ -37,6 +37,7 @@ struct DynamicList<T: Requestable>: View {
 				}
 			}
 		}
+		.loadingResource(isLoading: $listProvider.fetchingResources)
 	}
 }
 

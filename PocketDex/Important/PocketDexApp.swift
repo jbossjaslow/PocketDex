@@ -12,9 +12,8 @@ import PokeSwift
 struct PocketDexApp: App {
     var body: some Scene {
         WindowGroup {
-			DynamicList<Pokemon>()
-//			TypeList()
-//			ContentView()
+			TabBar()
+				.environmentObject(ViewRouter(initialSelection: .pokemon))
         }
     }
 }
