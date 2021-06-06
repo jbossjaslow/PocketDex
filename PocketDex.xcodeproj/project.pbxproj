@@ -36,6 +36,7 @@
 		39CEAE28266D4AEB00941036 /* TabBarIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CEAE27266D4AEB00941036 /* TabBarIcons.swift */; };
 		39CEAE2A266D4B3D00941036 /* ViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CEAE29266D4B3D00941036 /* ViewRouter.swift */; };
 		39CEAE2C266D4D9900941036 /* TabBarIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CEAE2B266D4D9900941036 /* TabBarIcon.swift */; };
+		39CEAE31266D806500941036 /* LazyNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CEAE30266D806500941036 /* LazyNavigationView.swift */; };
 		39D31B3F2640E54300BB3DD9 /* RemoteImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D31B3E2640E54300BB3DD9 /* RemoteImageView.swift */; };
 /* End PBXBuildFile section */
 
@@ -91,6 +92,7 @@
 		39CEAE27266D4AEB00941036 /* TabBarIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarIcons.swift; sourceTree = "<group>"; };
 		39CEAE29266D4B3D00941036 /* ViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRouter.swift; sourceTree = "<group>"; };
 		39CEAE2B266D4D9900941036 /* TabBarIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarIcon.swift; sourceTree = "<group>"; };
+		39CEAE30266D806500941036 /* LazyNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyNavigationView.swift; sourceTree = "<group>"; };
 		39D31B3E2640E54300BB3DD9 /* RemoteImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -193,8 +195,9 @@
 		39A5B26B26475BD2007F55C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				393C627E263F023A00EBE6B4 /* PokemonView.swift */,
-				39D31B3E2640E54300BB3DD9 /* RemoteImageView.swift */,
+				39CEAE2F266D804600941036 /* Images */,
+				39CEAE2D266D802E00941036 /* Navigation */,
+				39CEAE2E266D803900941036 /* Pokemon */,
 				39CEAE1A266C4D5800941036 /* Resource List */,
 				39CEAE20266C524500941036 /* Tab Bar */,
 				39A5B26F26475C92007F55C3 /* Type */,
@@ -311,6 +314,30 @@
 				39CEAE25266D4AE100941036 /* TabBarView.swift */,
 			);
 			path = "Tab Bar";
+			sourceTree = "<group>";
+		};
+		39CEAE2D266D802E00941036 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				39CEAE30266D806500941036 /* LazyNavigationView.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
+		39CEAE2E266D803900941036 /* Pokemon */ = {
+			isa = PBXGroup;
+			children = (
+				393C627E263F023A00EBE6B4 /* PokemonView.swift */,
+			);
+			path = Pokemon;
+			sourceTree = "<group>";
+		};
+		39CEAE2F266D804600941036 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				39D31B3E2640E54300BB3DD9 /* RemoteImageView.swift */,
+			);
+			path = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -477,6 +504,7 @@
 				39CEAE2A266D4B3D00941036 /* ViewRouter.swift in Sources */,
 				39CEAE22266C526800941036 /* TabBar.swift in Sources */,
 				399BD61C266582E3001CA60C /* DynamicList.swift in Sources */,
+				39CEAE31266D806500941036 /* LazyNavigationView.swift in Sources */,
 				39CA6897264F46D200F005C5 /* TypeDetail.swift in Sources */,
 				393C627F263F023A00EBE6B4 /* PokemonView.swift in Sources */,
 				39BE5CBB2668068C0044FFD5 /* DynamicListProvider.swift in Sources */,

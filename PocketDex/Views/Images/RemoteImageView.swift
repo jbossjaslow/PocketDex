@@ -19,10 +19,12 @@ struct RemoteImageView: View {
 	
     var body: some View {
 		VStack {
-			Image(uiImage: image ?? Asset.Pokeball.pokeball.image)
-				.resizable()
-				.aspectRatio(contentMode: .fit)
-				.loadingResource(isLoading: $loading)
+			if let image = image {
+				Image(uiImage: image)
+					.resizable()
+					.aspectRatio(contentMode: .fit)
+					.loadingResource(isLoading: $loading)
+			}
 		}
 		.onAppear {
 			loadImage(from: url)
@@ -36,10 +38,12 @@ struct RemoteImageView: View {
 		loading = true
 		
 		SessionManager.requestImage(url: url) { result in
-			if case .success(let image) = result {
-				self.image = image
+			DispatchQueue.main.async {
+				if case .success(let image) = result {
+					self.image = image
+				}
+				loading = false
 			}
-			loading = false
 		}
 	}
 }
@@ -70,6 +74,7 @@ struct LoadingRotationImageModifer: ViewModifier {
 							.frame(height: 150)
 							.rotationEffect(Angle(degrees: animating ? 360 : 0.0))
 							.animation(repeatForeverAnimation)
+							.opacity(0.4)
 							.onAppear {
 								animating = true
 							}

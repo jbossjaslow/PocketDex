@@ -16,7 +16,13 @@ struct StaticList<T: Requestable & ResourceLimit>: View {
 			List {
 				ForEach(viewModel.filteredResources, id: \.name) { resource in
 					if T.self == Pokemon.self {
-						NavigationLink(destination: PokemonView(requestURL: resource.url)) {
+						// This preloads all of the calls, making it take super long to start the app
+//						NavigationLink(destination: PokemonView(requestURL: resource.url)) {
+//							Text(resource.name.capitalizingFirstLetter())
+//						}
+						
+						// This lazy loads the destinations
+						NavigationLink(destination: LazyNavigationView(PokemonView(requestURL: resource.url))) {
 							Text(resource.name.capitalizingFirstLetter())
 						}
 					} else {
@@ -31,6 +37,10 @@ struct StaticList<T: Requestable & ResourceLimit>: View {
 			.onAppear {
 				print("Showing \(String(describing: T.self))")
 			}
+//			.gesture(DragGesture()
+//						 .onChanged({ _ in
+//							 UIApplication.shared.dismissKeyboard()
+//						 })
 		}
     }
 }

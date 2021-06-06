@@ -15,11 +15,15 @@ struct PokemonView: View {
 	@State var pokemonName: String = "Pokemon Name"
 	@State var pokemonGenus: String = "Pokemon Genus"
 	@State var pokemonFrontSprite: String = ""
+	@State var pokemonTypes: [Type] = []
+//	@State var pokemon: Pokemon? = nil
 	
-	@State private var lastPokemonSearched: Int = 0
+	@State var backgroundGradient: [Color] = [.white]
 	
     var body: some View {
 		VStack {
+			Spacer()
+			
 			HStack {
 				Text(pokemonName)
 				
@@ -29,27 +33,19 @@ struct PokemonView: View {
 				Text(pokemonGenus)
 			}
 			.padding()
-			.overlay(
-				HStack {
-					if makingRequest {
-						ProgressView()
-							.progressViewStyle(CircularProgressViewStyle())
-					}
-				}
-			)
 			
 			RemoteImageView(url: $pokemonFrontSprite)
 			
-//			Button {
-//				getRandomPokemon()
-//			} label: {
-//				Text("Get a random pokemon")
-//			}
-//			.disabled(makingRequest)
+			Spacer()
 		}
 		.onAppear {
 			getPokemon()
 		}
+		.background(
+			LinearGradient(gradient: Gradient(colors: backgroundGradient),
+						   startPoint: .top,
+						   endPoint: .bottom)
+		)
     }
 	
 	func getPokemon() {
@@ -63,8 +59,10 @@ struct PokemonView: View {
 					return
 				}
 				
+//				self.pokemon = pokemon
 				pokemonName = name
 				getPokemonSpecies(pokemon: pokemon)
+				getPokemonTypes(pokemon: pokemon)
 				
 				if let sprite = pokemon.sprites?.frontDefault {
 					pokemonFrontSprite = sprite
@@ -74,36 +72,6 @@ struct PokemonView: View {
 			}
 		}
 	}
-	
-//	func getRandomPokemon() {
-//		//max pokemon is 898 (does not include forms)
-//		//pokemon forms range from 10001 to 10220
-//		makingRequest = true
-////		let rand = Int.random(in: 1...898)
-//		var rand = Int.random(in: 1...5)
-//		while rand == lastPokemonSearched {
-//			rand = Int.random(in: 1...5)
-//		}
-//		lastPokemonSearched = rand
-//		print(rand)
-//		Pokemon.request(using: .id(rand)) { (_ result: Pokemon?) in
-//			guard let pokemon = result,
-//				  let name = pokemon.name else {
-//				print("Error, check input")
-//				makingRequest = false
-//				return
-//			}
-//
-//			pokemonName = name
-//			getPokemonSpecies(pokemon: pokemon)
-//
-//			if let sprite = pokemon.sprites?.frontDefault {
-//				pokemonFrontSprite = sprite
-//			}
-//
-//			makingRequest = false
-//		}
-//	}
 	
 	func getPokemonSpecies(pokemon: Pokemon) {
 		pokemon.species?.request { result in
@@ -124,6 +92,32 @@ struct PokemonView: View {
 				
 				pokemonGenus = genus
 			}
+		}
+	}
+	
+	func getPokemonTypes(pokemon: Pokemon) {
+		pokemon.types?.forEach {
+			$0.type?.request { result in
+				DispatchQueue.main.async {
+					guard let type = result else {
+						print("Error, check input")
+						return
+					}
+					
+					pokemonTypes.append(type)
+					self.backgroundGradient = getPokemonTypeGradient()
+				}
+			}
+		}
+	}
+	
+	func getPokemonTypeGradient() -> [Color] {
+		guard !pokemonTypes.isEmpty else {
+			return [.white]
+		}
+		
+		return pokemonTypes.map {
+			Color($0.mapAdditionalInfo()?.color ?? .white)
 		}
 	}
 }
