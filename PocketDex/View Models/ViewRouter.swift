@@ -24,11 +24,11 @@ class ViewRouter: ObservableObject {
 	
 	func getTabIcon(_ selection: TabIcon) -> UIImage {
 		switch selection {
-			case .pokemon: return Asset.Pokeball.pokeballSimple.image
-			case .type: return Asset.Pokeball.pokeballSimple.image
-			case .ability: return Asset.Pokeball.pokeballSimple.image
-			case .move: return Asset.Pokeball.pokeballSimple.image
-			case .more: return UIImage(systemName: "list.bullet") ?? Asset.Pokeball.pokeballSimple.image
+			case .pokemon: return Asset.Pokeball.pokeball.image
+			case .type: return Asset.Pokeball.pokeball.image
+			case .ability: return Asset.Pokeball.pokeball.image
+			case .move: return Asset.Pokeball.pokeball.image
+			case .more: return UIImage(systemName: "list.bullet") ?? Asset.Pokeball.pokeball.image
 		}
 	}
 }

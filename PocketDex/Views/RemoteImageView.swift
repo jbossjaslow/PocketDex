@@ -19,7 +19,7 @@ struct RemoteImageView: View {
 	
     var body: some View {
 		VStack {
-			Image(uiImage: image ?? Asset.Pokeball.pokeballSimple.image)
+			Image(uiImage: image ?? Asset.Pokeball.pokeball.image)
 				.resizable()
 				.aspectRatio(contentMode: .fit)
 				.loadingResource(isLoading: $loading)
@@ -64,7 +64,7 @@ struct LoadingRotationImageModifer: ViewModifier {
 			.overlay(
 				HStack {
 					if isLoading {
-						Image(uiImage: Asset.Pokeball.pokeballSimple.image)
+						Image(uiImage: Asset.Pokeball.pokeball.image)
 							.resizable()
 							.aspectRatio(contentMode: .fit)
 							.frame(height: 150)

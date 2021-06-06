@@ -23,6 +23,7 @@ class StaticListViewModel<ResourceType: Requestable & ResourceLimit>: Observable
 	
 	init() {
 		populateResourceList()
+		print("Running init for \(String(describing: ResourceType.self))")
 	}
 	
 	func reset() {
@@ -31,7 +32,7 @@ class StaticListViewModel<ResourceType: Requestable & ResourceLimit>: Observable
 	
 	func populateResourceList() {
 		isLoading = true
-		ResourceType.requestList(resourceLimit: ResourceType.normalLimit) { (_ result: PagedList<ResourceType>?) in
+		ResourceType.requestStaticList(resourceLimit: ResourceType.normalLimit) { (_ result: PagedList<ResourceType>?) in
 			DispatchQueue.main.async {
 				self.isLoading = false
 				if let pagedList = result {

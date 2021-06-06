@@ -61,6 +61,7 @@ struct TypeDetail: View {
 					//List of moves with this type
 					MovesWithThisType()
 				}
+				.padding(.bottom)
 			}
 			.background(Color(viewModel.typeMap!.color.cgColor).edgesIgnoringSafeArea(.all))
 		} else {

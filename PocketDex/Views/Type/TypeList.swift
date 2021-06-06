@@ -26,21 +26,19 @@ struct TypeList: View {
 						}
 					}
 				}
-				.navigationBarHidden(true)
-			} else {
-				ProgressView()
-					.progressViewStyle(CircularProgressViewStyle())
-					.navigationBarHidden(true)
+				.navigationTitle("Types")
 			}
 		}
+		.loadingResource(isLoading: $makingRequest)
 		.onAppear {
+			print("Appearing")
 			requestTypes()
 		}
 	}
 	
 	func requestTypes() {
 		makingRequest = true
-		Type.requestList { (_ result: PagedList<Type>?) in
+		Type.requestDynamicList { (_ result: PagedList<Type>?) in
 			DispatchQueue.main.async {
 				guard let resourceList = result?.results else {
 					self.makingRequest = false

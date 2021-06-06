@@ -47,8 +47,8 @@ class DynamicListProvider<ResourceType: Requestable>: ObservableObject {
 			}
 		} else {
 			let startIndex = resourceList.count
-			ResourceType.requestList(resourceLimit: batchSize,
-									 offset: startIndex) { (_ pagedList: PagedList<ResourceType>?) in
+			ResourceType.requestDynamicList(resourceLimit: batchSize,
+											offset: startIndex) { (_ pagedList: PagedList<ResourceType>?) in
 				DispatchQueue.main.async {
 					self.fetchingResources = false
 					print("Fetching from discrete URL")

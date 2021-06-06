@@ -11,7 +11,6 @@ import PokeSwift
 struct TabBarView: View {
 	@EnvironmentObject var viewRouter: ViewRouter
 	
-	@ViewBuilder
 	var body: some View {
 		switch viewRouter.currentSelection {
 			case .pokemon:

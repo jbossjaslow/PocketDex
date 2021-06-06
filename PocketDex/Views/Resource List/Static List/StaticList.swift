@@ -15,13 +15,22 @@ struct StaticList<T: Requestable & ResourceLimit>: View {
 		NavigationView {
 			List {
 				ForEach(viewModel.filteredResources, id: \.name) { resource in
-					Text(resource.name.capitalizingFirstLetter())
+					if T.self == Pokemon.self {
+						NavigationLink(destination: PokemonView(requestURL: resource.url)) {
+							Text(resource.name.capitalizingFirstLetter())
+						}
+					} else {
+						Text(resource.name.capitalizingFirstLetter())
+					}
 				}
 			}
 			.loadingResource(isLoading: $viewModel.isLoading)
 			.addSearchBar(searchText: $viewModel.searchText)
 			.navigationTitle(String(describing: T.self))
 			.listStyle(PlainListStyle())
+			.onAppear {
+				print("Showing \(String(describing: T.self))")
+			}
 		}
     }
 }

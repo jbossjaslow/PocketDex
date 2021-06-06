@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PokeSwift
 
 struct PokemonWithThisType: View {
 	@EnvironmentObject var viewModel: TypeViewModel
@@ -16,8 +17,9 @@ struct PokemonWithThisType: View {
 			ScrollView(.vertical, showsIndicators: true) {
 				VStack {
 					ForEach(pokemonWithThisType, id: \.pokemon?.name) { pokemon in
-						Text(pokemon.pokemon?.name.capitalizingFirstLetter() ?? "Pokemon name")
-						//on tap view, go to detail view
+						NavigationLink(destination: PokemonView(requestURL: getPokemonURL(from: pokemon))) {
+							Text(pokemon.pokemon?.name.capitalizingFirstLetter() ?? "Pokemon name")
+						}
 					}
 				}
 			}
@@ -27,6 +29,14 @@ struct PokemonWithThisType: View {
 			Text("Error Loading pokemon with this type")
 		}
     }
+	
+	func getPokemonURL(from pokemon: TypePokemon) -> String {
+		guard let url = pokemon.pokemon?.url else {
+			return Pokemon.url + "1"
+		}
+		
+		return url
+	}
 }
 
 struct PokemonWithThisType_Previews: PreviewProvider {
