@@ -24,16 +24,30 @@ struct PokemonView: View {
 		VStack {
 			Spacer()
 			
+			//Name & Genus
 			HStack {
-				Text(pokemonName)
+				Text(pokemonName.capitalizingFirstLetter())
+					.font(.largeTitle)
 				
 				Text("|")
 					.font(.largeTitle)
 				
 				Text(pokemonGenus)
+					.font(.largeTitle)
 			}
 			.padding()
 			
+			//Types
+			HStack() {
+				ForEach(pokemonTypes.compactMap { $0.mapAdditionalInfo() }, id: \.name) { typeMap in
+					NavigationLink(destination: TypeDetail().environmentObject(TypeViewModel(typeMap: typeMap))) {
+						Image(uiImage: typeMap.iconRectangular)
+							.border(Color.white, width: 2)
+					}
+				}
+			}
+			
+			//Sprite
 			RemoteImageView(url: $pokemonFrontSprite)
 			
 			Spacer()
@@ -46,10 +60,12 @@ struct PokemonView: View {
 						   startPoint: .top,
 						   endPoint: .bottom)
 		)
+		.edgesIgnoringSafeArea(.all)
     }
 	
 	func getPokemon() {
 		makingRequest = true
+		print("Requesting pokemon with url: \(requestURL)")
 		Pokemon.request(using: .url(requestURL)) { (_ result: Pokemon?) in
 			DispatchQueue.main.async {
 				guard let pokemon = result,
@@ -96,6 +112,7 @@ struct PokemonView: View {
 	}
 	
 	func getPokemonTypes(pokemon: Pokemon) {
+		pokemonTypes.removeAll()
 		pokemon.types?.forEach {
 			$0.type?.request { result in
 				DispatchQueue.main.async {
@@ -124,6 +141,8 @@ struct PokemonView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-		PokemonView(requestURL: Pokemon.url + "1")
+		NavigationView {
+			PokemonView(requestURL: Pokemon.url + "1")
+		}
     }
 }

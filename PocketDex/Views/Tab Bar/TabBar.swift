@@ -40,12 +40,16 @@ struct TabBar: View {
 					Text(TabIcon.ability.rawValue)
 				}
 			
-			Text("More")
-				.tag(TabIcon.more)
-				.tabItem {
-					Image(uiImage: getTabIcon(.more))
-					Text(TabIcon.more.rawValue)
-				}
+			Button {
+				//
+			} label: {
+				Text("More")
+			}
+			.tag(TabIcon.more)
+			.tabItem {
+				Image(uiImage: getTabIcon(.more))
+				Text(TabIcon.more.rawValue)
+			}
 		}
 	}
 	

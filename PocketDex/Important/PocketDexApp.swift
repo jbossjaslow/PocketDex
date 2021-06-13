@@ -13,7 +13,7 @@ struct PocketDexApp: App {
     var body: some Scene {
         WindowGroup {
 			TabBar()
-				.environmentObject(ViewRouter(initialSelection: .pokemon))
+//				.environmentObject(ViewRouter(initialSelection: .pokemon))
         }
     }
 }

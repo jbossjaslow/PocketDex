@@ -119,3 +119,11 @@ struct TypeMap: Identifiable {
 	var iconRectangular: UIImage
 	var name: String
 }
+
+extension Array where Element: Type {
+	var mappings: [TypeMap] {
+		self.compactMap {
+			$0.mapAdditionalInfo()
+		}
+	}
+}

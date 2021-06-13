@@ -14,7 +14,7 @@ struct TypeList: View {
 	
 	var body: some View {
 		NavigationView {
-			if !makingRequest {
+			if !makingRequest && !typeMapList.isEmpty {
 				List {
 					ForEach(typeMapList) { typeMap in
 						NavigationLink(
@@ -27,6 +27,8 @@ struct TypeList: View {
 					}
 				}
 				.navigationTitle("Types")
+			} else {
+				Text("Loading...")
 			}
 		}
 		.loadingResource(isLoading: $makingRequest)
@@ -38,7 +40,7 @@ struct TypeList: View {
 	
 	func requestTypes() {
 		makingRequest = true
-		Type.requestDynamicList { (_ result: PagedList<Type>?) in
+		Type.requestStaticList(resourceLimit: Type.normalLimit) { (_ result: PagedList<Type>?) in
 			DispatchQueue.main.async {
 				guard let resourceList = result?.results else {
 					self.makingRequest = false
