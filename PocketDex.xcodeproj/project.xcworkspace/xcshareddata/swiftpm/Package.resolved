@@ -5,8 +5,8 @@
         "package": "PokeSwift",
         "repositoryURL": "git@github.com:jbossjaslow/PokeSwift.git",
         "state": {
-          "branch": "main",
-          "revision": "64a7a38abb6e922300836426ac026368ff3c4228",
+          "branch": "feature/SwiftUI-3-conversion",
+          "revision": "776865e115d3c6f4adeba6a6681c6183d3fb9071",
           "version": null
         }
       }

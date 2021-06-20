@@ -9,16 +9,7 @@ import SwiftUI
 import PokeSwift
 
 struct PokemonView: View {
-	@State var requestURL: String
-	
-	@State var makingRequest: Bool = false
-	@State var pokemonName: String = "Pokemon Name"
-	@State var pokemonGenus: String = "Pokemon Genus"
-	@State var pokemonFrontSprite: String = ""
-	@State var pokemonTypes: [Type] = []
-//	@State var pokemon: Pokemon? = nil
-	
-	@State var backgroundGradient: [Color] = [.white]
+	@ObservedObject var viewModel: PokemonViewModel
 	
     var body: some View {
 		VStack {
@@ -26,20 +17,20 @@ struct PokemonView: View {
 			
 			//Name & Genus
 			HStack {
-				Text(pokemonName.capitalizingFirstLetter())
+				Text(viewModel.pokemonName.capitalizingFirstLetter())
 					.font(.largeTitle)
 				
 				Text("|")
 					.font(.largeTitle)
 				
-				Text(pokemonGenus)
+				Text(viewModel.pokemonGenus)
 					.font(.largeTitle)
 			}
 			.padding()
 			
 			//Types
-			HStack() {
-				ForEach(pokemonTypes.compactMap { $0.mapAdditionalInfo() }, id: \.name) { typeMap in
+			HStack(spacing: 5) {
+				ForEach(viewModel.typeMaps, id: \.name) { typeMap in
 					NavigationLink(destination: TypeDetail().environmentObject(TypeViewModel(typeMap: typeMap))) {
 						Image(uiImage: typeMap.iconRectangular)
 							.border(Color.white, width: 2)
@@ -48,101 +39,35 @@ struct PokemonView: View {
 			}
 			
 			//Sprite
-			RemoteImageView(url: $pokemonFrontSprite)
+			AsyncImage(url: URL(string: viewModel.pokemonFrontSprite)) { image in
+				image
+					.resizable()
+					.aspectRatio(contentMode: .fit)
+			} placeholder: {
+				Image(uiImage: Asset.Pokeball.pokeball.image)
+					.resizable()
+					.aspectRatio(contentMode: .fit)
+					.frame(width: 50, height: 50)
+			}
 			
 			Spacer()
 		}
-		.onAppear {
-			getPokemon()
+		.task {
+			await viewModel.fetchPokemon()
 		}
 		.background(
-			LinearGradient(gradient: Gradient(colors: backgroundGradient),
+			LinearGradient(gradient: Gradient(colors: viewModel.backgroundGradient),
 						   startPoint: .top,
 						   endPoint: .bottom)
 		)
 		.edgesIgnoringSafeArea(.all)
     }
-	
-	func getPokemon() {
-		makingRequest = true
-		print("Requesting pokemon with url: \(requestURL)")
-		Pokemon.request(using: .url(requestURL)) { (_ result: Pokemon?) in
-			DispatchQueue.main.async {
-				guard let pokemon = result,
-					  let name = pokemon.name else {
-					print("Error, check input")
-					self.makingRequest = false
-					return
-				}
-				
-//				self.pokemon = pokemon
-				pokemonName = name
-				getPokemonSpecies(pokemon: pokemon)
-				getPokemonTypes(pokemon: pokemon)
-				
-				if let sprite = pokemon.sprites?.frontDefault {
-					pokemonFrontSprite = sprite
-				}
-				
-				makingRequest = false
-			}
-		}
-	}
-	
-	func getPokemonSpecies(pokemon: Pokemon) {
-		pokemon.species?.request { result in
-			DispatchQueue.main.async {
-				guard let species = result,
-					  let genusList = species.genera else {
-					print("Error, check input")
-					return
-				}
-				
-				let genusEnglish = genusList.filter {
-					$0.language?.name == "en"
-				}
-				
-				guard let genus = genusEnglish.first?.genus else {
-					return
-				}
-				
-				pokemonGenus = genus
-			}
-		}
-	}
-	
-	func getPokemonTypes(pokemon: Pokemon) {
-		pokemonTypes.removeAll()
-		pokemon.types?.forEach {
-			$0.type?.request { result in
-				DispatchQueue.main.async {
-					guard let type = result else {
-						print("Error, check input")
-						return
-					}
-					
-					pokemonTypes.append(type)
-					self.backgroundGradient = getPokemonTypeGradient()
-				}
-			}
-		}
-	}
-	
-	func getPokemonTypeGradient() -> [Color] {
-		guard !pokemonTypes.isEmpty else {
-			return [.white]
-		}
-		
-		return pokemonTypes.map {
-			Color($0.mapAdditionalInfo()?.color ?? .white)
-		}
-	}
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
 		NavigationView {
-			PokemonView(requestURL: Pokemon.url + "1")
+			PokemonView(viewModel: PokemonViewModel(url: Pokemon.url + "1"))
 		}
     }
 }

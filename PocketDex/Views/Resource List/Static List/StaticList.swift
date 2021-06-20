@@ -17,7 +17,7 @@ struct StaticList<T: Requestable & ResourceLimit>: View {
 				ForEach(viewModel.filteredResources, id: \.name) { resource in
 					if T.self == Pokemon.self {
 						// This preloads all of the calls, making it take super long to start the app
-						NavigationLink(destination: PokemonView(requestURL: resource.url)) {
+						NavigationLink(destination: PokemonView(viewModel: PokemonViewModel(url: resource.url))) {
 							Text(resource.name.capitalizingFirstLetter())
 						}
 						
@@ -36,6 +36,9 @@ struct StaticList<T: Requestable & ResourceLimit>: View {
 			.listStyle(PlainListStyle())
 			.onAppear {
 //				print("Showing \(String(describing: T.self))")
+			}
+			.task {
+				await viewModel.populateResourceList()
 			}
 //			.gesture(DragGesture()
 //						 .onChanged({ _ in

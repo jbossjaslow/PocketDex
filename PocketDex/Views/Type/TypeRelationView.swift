@@ -26,8 +26,6 @@ enum TypeRelationship: String {
 
 struct TypeRelationView: View {
 	@EnvironmentObject var viewModel: TypeViewModel
-//	var typeRelations: [NamedAPIResource<Type>]
-	@State var typeRelations: [String]
 	
 	let typeRelationship: TypeRelationship
 	var typeRelationshipText: String {
@@ -74,9 +72,9 @@ struct TypeRelationView: View {
 			.background(backgroundColor)
 			
 			ScrollView(.horizontal, showsIndicators: false) {
-				if typeRelations.count > 0 {
+				if viewModel.typeRelations(relationship: typeRelationship).count > 0 {
 					HStack(spacing: 5) {
-						ForEach(typeRelations, id: \.self) { typeName in
+						ForEach(viewModel.typeRelations(relationship: typeRelationship), id: \.self) { typeName in
 							NavigationLink(destination: TypeDetail().environmentObject(TypeViewModel(typeName: typeName))) {
 								Image(uiImage: Type.mapAdditionalInfo(typeName)!.iconCircular)
 									.resizable()
@@ -97,32 +95,28 @@ struct TypeRelationView: View {
 }
 
 struct TypeRelationView_Previews: PreviewProvider {
-	static var normalType = TypeMap(color: Asset.PokemonType.Color.normal.color,
-									iconCircular: Asset.PokemonType.Icons.normalCircular.image,
-									iconRectangular: Asset.PokemonType.Icons.normalRectangular.image,
-									name: "normal")
+	static var normalType = TypeViewModel(typeName: "normal")
+	static var grassType = TypeViewModel(typeName: "grass")
+	static var dragonType = TypeViewModel(typeName: "dragon")
 	
 	static var previews: some View {
 		NavigationView {
 			VStack {
-				TypeRelationView(typeRelations: ["rock",
-												 "steel"],
-								 typeRelationship: .halfDamageTo)
-					.environmentObject(TypeViewModel(typeMap: normalType))
+				TypeRelationView(typeRelationship: .halfDamageFrom)
+					.environmentObject(dragonType)
 				
-				TypeRelationView(typeRelations: ["electric",
-												 "grass",
-												 "dragon",
-												 "normal"],
-								 typeRelationship: .doubleDamageTo)
-					.environmentObject(TypeViewModel(typeMap: normalType))
+				TypeRelationView(typeRelationship: .doubleDamageFrom)
+					.environmentObject(normalType)
 				
-				TypeRelationView(typeRelations: [],
-								 typeRelationship: .noDamageFrom)
-					.environmentObject(TypeViewModel(typeMap: normalType))
-	//				.scaleEffect(0.75)
+				TypeRelationView(typeRelationship: .noDamageFrom)
+					.environmentObject(grassType)
 			}
 			.navigationBarHidden(true)
+			.task {
+				await normalType.fetchTypes()
+				await grassType.fetchTypes()
+				await dragonType.fetchTypes()
+			}
 		}
 	}
 }

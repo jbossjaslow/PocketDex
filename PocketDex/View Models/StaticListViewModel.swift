@@ -21,24 +21,20 @@ class StaticListViewModel<ResourceType: Requestable & ResourceLimit>: Observable
 		}
 	}
 	
-	init() {
-		populateResourceList()
-		print("Running init for \(String(describing: ResourceType.self))")
-	}
-	
 	func reset() {
 		resourceList.removeAll()
 	}
 	
-	func populateResourceList() {
+	func populateResourceList() async {
 		isLoading = true
-		ResourceType.requestStaticList(resourceLimit: ResourceType.normalLimit) { (_ result: PagedList<ResourceType>?) in
-			DispatchQueue.main.async {
-				self.isLoading = false
-				if let pagedList = result {
-					self.resourceList.append(contentsOf: pagedList.results)
-				}
-			}
+		
+		do {
+			let pagedList: PagedList<ResourceType> = try await ResourceType.requestStaticList(resourceLimit: ResourceType.normalLimit)
+			self.resourceList.append(contentsOf: pagedList.results)
+		} catch {
+			print("ERROR: \(error.localizedDescription)")
 		}
+		
+		isLoading = false
 	}
 }

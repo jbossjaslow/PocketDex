@@ -17,26 +17,51 @@ class TypeViewModel: ObservableObject {
 	
 	@Published var makingRequest: Bool = false
 	
+	private var typeName: String
+	
 	init(typeName: String) {
-		makingRequest = true
-		DispatchQueue.main.async {
-			Type.request(using: .name(typeName)) { (_ result: Type?) in
-				if let result = result {
-					self.pokemonType = result
-					self.typeMap = result.mapAdditionalInfo()
-				}
-				self.makingRequest = false
-			}
-		}
+		self.typeName = typeName
+	}
+	
+	init(type: Type) {
+		pokemonType = type
+		typeMap = type.mapAdditionalInfo()
+		typeName = type.name ?? "NAME ERROR"
 	}
 	
 	convenience init(typeMap: TypeMap) {
 		self.init(typeName: typeMap.name)
 	}
 	
-	init(type: Type) {
-		pokemonType = type
-		typeMap = type.mapAdditionalInfo()
+	func fetchTypes() async {
+		await fetchTypes(from: typeName)
+	}
+	
+	func fetchTypes(from name: String) async {
+		do {
+			let fetchedType = try await Type.request(using: .name(name))
+			self.pokemonType = fetchedType
+			self.typeMap = fetchedType.mapAdditionalInfo()
+		} catch {
+			print("ERROR: \(error.localizedDescription)")
+		}
+	}
+	
+	func typeRelations(relationship: TypeRelationship) -> [String] {
+		switch relationship {
+			case .doubleDamageTo:
+				return pokemonType?.damageRelations?.doubleDamageTo?.compactMap { $0.name } ?? []
+			case .halfDamageTo:
+				return pokemonType?.damageRelations?.halfDamageTo?.compactMap { $0.name } ?? []
+			case .noDamageTo:
+				return pokemonType?.damageRelations?.noDamageTo?.compactMap { $0.name } ?? []
+			case .doubleDamageFrom:
+				return pokemonType?.damageRelations?.doubleDamageFrom?.compactMap { $0.name } ?? []
+			case .halfDamageFrom:
+				return pokemonType?.damageRelations?.halfDamageFrom?.compactMap { $0.name } ?? []
+			case .noDamageFrom:
+				return pokemonType?.damageRelations?.noDamageFrom?.compactMap { $0.name } ?? []
+		}
 	}
 }
 

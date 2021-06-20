@@ -14,6 +14,7 @@
 		393C628F263F023D00EBE6B4 /* PocketDexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C628E263F023D00EBE6B4 /* PocketDexTests.swift */; };
 		393C629A263F023D00EBE6B4 /* PocketDexUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C6299263F023D00EBE6B4 /* PocketDexUITests.swift */; };
 		393C62A9263F030100EBE6B4 /* PokeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 393C62A8263F030100EBE6B4 /* PokeSwift */; };
+		398BF389267FAF6B00AABD5C /* PokemonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398BF388267FAF6B00AABD5C /* PokemonViewModel.swift */; };
 		399BD61C266582E3001CA60C /* DynamicList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399BD61B266582E3001CA60C /* DynamicList.swift */; };
 		39A5B27426476299007F55C3 /* TypeMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A5B27326476299007F55C3 /* TypeMappings.swift */; };
 		39BE5CBB2668068C0044FFD5 /* DynamicListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39BE5CBA2668068C0044FFD5 /* DynamicListProvider.swift */; };
@@ -70,6 +71,7 @@
 		393C6295263F023D00EBE6B4 /* PocketDexUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PocketDexUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		393C6299263F023D00EBE6B4 /* PocketDexUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PocketDexUITests.swift; sourceTree = "<group>"; };
 		393C629B263F023D00EBE6B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		398BF388267FAF6B00AABD5C /* PokemonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonViewModel.swift; sourceTree = "<group>"; };
 		399BD61B266582E3001CA60C /* DynamicList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicList.swift; sourceTree = "<group>"; };
 		39A5B27326476299007F55C3 /* TypeMappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeMappings.swift; sourceTree = "<group>"; };
 		39BE5CBA2668068C0044FFD5 /* DynamicListProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicListProvider.swift; sourceTree = "<group>"; };
@@ -211,6 +213,7 @@
 				39CA68A226519ED200F005C5 /* TypeViewModel.swift */,
 				39CEAE1E266C4EB100941036 /* StaticListViewModel.swift */,
 				39CEAE29266D4B3D00941036 /* ViewRouter.swift */,
+				398BF388267FAF6B00AABD5C /* PokemonViewModel.swift */,
 			);
 			path = "View Models";
 			sourceTree = "<group>";
@@ -504,6 +507,7 @@
 				39CEAE2A266D4B3D00941036 /* ViewRouter.swift in Sources */,
 				39CEAE22266C526800941036 /* TabBar.swift in Sources */,
 				399BD61C266582E3001CA60C /* DynamicList.swift in Sources */,
+				398BF389267FAF6B00AABD5C /* PokemonViewModel.swift in Sources */,
 				39CEAE31266D806500941036 /* LazyNavigationView.swift in Sources */,
 				39CA6897264F46D200F005C5 /* TypeDetail.swift in Sources */,
 				393C627F263F023A00EBE6B4 /* PokemonView.swift in Sources */,
@@ -609,7 +613,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -664,7 +668,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -684,7 +688,7 @@
 				DEVELOPMENT_TEAM = E5AAHWL9DL;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = PocketDex/Important/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -706,7 +710,7 @@
 				DEVELOPMENT_TEAM = E5AAHWL9DL;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = PocketDex/Important/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -848,7 +852,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "git@github.com:jbossjaslow/PokeSwift.git";
 			requirement = {
-				branch = main;
+				branch = "feature/SwiftUI-3-conversion";
 				kind = branch;
 			};
 		};

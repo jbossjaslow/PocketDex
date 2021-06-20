@@ -22,40 +22,37 @@ class DynamicListProvider<ResourceType: Requestable>: ObservableObject {
 		resourceList = []
 		self.batchSize = batchSize
 		self.prefetchMargin = prefetchMargin
-		fetchMoreItemsIfNeeded(currentIndex: 0)
 	}
 	
-	func reset() {
+	func reset() async {
 		resourceList = []
-		fetchMoreItemsIfNeeded(currentIndex: -1)
+		await fetchMoreItemsIfNeeded(currentIndex: -1)
 	}
 	
-	func fetchMoreItemsIfNeeded(currentIndex: Int) {
+	func fetchMoreItemsIfNeeded(currentIndex: Int) async {
 		guard !fetchingResources,
 			  currentIndex >= resourceList.count - prefetchMargin else { return }
 		
 		fetchingResources = true
 		print("Fetching with index \(currentIndex)")
 		
-		if let nextBatchURL = nextBatchURL {
-			ResourceType.requestList(from: nextBatchURL) { (_ pagedList: PagedList<ResourceType>?) in
-				DispatchQueue.main.async {
-					self.fetchingResources = false
-					print("Fetching from next url")
-					self.handleFetch(pagedList: pagedList)
-				}
+		do {
+			if let nextBatchURL = nextBatchURL {
+				let pagedList: PagedList<ResourceType> = try await ResourceType.requestList(from: nextBatchURL)
+				self.handleFetch(pagedList: pagedList)
+				print("Fetching from next url")
+			} else {
+				let startIndex = resourceList.count
+				let pagedList: PagedList<ResourceType> = try await ResourceType.requestDynamicList(resourceLimit: batchSize,
+																								   offset: startIndex)
+				self.handleFetch(pagedList: pagedList)
+				print("Fetching from discrete URL")
 			}
-		} else {
-			let startIndex = resourceList.count
-			ResourceType.requestDynamicList(resourceLimit: batchSize,
-											offset: startIndex) { (_ pagedList: PagedList<ResourceType>?) in
-				DispatchQueue.main.async {
-					self.fetchingResources = false
-					print("Fetching from discrete URL")
-					self.handleFetch(pagedList: pagedList)
-				}
-			}
+		} catch {
+			print("ERROR: \(error.localizedDescription)")
 		}
+		
+		self.fetchingResources = false
 	}
 	
 	private func handleFetch(pagedList: PagedList<ResourceType>?) {
