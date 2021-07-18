@@ -44,12 +44,15 @@ class StaticListViewModel<ResourceType: Requestable & ResourceLimit>: Observable
 	}
 	
 	func populateResourceList() async {
+		guard resourceList.isEmpty && !isLoading else {
+			return
+		}
+		
 		isLoading = true
-		resourceList.removeAll()
 		
 		do {
 			let pagedList: PagedList<ResourceType> = try await ResourceType.requestStaticList(resourceLimit: ResourceType.normalLimit)
-			self.resourceList.append(contentsOf: pagedList.results)
+			resourceList = pagedList.results
 			isLoading = false
 		} catch {
 			print("ERROR: \(error.localizedDescription)")

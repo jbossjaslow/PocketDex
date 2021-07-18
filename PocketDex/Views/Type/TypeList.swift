@@ -27,11 +27,12 @@ struct TypeList: View {
 					}
 				}
 				.navigationTitle("Types")
+				.listStyle(PlainListStyle())
 			} else {
 				Text("Loading...")
 			}
 		}
-		.loadingResource(isLoading: $makingRequest)
+//		.loadingResource(isLoading: $makingRequest)
 		.task {
 			await requestTypes()
 		}

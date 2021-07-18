@@ -45,11 +45,8 @@ struct StaticList<T: Requestable & ResourceLimit>: View {
 			}
 //			.loadingResource(isLoading: $viewModel.isLoading)
 			.searchable(text: $viewModel.searchText)
-			.navigationTitle(String(describing: T.self)) // Causes UIViewAlertForUnsatisfiableConstraints warning
+//			.navigationTitle(String(describing: T.self)) // Causes UIViewAlertForUnsatisfiableConstraints warning
 			.listStyle(PlainListStyle())
-			.task {
-				await viewModel.populateResourceList()
-			}
 			.toolbar {
 				Menu {
 					Picker("", selection: $viewModel.ordering) {
@@ -61,12 +58,11 @@ struct StaticList<T: Requestable & ResourceLimit>: View {
 						.padding(.trailing, 10)
 				}
 			}
-//			.gesture(DragGesture()
-//						 .onChanged({ _ in
-//							 UIApplication.shared.dismissKeyboard()
-//						 })
 		}
 		.accentColor(.black)
+		.task {
+			await viewModel.populateResourceList()
+		}
     }
 }
 

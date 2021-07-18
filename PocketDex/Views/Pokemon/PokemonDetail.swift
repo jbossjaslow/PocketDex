@@ -56,16 +56,8 @@ struct PokemonDetail: View {
 				.padding(.horizontal)
 				
 				//Sprite
-				AsyncImage(url: URL(string: viewModel.pokemonFrontSprite)) { image in
-					image
-						.resizable()
-						.aspectRatio(contentMode: .fit)
-				} placeholder: {
-					Image(uiImage: Asset.Pokeball.pokeball.image)
-						.resizable()
-						.aspectRatio(contentMode: .fit)
-						.frame(width: 50, height: 50)
-				}
+				SpriteGallery()
+					.environmentObject(viewModel)
 				
 				PopOutList<Move>(title: "Moves learned by this Pokemon",
 								 resources: $viewModel.movesLearned)
