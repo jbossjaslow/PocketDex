@@ -12,51 +12,64 @@ struct DamageRelations: View {
 	@EnvironmentObject var viewModel: TypeViewModel
 	
 	var body: some View {
-		HStack {
-			VStack {
-				Text("Offensive")
+		VStack {
+			HStack {
+				Text(viewModel.showingDamageRelations ? "Hide Damage Relations" : "Show Damage Relations")
+					.font(.title)
+					.padding(.trailing)
+				
+				Image(systemName: "chevron.forward")
+					.rotationEffect(Angle(degrees: viewModel.showingDamageRelations ? 90 : 0))
 					.font(.title)
 				
-				TypeRelationView(typeRelationship: .doubleDamageTo)
-				
 				Spacer()
-				
-				TypeRelationView(typeRelationship: .halfDamageTo)
-				
-				Spacer()
-				
-				TypeRelationView(typeRelationship: .noDamageTo)
+			}
+			.onTapGesture {
+				viewModel.showingDamageRelations.toggle()
 			}
 			
-			Spacer()
-			
-			VStack {
-				Text("Defensive")
-					.font(.title)
-				
-				TypeRelationView(typeRelationship: .halfDamageFrom)
-				
-				Spacer()
-				
-				TypeRelationView(typeRelationship: .doubleDamageFrom)
-				
-				Spacer()
-				
-				TypeRelationView(typeRelationship: .noDamageFrom)
+			if viewModel.showingDamageRelations {
+				HStack {
+					VStack(spacing: 10) {
+						Text("Offensive")
+							.font(.title)
+						
+						Divider()
+						
+						TypeRelationView(typeRelationship: .doubleDamageTo)
+						
+						TypeRelationView(typeRelationship: .halfDamageTo)
+						
+						TypeRelationView(typeRelationship: .noDamageTo)
+					}
+					.frame(minHeight: 50)
+					
+					Spacer()
+					
+					VStack(spacing: 10) {
+						Text("Defensive")
+							.font(.title)
+						
+						Divider()
+						
+						TypeRelationView(typeRelationship: .halfDamageFrom)
+						
+						TypeRelationView(typeRelationship: .doubleDamageFrom)
+						
+						TypeRelationView(typeRelationship: .noDamageFrom)
+					}
+					.frame(minHeight: 50)
+				}
 			}
 		}
-		.padding(.horizontal, 5)
+		.animation(.easeInOut,
+				   value: viewModel.showingDamageRelations)
 	}
 }
 
 struct DamageRelations_Previews: PreviewProvider {
-	static var normalType = TypeMap(color: Asset.PokemonType.Color.normal.color,
-									iconCircular: Asset.PokemonType.Icons.normalCircular.image,
-									iconRectangular: Asset.PokemonType.Icons.normalRectangular.image,
-									name: "normal")
-	
 	static var previews: some View {
 		DamageRelations()
-			.environmentObject(TypeViewModel(typeMap: normalType))
+			.environmentObject(TypeViewModel(typeName: "normal"))
 	}
 }

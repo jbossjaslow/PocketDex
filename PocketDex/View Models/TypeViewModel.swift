@@ -14,8 +14,12 @@ class TypeViewModel: ObservableObject {
 									  iconRectangular: Asset.PokemonType.Icons.normalRectangular.image,
 									  name: "normal")
 	@Published var pokemonType: Type?
+	@Published var showingDamageRelations: Bool = false
 	
 	@Published var makingRequest: Bool = false
+	
+	@Published var pokemonWithThisType: [NamedAPIResource<Pokemon>] = []
+	@Published var movesWithThisType: [NamedAPIResource<Move>] = []
 	
 	private var typeName: String
 	
@@ -42,6 +46,8 @@ class TypeViewModel: ObservableObject {
 			let fetchedType = try await Type.request(using: .name(name))
 			self.pokemonType = fetchedType
 			self.typeMap = fetchedType.mapAdditionalInfo()
+			self.pokemonWithThisType = fetchedType.pokemon?.compactMap { $0.pokemon } ?? []
+			self.movesWithThisType = fetchedType.moves ?? []
 		} catch {
 			print("ERROR: \(error.localizedDescription)")
 		}

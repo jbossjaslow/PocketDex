@@ -25,14 +25,14 @@ struct TabBar: View {
 					Image(uiImage: getTabIcon(.type))
 					Text(TabIcon.type.rawValue)
 				}
-			
+
 			StaticList<Move>()
 				.tag(TabIcon.move)
 				.tabItem {
 					Image(uiImage: getTabIcon(.move))
 					Text(TabIcon.move.rawValue)
 				}
-			
+
 			StaticList<Ability>()
 				.tag(TabIcon.ability)
 				.tabItem {

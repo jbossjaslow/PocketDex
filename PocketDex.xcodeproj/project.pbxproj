@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3903E3E126A34099000DE4B2 /* AbilityDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3903E3E026A34099000DE4B2 /* AbilityDetail.swift */; };
+		3903E3E326A34118000DE4B2 /* AbilityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3903E3E226A34118000DE4B2 /* AbilityViewModel.swift */; };
 		393C627D263F023A00EBE6B4 /* PocketDexApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C627C263F023A00EBE6B4 /* PocketDexApp.swift */; };
-		393C627F263F023A00EBE6B4 /* PokemonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C627E263F023A00EBE6B4 /* PokemonView.swift */; };
+		393C627F263F023A00EBE6B4 /* PokemonDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C627E263F023A00EBE6B4 /* PokemonDetail.swift */; };
 		393C6281263F023D00EBE6B4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 393C6280263F023D00EBE6B4 /* Assets.xcassets */; };
 		393C6284263F023D00EBE6B4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 393C6283263F023D00EBE6B4 /* Preview Assets.xcassets */; };
 		393C628F263F023D00EBE6B4 /* PocketDexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C628E263F023D00EBE6B4 /* PocketDexTests.swift */; };
@@ -18,6 +20,9 @@
 		399BD61C266582E3001CA60C /* DynamicList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399BD61B266582E3001CA60C /* DynamicList.swift */; };
 		39A5B27426476299007F55C3 /* TypeMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A5B27326476299007F55C3 /* TypeMappings.swift */; };
 		39BE5CBB2668068C0044FFD5 /* DynamicListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39BE5CBA2668068C0044FFD5 /* DynamicListProvider.swift */; };
+		39C282072688EF2F004C9C3A /* PopOutList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C282062688EF2E004C9C3A /* PopOutList.swift */; };
+		39C2820A26893D16004C9C3A /* MoveDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C2820926893D16004C9C3A /* MoveDetail.swift */; };
+		39C2820C26893D28004C9C3A /* MoveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C2820B26893D28004C9C3A /* MoveViewModel.swift */; };
 		39CA6890264D99DB00F005C5 /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = 39CA688F264D99DB00F005C5 /* swiftgen.yml */; };
 		39CA6892264D9AC500F005C5 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CA6891264D9AC500F005C5 /* Assets.swift */; };
 		39CA6897264F46D200F005C5 /* TypeDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CA6896264F46D200F005C5 /* TypeDetail.swift */; };
@@ -59,9 +64,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3903E3E026A34099000DE4B2 /* AbilityDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbilityDetail.swift; sourceTree = "<group>"; };
+		3903E3E226A34118000DE4B2 /* AbilityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbilityViewModel.swift; sourceTree = "<group>"; };
 		393C6279263F023A00EBE6B4 /* PocketDex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PocketDex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		393C627C263F023A00EBE6B4 /* PocketDexApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PocketDexApp.swift; sourceTree = "<group>"; };
-		393C627E263F023A00EBE6B4 /* PokemonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonView.swift; sourceTree = "<group>"; };
+		393C627E263F023A00EBE6B4 /* PokemonDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonDetail.swift; sourceTree = "<group>"; };
 		393C6280263F023D00EBE6B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		393C6283263F023D00EBE6B4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		393C6285263F023D00EBE6B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -75,6 +82,9 @@
 		399BD61B266582E3001CA60C /* DynamicList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicList.swift; sourceTree = "<group>"; };
 		39A5B27326476299007F55C3 /* TypeMappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeMappings.swift; sourceTree = "<group>"; };
 		39BE5CBA2668068C0044FFD5 /* DynamicListProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicListProvider.swift; sourceTree = "<group>"; };
+		39C282062688EF2E004C9C3A /* PopOutList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopOutList.swift; sourceTree = "<group>"; };
+		39C2820926893D16004C9C3A /* MoveDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveDetail.swift; sourceTree = "<group>"; };
+		39C2820B26893D28004C9C3A /* MoveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveViewModel.swift; sourceTree = "<group>"; };
 		39CA688F264D99DB00F005C5 /* swiftgen.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
 		39CA6891264D9AC500F005C5 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		39CA6896264F46D200F005C5 /* TypeDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeDetail.swift; sourceTree = "<group>"; };
@@ -124,6 +134,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3903E3DF26A34082000DE4B2 /* Ability */ = {
+			isa = PBXGroup;
+			children = (
+				3903E3E026A34099000DE4B2 /* AbilityDetail.swift */,
+			);
+			path = Ability;
+			sourceTree = "<group>";
+		};
 		393C6270263F023A00EBE6B4 = {
 			isa = PBXGroup;
 			children = (
@@ -197,7 +215,9 @@
 		39A5B26B26475BD2007F55C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3903E3DF26A34082000DE4B2 /* Ability */,
 				39CEAE2F266D804600941036 /* Images */,
+				39C2820826893D09004C9C3A /* Move */,
 				39CEAE2D266D802E00941036 /* Navigation */,
 				39CEAE2E266D803900941036 /* Pokemon */,
 				39CEAE1A266C4D5800941036 /* Resource List */,
@@ -214,6 +234,8 @@
 				39CEAE1E266C4EB100941036 /* StaticListViewModel.swift */,
 				39CEAE29266D4B3D00941036 /* ViewRouter.swift */,
 				398BF388267FAF6B00AABD5C /* PokemonViewModel.swift */,
+				39C2820B26893D28004C9C3A /* MoveViewModel.swift */,
+				3903E3E226A34118000DE4B2 /* AbilityViewModel.swift */,
 			);
 			path = "View Models";
 			sourceTree = "<group>";
@@ -257,6 +279,14 @@
 				39CEAE18266C46FF00941036 /* ResourceLimits.swift */,
 			);
 			path = DataModels;
+			sourceTree = "<group>";
+		};
+		39C2820826893D09004C9C3A /* Move */ = {
+			isa = PBXGroup;
+			children = (
+				39C2820926893D16004C9C3A /* MoveDetail.swift */,
+			);
+			path = Move;
 			sourceTree = "<group>";
 		};
 		39CA688C264D968C00F005C5 /* Static */ = {
@@ -323,6 +353,7 @@
 			isa = PBXGroup;
 			children = (
 				39CEAE30266D806500941036 /* LazyNavigationView.swift */,
+				39C282062688EF2E004C9C3A /* PopOutList.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -330,7 +361,7 @@
 		39CEAE2E266D803900941036 /* Pokemon */ = {
 			isa = PBXGroup;
 			children = (
-				393C627E263F023A00EBE6B4 /* PokemonView.swift */,
+				393C627E263F023A00EBE6B4 /* PokemonDetail.swift */,
 			);
 			path = Pokemon;
 			sourceTree = "<group>";
@@ -507,18 +538,23 @@
 				39CEAE2A266D4B3D00941036 /* ViewRouter.swift in Sources */,
 				39CEAE22266C526800941036 /* TabBar.swift in Sources */,
 				399BD61C266582E3001CA60C /* DynamicList.swift in Sources */,
+				39C282072688EF2F004C9C3A /* PopOutList.swift in Sources */,
 				398BF389267FAF6B00AABD5C /* PokemonViewModel.swift in Sources */,
 				39CEAE31266D806500941036 /* LazyNavigationView.swift in Sources */,
 				39CA6897264F46D200F005C5 /* TypeDetail.swift in Sources */,
-				393C627F263F023A00EBE6B4 /* PokemonView.swift in Sources */,
+				393C627F263F023A00EBE6B4 /* PokemonDetail.swift in Sources */,
 				39BE5CBB2668068C0044FFD5 /* DynamicListProvider.swift in Sources */,
 				39CA689D265031D400F005C5 /* DamageRelations.swift in Sources */,
+				3903E3E326A34118000DE4B2 /* AbilityViewModel.swift in Sources */,
+				39C2820A26893D16004C9C3A /* MoveDetail.swift in Sources */,
 				39CA6892264D9AC500F005C5 /* Assets.swift in Sources */,
+				39C2820C26893D28004C9C3A /* MoveViewModel.swift in Sources */,
 				39CA68A72651A5BB00F005C5 /* PokemonWithThisType.swift in Sources */,
 				39D31B3F2640E54300BB3DD9 /* RemoteImageView.swift in Sources */,
 				39CEAE1D266C4DB500941036 /* StaticList.swift in Sources */,
 				39CEAE19266C46FF00941036 /* ResourceLimits.swift in Sources */,
 				393C627D263F023A00EBE6B4 /* PocketDexApp.swift in Sources */,
+				3903E3E126A34099000DE4B2 /* AbilityDetail.swift in Sources */,
 				39CA68A52651A4C900F005C5 /* MovesWithThisType.swift in Sources */,
 				39CA689B26501E8F00F005C5 /* StringEntensions.swift in Sources */,
 				39CEAE26266D4AE100941036 /* TabBarView.swift in Sources */,

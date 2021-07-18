@@ -9,43 +9,64 @@ import SwiftUI
 import PokeSwift
 
 struct StaticList<T: Requestable & ResourceLimit>: View {
-	@ObservedObject var viewModel = StaticListViewModel<T>()
+	@ObservedObject private var viewModel: StaticListViewModel<T>
+	
+	init() {
+		self.viewModel = StaticListViewModel<T>()
+	}
 	
     var body: some View {
 		NavigationView {
 			List {
-				ForEach(viewModel.filteredResources, id: \.name) { resource in
-					if T.self == Pokemon.self {
-						// This preloads all of the calls, making it take super long to start the app
-						NavigationLink(destination: PokemonView(viewModel: PokemonViewModel(url: resource.url))) {
+				ForEach(viewModel.arrangedResources, id: \.name) { resource in
+					switch T.self {
+						case is Pokemon.Type:
+							// This preloads all of the calls, making it take super long to start the app
+							NavigationLink(destination: PokemonDetail(viewModel: PokemonViewModel(url: resource.url))) {
+								Text(resource.name.capitalizingFirstLetter())
+							}
+							
+							// This lazy loads the destinations
+	//						NavigationLink(destination: LazyNavigationView(PokemonDetail(requestURL: resource.url))) {
+	//							Text(resource.name.capitalizingFirstLetter())
+	//						}
+						case is Move.Type:
+							NavigationLink(destination: MoveDetail(viewModel: MoveViewModel(moveName: resource.name))) {
+								Text(resource.name)
+							}
+						case is Ability.Type:
+							NavigationLink(destination: AbilityDetail(viewModel: AbilityViewModel(name: resource.name))) {
+								Text(resource.name)
+							}
+						default:
 							Text(resource.name.capitalizingFirstLetter())
-						}
-						
-						// This lazy loads the destinations
-//						NavigationLink(destination: LazyNavigationView(PokemonView(requestURL: resource.url))) {
-//							Text(resource.name.capitalizingFirstLetter())
-//						}
-					} else {
-						Text(resource.name.capitalizingFirstLetter())
 					}
 				}
 			}
-			.loadingResource(isLoading: $viewModel.isLoading)
-			.addSearchBar(searchText: $viewModel.searchText)
-			.navigationTitle(String(describing: T.self))
+//			.loadingResource(isLoading: $viewModel.isLoading)
+			.searchable(text: $viewModel.searchText)
+			.navigationTitle(String(describing: T.self)) // Causes UIViewAlertForUnsatisfiableConstraints warning
 			.listStyle(PlainListStyle())
-			.onAppear {
-//				print("Showing \(String(describing: T.self))")
-			}
 			.task {
 				await viewModel.populateResourceList()
+			}
+			.toolbar {
+				Menu {
+					Picker("", selection: $viewModel.ordering) {
+						Text(Ordering.default.rawValue).tag(Ordering.default)
+						Text(Ordering.alphabetical.rawValue).tag(Ordering.alphabetical)
+					}
+				} label: {
+					Image(systemName: "arrow.up.and.down")
+						.padding(.trailing, 10)
+				}
 			}
 //			.gesture(DragGesture()
 //						 .onChanged({ _ in
 //							 UIApplication.shared.dismissKeyboard()
 //						 })
 		}
-		.accentColor(.white)
+		.accentColor(.black)
     }
 }
 

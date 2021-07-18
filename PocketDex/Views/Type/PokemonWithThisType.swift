@@ -39,7 +39,7 @@ struct PokemonWithThisType: View {
 	}
 	
 	func getPokemonView(from pokemon: TypePokemon) -> some View {
-		PokemonView(viewModel: PokemonViewModel(url: getPokemonURL(from: pokemon)))
+		PokemonDetail(viewModel: PokemonViewModel(url: getPokemonURL(from: pokemon)))
 	}
 }
 

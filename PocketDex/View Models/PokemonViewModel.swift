@@ -15,6 +15,8 @@ class PokemonViewModel: ObservableObject {
 	@Published var pokemonFrontSprite: String = ""
 	@Published var pokemonTypes: [Type] = []
 	@Published var backgroundGradient: [Color] = [.white]
+	@Published var movesLearned: [NamedAPIResource<Move>] = []
+	@Published var abilities: [PokemonAbility] = []
 	
 	var typeMaps: [TypeMap] {
 		pokemonTypes.compactMap { $0.mapAdditionalInfo() }
@@ -56,6 +58,14 @@ class PokemonViewModel: ObservableObject {
 			
 			if let sprite = fetchedPokemon.sprites?.frontDefault {
 				pokemonFrontSprite = sprite
+			}
+			
+			if let moves = fetchedPokemon.moves {
+				movesLearned = moves.compactMap { $0.move }
+			}
+			
+			if let abilities = fetchedPokemon.abilities {
+				self.abilities = abilities.sorted(by: { $0.slot ?? 0 < $1.slot ?? 1 })
 			}
 		} catch {
 			print("ERROR: \(error.localizedDescription)")
