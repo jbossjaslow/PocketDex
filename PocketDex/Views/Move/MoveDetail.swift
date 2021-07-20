@@ -48,7 +48,10 @@ struct MoveDetail: View {
 		.task {
 			await viewModel.fetchMove()
 		}
-		.background(Color(viewModel.typeMap?.color ?? .white).edgesIgnoringSafeArea([.top, .leading, .trailing]))
+		.background(
+			Color(viewModel.typeMap?.color ?? .white)
+				.edgesIgnoringSafeArea([.top, .leading, .trailing])
+		)
 	}
 }
 

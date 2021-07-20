@@ -18,6 +18,8 @@ class PokemonViewModel: ObservableObject {
 	@Published var backgroundGradient: [Color] = [.white]
 	@Published var movesLearned: [NamedAPIResource<Move>] = []
 	@Published var abilities: [PokemonAbility] = []
+	@Published var stats: [(name: String,
+							value: Int)] = []
 	
 	var typeMaps: [TypeMap] {
 		pokemonTypes.compactMap { $0.mapAdditionalInfo() }
@@ -78,6 +80,14 @@ class PokemonViewModel: ObservableObject {
 			]
 			pokemonSprites.removeAll { (name, url) in
 				url.isEmpty
+			}
+			
+			if let stats = fetchedPokemon.stats,
+			   stats.count == 6 {
+				self.stats = stats.map {
+					return (name: $0.stat?.name ?? "ERROR",
+							value: $0.baseStat ?? 0)
+				}
 			}
 		} catch {
 			print("ERROR: \(error.localizedDescription)")

@@ -23,6 +23,24 @@ struct PokemonDetail: View {
 				Text(viewModel.pokemonGenus)
 					.font(.largeTitle)
 				
+				//Types
+				HStack(spacing: 5) {
+					ForEach(viewModel.typeMaps, id: \.name) { typeMap in
+						NavigationLink(destination: TypeDetail().environmentObject(TypeViewModel(typeMap: typeMap))) {
+							Image(uiImage: typeMap.iconRectangular)
+								.resizable()
+								.aspectRatio(contentMode: .fit)
+								.border(Color.white, width: 2)
+						}
+					}
+				}
+				.padding(.horizontal)
+				
+				//Sprite
+				SpriteGallery()
+					.environmentObject(viewModel)
+				
+				
 				//Abilities
 				HStack(spacing: 5) {
 					ForEach(viewModel.abilities, id: \.slot) { ability in
@@ -41,24 +59,11 @@ struct PokemonDetail: View {
 						.tint(.white)
 					}
 				}
+				// Stats
+				StatsView(statsArr: viewModel.stats)
+					.padding()
 				
-				//Types
-				HStack(spacing: 5) {
-					ForEach(viewModel.typeMaps, id: \.name) { typeMap in
-						NavigationLink(destination: TypeDetail().environmentObject(TypeViewModel(typeMap: typeMap))) {
-							Image(uiImage: typeMap.iconRectangular)
-								.resizable()
-								.aspectRatio(contentMode: .fit)
-								.border(Color.white, width: 2)
-						}
-					}
-				}
-				.padding(.horizontal)
-				
-				//Sprite
-				SpriteGallery()
-					.environmentObject(viewModel)
-				
+				// Moves
 				PopOutList<Move>(title: "Moves learned by this Pokemon",
 								 resources: $viewModel.movesLearned)
 					.padding(.horizontal)

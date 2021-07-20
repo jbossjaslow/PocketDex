@@ -67,8 +67,9 @@ struct SpriteGallery: View {
 								} placeholder: {
 									Image(uiImage: Asset.Pokeball.pokeball.image)
 										.resizable()
-										.aspectRatio(contentMode: .fit)
-										.frame(width: 50, height: 50)
+										.scaledToFit()
+										.frame(width: 200, height: 200)
+										.scaleEffect(0.25)
 								}
 								
 								Text(spriteName)
