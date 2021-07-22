@@ -6,24 +6,79 @@
 //
 
 import SwiftUI
+import PokeSwift
 
 struct StatsView: View {
-	let statsArr: [(name: String,
-					value: Int)]
+	@EnvironmentObject var viewModel: PokemonViewModel
+	
+	internal let timer = Timer.publish(every: 0.1,
+									   tolerance: 0.25,
+									   on: .main,
+									   in: .common).autoconnect()
+	@State internal var tick = -1
+	
+	internal let springAnimation = Animation.spring(response: 0.3,
+													dampingFraction: 0.5,
+													blendDuration: 0.1)
+	
+	private var bst: Int {
+		viewModel.stats.reduce(0) {
+			$0 + $1.value
+		}
+	}
 	
     var body: some View {
 		VStack {
-			ForEach(statsArr, id: \.name) { stat in
-				StatCapsule(name: stat.name,
-							value: stat.value)
+			HStack {
+				Text("Base Stat Total: \(bst)")
+					.font(.title)
+					.bold()
+				
+				Spacer()
+				
+				Button {
+					viewModel.showingStats.toggle()
+				} label: {
+					Image(systemName: "chevron.right.circle")
+						.resizable()
+						.scaledToFit()
+						.frame(height: 30)
+						.foregroundColor(.black)
+						.rotationEffect(Angle(degrees: viewModel.showingStats ? 90 : 0))
+				}
 			}
+			.animation(springAnimation,
+					   value: viewModel.showingStats)
+			
+			if viewModel.showingStats {
+				ForEach(viewModel.stats, id: \.name) { stat in
+					StatCapsule(name: stat.name,
+								value: stat.value,
+								indexNum: viewModel.stats.firstIndex(where: { $0 == stat }) ?? -1,
+								currentTick: $tick)
+						.transition(.opacity.animation(.easeOut(duration: 0.1)))
+				}
+			}
+		}
+		.onReceive(timer) { _ in
+			if viewModel.showingStats {
+				tick += 1
+			} else {
+				tick = -1
+			}
+		}
+		.onDisappear {
+			self.timer.upstream.connect().cancel()
 		}
     }
 	
 	private struct StatCapsule: View {
 		@State var name: String
 		@State var value: Int
+		let indexNum: Int
+		@Binding var currentTick: Int
 		
+		@State private var tempValue: Int = 0
 		private let color: Color = .green
 		private let height: CGFloat = 15
 		
@@ -55,14 +110,18 @@ struct StatsView: View {
 				}
 				.frame(height: height)
 			}
-			.onAppear {
-				let temp = value
-				value = 0
-				withAnimation(.spring(response: 0.3,
-									  dampingFraction: 0.5,
-									  blendDuration: 0.1)) {
-					value = temp
+			.onChange(of: currentTick) { tick in
+				if tick == indexNum {
+					withAnimation(.spring(response: 0.3,
+										  dampingFraction: 0.5,
+										  blendDuration: 0.1)) {
+						value = tempValue
+					}
 				}
+			}
+			.onAppear {
+				tempValue = value
+				value = 0
 			}
 		}
 		
@@ -98,11 +157,12 @@ struct StatsView: View {
 
 struct StatsView_Previews: PreviewProvider {
     static var previews: some View {
-		StatsView(statsArr: [("Health", 80),
-							 ("Attack", 100),
-							 ("Defence", 120),
-							 ("SpA", 140),
-							 ("SpD", 160),
-							 ("Speed", 170)])
+		let viewModel = PokemonViewModel(url: Pokemon.url + "3")
+		
+		StatsView()
+			.environmentObject(viewModel)
+			.task {
+				await viewModel.fetchPokemon()
+			}
     }
 }

@@ -21,6 +21,8 @@ class PokemonViewModel: ObservableObject {
 	@Published var stats: [(name: String,
 							value: Int)] = []
 	
+	@Published var showingStats: Bool = false
+	
 	var typeMaps: [TypeMap] {
 		pokemonTypes.compactMap { $0.mapAdditionalInfo() }
 	}
