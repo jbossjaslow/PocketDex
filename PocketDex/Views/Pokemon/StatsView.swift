@@ -67,8 +67,8 @@ struct StatsView: View {
 				tick = -1
 			}
 		}
-		.onDisappear {
-			self.timer.upstream.connect().cancel()
+		.onAppear {
+			tick = -1
 		}
     }
 	
@@ -106,6 +106,9 @@ struct StatsView: View {
 							.fill(getColor(proxy: proxy))
 							.frame(width: getWidth(proxy: proxy),
 								   height: height)
+							.shadow(radius: 2,
+									x: 2,
+									y: 0)
 					}
 				}
 				.frame(height: height)

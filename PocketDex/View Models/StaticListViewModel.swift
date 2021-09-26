@@ -51,7 +51,7 @@ class StaticListViewModel<ResourceType: Requestable & ResourceLimit>: Observable
 		isLoading = true
 		
 		do {
-			let pagedList: PagedList<ResourceType> = try await ResourceType.requestStaticList(resourceLimit: ResourceType.normalLimit)
+			let pagedList: PagedList<ResourceType> = try await ResourceType.requestStaticList(resourceLimit: ResourceType.totalLimit)
 			resourceList = pagedList.results
 			isLoading = false
 		} catch {

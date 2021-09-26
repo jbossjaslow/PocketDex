@@ -19,27 +19,35 @@ struct StaticList<T: Requestable & ResourceLimit>: View {
 		NavigationView {
 			List {
 				ForEach(viewModel.arrangedResources, id: \.name) { resource in
+					let name = resource.name.capitalizingFirstLetter()
 					switch T.self {
 						case is Pokemon.Type:
-							// This preloads all of the calls, making it take super long to start the app
-							NavigationLink(destination: PokemonDetail(viewModel: PokemonViewModel(url: resource.url))) {
-								Text(resource.name.capitalizingFirstLetter())
-							}
+							let viewModel = PokemonViewModel(url: resource.url,
+															 name: name)
+							Text(name)
+								.navigationTitle("Pokemon")
+								.navigableTo {
+									PokemonDetail(viewModel: viewModel)
+								}
 							
-							// This lazy loads the destinations
-	//						NavigationLink(destination: LazyNavigationView(PokemonDetail(requestURL: resource.url))) {
-	//							Text(resource.name.capitalizingFirstLetter())
-	//						}
 						case is Move.Type:
-							NavigationLink(destination: MoveDetail(viewModel: MoveViewModel(moveName: resource.name))) {
-								Text(resource.name)
-							}
+							let viewModel = MoveViewModel(moveName: name)
+							
+							Text(name)
+								.navigationTitle("Moves")
+								.navigableTo {
+									MoveDetail(viewModel: viewModel)
+								}
 						case is Ability.Type:
-							NavigationLink(destination: AbilityDetail(viewModel: AbilityViewModel(name: resource.name))) {
-								Text(resource.name)
-							}
+							let viewModel = AbilityViewModel(name: name)
+							
+							Text(name)
+								.navigationTitle("Abilities")
+								.navigableTo {
+									AbilityDetail(viewModel: viewModel)
+								}
 						default:
-							Text(resource.name.capitalizingFirstLetter())
+							Text(name)
 					}
 				}
 			}
