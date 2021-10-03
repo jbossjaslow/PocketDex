@@ -27,36 +27,34 @@ struct TypeList: View {
 					}
 				}
 				.navigationTitle("Types")
+				.listStyle(PlainListStyle())
 			} else {
 				Text("Loading...")
 			}
 		}
-		.loadingResource(isLoading: $makingRequest)
+//		.loadingResource(isLoading: $makingRequest)
+		.task {
+			await requestTypes()
+		}
 		.onAppear {
 			print("Appearing")
-			requestTypes()
 		}
 	}
 	
-	func requestTypes() {
-		makingRequest = true
-		Type.requestStaticList(resourceLimit: Type.normalLimit) { (_ result: PagedList<Type>?) in
-			DispatchQueue.main.async {
-				guard let resourceList = result?.results else {
-					self.makingRequest = false
-					return
+	func requestTypes() async {
+		do {
+			let pagedList: PagedList<Type> = try await Type.requestStaticList(resourceLimit: Type.normalLimit)
+			let resourceList = pagedList.results
+			self.typeMapList = resourceList.compactMap {
+				switch $0.name {
+					case "unknown", "shadow":
+						return nil
+					default:
+						return Type.mapAdditionalInfo($0.name)
 				}
-				
-				self.typeMapList = resourceList.compactMap {
-					switch $0.name {
-						case "unknown", "shadow":
-							return nil
-						default:
-							return Type.mapAdditionalInfo($0.name)
-					}
-				}
-				self.makingRequest = false
 			}
+		} catch {
+			print("ERROR: \(error.localizedDescription)")
 		}
 	}
 }

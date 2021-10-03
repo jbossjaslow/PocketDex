@@ -17,7 +17,7 @@ struct PokemonWithThisType: View {
 			ScrollView(.vertical, showsIndicators: true) {
 				VStack {
 					ForEach(pokemonWithThisType, id: \.pokemon?.name) { pokemon in
-						NavigationLink(destination: PokemonView(requestURL: getPokemonURL(from: pokemon))) {
+						NavigationLink(destination: getPokemonView(from: pokemon)) {
 							Text(pokemon.pokemon?.name.capitalizingFirstLetter() ?? "Pokemon name")
 						}
 					}
@@ -36,6 +36,10 @@ struct PokemonWithThisType: View {
 		}
 		
 		return url
+	}
+	
+	func getPokemonView(from pokemon: TypePokemon) -> some View {
+		PokemonDetail(viewModel: PokemonViewModel(url: getPokemonURL(from: pokemon)))
 	}
 }
 

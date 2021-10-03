@@ -8,37 +8,54 @@
 import SwiftUI
 import PokeSwift
 
+enum Ordering: String {
+	case alphabetical = "A to Z"
+	case `default` = "Default"
+}
+
 class StaticListViewModel<ResourceType: Requestable & ResourceLimit>: ObservableObject {
 	@Published var resourceList: [NamedAPIResource<ResourceType>] = []
 	@Published var isLoading: Bool = false
 	@Published var searchText: String = ""
+	@Published var ordering: Ordering = .default
 	
-	var filteredResources: [NamedAPIResource<ResourceType>] {
+	var arrangedResources: [NamedAPIResource<ResourceType>] {
+		var resources = resourceList
+
 		if !searchText.isEmpty {
-			return resourceList.filter { $0.name.contains(searchText.lowercased()) }
-		} else {
-			return resourceList
+			resources = resources.filter { $0.name.contains(searchText.lowercased()) }
 		}
-	}
-	
-	init() {
-		populateResourceList()
-		print("Running init for \(String(describing: ResourceType.self))")
+
+		if ordering == .alphabetical {
+			resources.sort { $0.name < $1.name }
+		}
+//		switch ordering {
+//			case .alphabetical:
+//				resources.sort { $0.name < $1.name }
+//			case .default:
+//				print("No ordering needed")
+//		}
+
+		return resources
 	}
 	
 	func reset() {
 		resourceList.removeAll()
 	}
 	
-	func populateResourceList() {
+	func populateResourceList() async {
+		guard resourceList.isEmpty && !isLoading else {
+			return
+		}
+		
 		isLoading = true
-		ResourceType.requestStaticList(resourceLimit: ResourceType.normalLimit) { (_ result: PagedList<ResourceType>?) in
-			DispatchQueue.main.async {
-				self.isLoading = false
-				if let pagedList = result {
-					self.resourceList.append(contentsOf: pagedList.results)
-				}
-			}
+		
+		do {
+			let pagedList: PagedList<ResourceType> = try await ResourceType.requestStaticList(resourceLimit: ResourceType.totalLimit)
+			resourceList = pagedList.results
+			isLoading = false
+		} catch {
+			print("ERROR: \(error.localizedDescription)")
 		}
 	}
 }
