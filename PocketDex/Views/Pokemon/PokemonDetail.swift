@@ -104,9 +104,3 @@ struct ContentView_Previews: PreviewProvider {
 		}
 	}
 }
-
-extension NamedAPIResource: Identifiable {
-	public var id: UUID {
-		UUID()
-	}
-}

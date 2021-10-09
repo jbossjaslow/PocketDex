@@ -21,18 +21,8 @@ struct PopOutMoveList: View {
 	}
 	
 	var body: some View {
-		NavigationLink(destination: listView) {
-//			HStack {
-//				Spacer()
-				Text(title)
-//				.frame(maxWidth: .infinity)
-//					.foregroundColor(.white)
-//					.bold()
-//					.padding()
-//				Spacer()
-//			}
-//			.border(Color.white, width: 2)
-		}
+		Text(title)
+			.navigableTo(listView)
 		.buttonStyle(.bordered)
 		.controlSize(.large)
 		.tint(.black)
@@ -54,9 +44,7 @@ struct PopOutMoveList: View {
 					
 					Text("Level learned at: \(resource.minLevel)")
 				}
-				.navigableTo {
-					MoveDetail(viewModel: viewModel)
-				}
+				.navigableTo(MoveDetail(viewModel: viewModel))
 			}
 		}
 		.navigationTitle(title)

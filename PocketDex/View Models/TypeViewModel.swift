@@ -41,6 +41,7 @@ class TypeViewModel: ObservableObject {
 		await fetchTypes(from: typeName)
 	}
 	
+	@MainActor
 	func fetchTypes(from name: String) async {
 		do {
 			let fetchedType = try await Type.request(using: .name(name))

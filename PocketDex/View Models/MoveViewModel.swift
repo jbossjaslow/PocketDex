@@ -14,7 +14,7 @@ class MoveViewModel: ObservableObject {
 	@Published var learnedByPokemon: [NamedAPIResource<Pokemon>] = []
 	
 	var moveNameCapitalized: String {
-		move?.name?.capitalizingFirstLetter() ?? "ERROR: No move name"
+		moveName.capitalizingFirstLetter()
 	}
 	
 	var moveEffectEnglish: String {
@@ -39,6 +39,7 @@ class MoveViewModel: ObservableObject {
 		self.moveName = moveName
 	}
 	
+	@MainActor
 	func fetchMove() async {
 		do {
 			let fetchedMove = try await Move.request(using: .name(moveName))

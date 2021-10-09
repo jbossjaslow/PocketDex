@@ -43,6 +43,7 @@ class StaticListViewModel<ResourceType: Requestable & ResourceLimit>: Observable
 		resourceList.removeAll()
 	}
 	
+	@MainActor
 	func populateResourceList() async {
 		guard resourceList.isEmpty && !isLoading else {
 			return

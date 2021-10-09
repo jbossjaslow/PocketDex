@@ -850,7 +850,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = E5AAHWL9DL;
 				INFOPLIST_FILE = PocketDexTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -872,7 +872,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = E5AAHWL9DL;
 				INFOPLIST_FILE = PocketDexTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -972,7 +972,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "git@github.com:jbossjaslow/PokeSwift.git";
 			requirement = {
-				branch = "feature/SwiftUI-3-conversion";
+				branch = main;
 				kind = branch;
 			};
 		};

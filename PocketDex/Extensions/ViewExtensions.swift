@@ -24,8 +24,12 @@ extension View {
 // MARK: - Navigation
 extension View {
 	func navigableTo<ToView: View>(disabled: Bool = false,
-								   _ goingToView: @escaping () -> ToView) -> some View {
-		self.modifier(NavigationModifier(disabled: disabled,
-										 goingToView: goingToView))
+								   _ goingToView: @autoclosure () -> ToView) -> some View {
+		NavigationLink(destination: goingToView) {
+			self
+		}
+		.disabled(disabled)
+//		self.modifier(NavigationModifier(disabled: disabled,
+//										 goingToView: goingToView))
 	}
 }

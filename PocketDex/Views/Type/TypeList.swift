@@ -41,7 +41,10 @@ struct TypeList: View {
 		}
 	}
 	
+	@MainActor
 	func requestTypes() async {
+		makingRequest = true
+		defer { makingRequest = false }
 		do {
 			let pagedList: PagedList<Type> = try await Type.requestStaticList(resourceLimit: Type.normalLimit)
 			let resourceList = pagedList.results

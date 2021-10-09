@@ -47,8 +47,10 @@ class PokemonViewModel: ObservableObject {
 		}
 	}
 	
+	@MainActor
 	func fetchPokemon() async {
 		makingRequest = true
+		defer { makingRequest = false }
 		
 		do {
 			let fetchedPokemon = try await Pokemon.request(using: .url(requestURL))
@@ -69,16 +71,16 @@ class PokemonViewModel: ObservableObject {
 		} catch {
 			print("ERROR: \(error.localizedDescription)")
 		}
-		
-		makingRequest = false
 	}
 	
+	@MainActor
 	private func fetchNameAndID(from fetchedPokemon: Pokemon) {
 		pokemonName = fetchedPokemon.name ?? "POKEMON NAME ERROR"
 		let id = fetchedPokemon.id ?? -1
 		pokemonID = "#" + id.description
 	}
 	
+	@MainActor
 	private func fetchSpeciesAndEvolutions(from fetchedPokemon: Pokemon) async throws {
 		self.species = try await fetchedPokemon.species?.request()
 		if let genusList = self.species?.genera {
@@ -90,6 +92,7 @@ class PokemonViewModel: ObservableObject {
 		self.chainPokemon = await EvolutionChainPokemonCollection(from: self.species)
 	}
 	
+	@MainActor
 	private func fetchTypes(from fetchedPokemon: Pokemon) async throws {
 		pokemonTypes.removeAll()
 		if fetchedPokemon.types?.count == 1,
@@ -104,18 +107,21 @@ class PokemonViewModel: ObservableObject {
 		self.backgroundGradient = getPokemonTypeGradient()
 	}
 	
+	@MainActor
 	private func fetchMoves(from fetchedPokemon: Pokemon) {
 		if let moves = fetchedPokemon.moves {
 			movesLearned = moves.compactMap { PokemonMoveData(move: $0) }
 		}
 	}
 	
+	@MainActor
 	private func fetchAbilities(from fetchedPokemon: Pokemon) {
 		if let abilities = fetchedPokemon.abilities {
 			self.abilities = abilities.sorted(by: { $0.slot ?? 0 < $1.slot ?? 1 })
 		}
 	}
 	
+	@MainActor
 	private func fetchSprites(from fetchedPokemon: Pokemon) {
 		// If there are female sprites, rename default sprites to Male; else, keep genderless
 		if fetchedPokemon.sprites?.frontFemale != nil,
@@ -143,6 +149,7 @@ class PokemonViewModel: ObservableObject {
 		}
 	}
 	
+	@MainActor
 	private func fetchStats(from fetchedPokemon: Pokemon) {
 		if let stats = fetchedPokemon.stats,
 		   stats.count == 6 {
@@ -153,6 +160,7 @@ class PokemonViewModel: ObservableObject {
 		}
 	}
 	
+	@MainActor
 	func getPokemonTypeGradient() -> [Color] {
 		guard !pokemonTypes.isEmpty else {
 			return [.white]

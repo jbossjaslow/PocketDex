@@ -27,12 +27,14 @@ struct PokemonEvolutionChainView: View {
 						if let sprite = evo.frontSprite,
 						   let url = evo.pokemonURL,
 						   let speciesName = evo.species?.name {
+							let viewModel = PokemonViewModel(url: url)
+							let isCurrentSpecies = checkIsCurrentSpecies(species: evo.species)
+							
 							PokemonImageView(sprite: sprite,
 											 name: speciesName,
-											 textEmphasized: checkIsCurrentSpecies(species: evo.species))
-								.navigableTo(disabled: checkIsCurrentSpecies(species: evo.species)) {
-									PokemonDetail(viewModel: PokemonViewModel(url: url))
-								}
+											 textEmphasized: isCurrentSpecies)
+								.navigableTo(disabled: isCurrentSpecies,
+											 PokemonDetail(viewModel: viewModel))
 						}
 					}
 				}

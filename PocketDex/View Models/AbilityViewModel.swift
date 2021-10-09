@@ -13,7 +13,7 @@ class AbilityViewModel: ObservableObject {
 	@Published var pokemonWithThisAbility: [NamedAPIResource<Pokemon>] = []
 	
 	var abilityNameCapitalized: String {
-		ability?.name?.capitalizingFirstLetter() ?? "ERROR: No move name"
+		ability?.name?.capitalizingFirstLetter() ?? "ERROR: No ability name"
 	}
 	
 	var abilityEffectEnglish: String {
@@ -34,6 +34,7 @@ class AbilityViewModel: ObservableObject {
 		self.abilityName = name
 	}
 	
+	@MainActor
 	func fetchAbility() async {
 		do {
 			let fetchedAbility = try await Ability.request(using: .name(abilityName))

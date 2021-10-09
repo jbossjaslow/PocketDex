@@ -14,15 +14,26 @@ struct PokemonMoveData {
 	let minLevel: Int
 	
 	init?(move: PokemonMove) {
+		let minGen = VersionGroupName.Gen7.USUM
+		
 		guard let moveName = move.move?.name,
 			  let moveURL = move.move?.url,
-			  let learnMethod = MoveLearnMethodType(name: move.versionGroupDetails?.first(where: { $0.versionGroup?.name == VersionGroupName.Gen7.USUM })?.moveLearnMethod?.name),
-			  let minLevel = move.versionGroupDetails?.first(where: { $0.versionGroup?.name == VersionGroupName.Gen7.USUM })?.levelLearnedAt else {
+			  let learnMethod = MoveLearnMethodType(name: move.getVersion(minGen)?.moveLearnMethod?.name),
+			  let minLevel = move.getVersion(minGen)?.levelLearnedAt else {
 				  return nil
 			  }
+		
 		self.moveName = moveName
 		self.moveURL = moveURL
 		self.learnMethod = learnMethod
 		self.minLevel = minLevel
+	}
+}
+
+extension PokemonMove {
+	func getVersion(_ minGen: String) -> PokemonMoveVersion? {
+		self.versionGroupDetails?.first {
+			$0.versionGroup?.name == minGen
+		}
 	}
 }
