@@ -12,29 +12,13 @@ struct SpriteGallery: View {
 	@EnvironmentObject var viewModel: PokemonViewModel
 	
 	var body: some View {
-		ScrollView(.horizontal) {
-			ScrollViewReader { scrollProxy in
-				HStack(spacing: 0) {
-					ForEach(viewModel.pokemonSprites, id: \.url) { (spriteName,
-																	spriteURL) in
-						GeometryReader { geometryProxy in
-							PokemonImageView(proxy: geometryProxy,
-											 sprite: spriteURL,
-											 name: spriteName)
-							.onTapGesture {
-								withAnimation(.easeOut(duration: 0.1)) {
-									scrollProxy.scrollTo(spriteURL,
-														 anchor: .center)
-								}
-							}
-						}
-//						.background(.red)
-						.frame(width: 200)
-					}
-				}
+		CarouselView($viewModel.pokemonSprites,
+					 selectedItemScale: .medium) { sprite, _ in
+			VStack(spacing: 0) {
+				PokemonImageView(sprite: sprite.url,
+								 name: sprite.name)
 			}
 		}
-		.frame(height: 200)
 	}
 }
 

@@ -13,8 +13,7 @@ class PokemonViewModel: ObservableObject {
 	@Published var pokemonName: String = "Pokemon Name"
 	@Published var pokemonID: String = "-1"
 	@Published var pokemonGenus: String = "Pokemon Genus"
-	@Published var pokemonSprites: [(name: String,
-									 url: String)] = [] // (Sprite name, url)
+	@Published var pokemonSprites: [SpriteReference] = [] // (Sprite name, url)
 	@Published var pokemonTypes: [Type] = []
 	@Published var backgroundGradient: [Color] = [.white]
 //	@Published var movesLearned: [NamedAPIResource<Move>] = []
@@ -24,7 +23,7 @@ class PokemonViewModel: ObservableObject {
 							value: Int)] = []
 	
 	@Published var species: PokemonSpecies?
-	@Published var chainPokemon: EvolutionChainPokemonCollection?
+	@Published var chainPokemonCollection: EvolutionChainPokemonCollection
 	
 	@Published var showingStats: Bool = false
 	
@@ -45,6 +44,7 @@ class PokemonViewModel: ObservableObject {
 			pokemonID = ""
 			#endif
 		}
+		self.chainPokemonCollection = EvolutionChainPokemonCollection()
 	}
 	
 	@MainActor
@@ -89,7 +89,7 @@ class PokemonViewModel: ObservableObject {
 			}
 			pokemonGenus = genusEnglish.first?.genus ?? "GENUS ERROR"
 		}
-		self.chainPokemon = await EvolutionChainPokemonCollection(from: self.species)
+		self.chainPokemonCollection = await EvolutionChainPokemonCollection(from: self.species)
 	}
 	
 	@MainActor
@@ -127,25 +127,37 @@ class PokemonViewModel: ObservableObject {
 		if fetchedPokemon.sprites?.frontFemale != nil,
 		   fetchedPokemon.sprites?.backFemale != nil {
 			pokemonSprites = [
-				("Front Male", fetchedPokemon.sprites?.frontDefault ?? ""),
-				("Front Male Shiny", fetchedPokemon.sprites?.frontShiny ?? ""),
-				("Front Female", fetchedPokemon.sprites?.frontFemale ?? ""),
-				("Front Female Shiny", fetchedPokemon.sprites?.frontShinyFemale ?? ""),
-				("Back Male", fetchedPokemon.sprites?.backDefault ?? ""),
-				("Back Male Shiny", fetchedPokemon.sprites?.backShiny ?? ""),
-				("Back Female", fetchedPokemon.sprites?.backFemale ?? ""),
-				("Back Female Shiny", fetchedPokemon.sprites?.backShinyFemale ?? ""),
+				SpriteReference(name: "Front Male",
+								url: fetchedPokemon.sprites?.frontDefault ?? ""),
+				SpriteReference(name: "Front Male Shiny",
+								url: fetchedPokemon.sprites?.frontShiny ?? ""),
+				SpriteReference(name: "Front Female",
+								url: fetchedPokemon.sprites?.frontFemale ?? ""),
+				SpriteReference(name: "Front Female Shiny",
+								url: fetchedPokemon.sprites?.frontShinyFemale ?? ""),
+				SpriteReference(name: "Back Male",
+								url: fetchedPokemon.sprites?.backDefault ?? ""),
+				SpriteReference(name: "Back Male Shiny",
+								url: fetchedPokemon.sprites?.backShiny ?? ""),
+				SpriteReference(name: "Back Female",
+								url: fetchedPokemon.sprites?.backFemale ?? ""),
+				SpriteReference(name: "Back Female Shiny",
+								url: fetchedPokemon.sprites?.backShinyFemale ?? "")
 			]
 		} else {
 			pokemonSprites = [
-				("Front", fetchedPokemon.sprites?.frontDefault ?? ""),
-				("Front Shiny", fetchedPokemon.sprites?.frontShiny ?? ""),
-				("Back", fetchedPokemon.sprites?.backDefault ?? ""),
-				("Back Shiny", fetchedPokemon.sprites?.backShiny ?? ""),
+				SpriteReference(name: "Front",
+								url: fetchedPokemon.sprites?.frontDefault ?? ""),
+				SpriteReference(name: "Front Shiny",
+								url: fetchedPokemon.sprites?.frontShiny ?? ""),
+				SpriteReference(name: "Back",
+								url: fetchedPokemon.sprites?.backDefault ?? ""),
+				SpriteReference(name: "Back Shiny",
+								url: fetchedPokemon.sprites?.backShiny ?? "")
 			]
 		}
-		pokemonSprites.removeAll { (name, url) in
-			url.isEmpty
+		pokemonSprites.removeAll {
+			$0.url.isEmpty
 		}
 	}
 	

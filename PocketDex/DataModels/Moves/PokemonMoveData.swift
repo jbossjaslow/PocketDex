@@ -18,8 +18,9 @@ struct PokemonMoveData {
 		
 		guard let moveName = move.move?.name,
 			  let moveURL = move.move?.url,
-			  let learnMethod = MoveLearnMethodType(name: move.getVersion(minGen)?.moveLearnMethod?.name),
-			  let minLevel = move.getVersion(minGen)?.levelLearnedAt else {
+			  let moveVersion = move.getVersion(minGen),
+			  let learnMethod = MoveLearnMethodType(name: moveVersion.moveLearnMethod?.name),
+			  let minLevel = moveVersion.levelLearnedAt else {
 				  return nil
 			  }
 		

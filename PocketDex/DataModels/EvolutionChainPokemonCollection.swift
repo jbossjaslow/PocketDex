@@ -8,14 +8,14 @@
 import SwiftUI
 import PokeSwift
 
-struct EvolutionChainPokemonCollection {
-	var chainPokemon: [EvolutionChainPokemon] = []
+class EvolutionChainPokemonCollection: ObservableObject {
+	@Published var chainPokemon: [EvolutionChainPokemon] = []
 	
-	let startingSpecies: PokemonSpecies?
+	init() {}
 	
-	init(from species: PokemonSpecies?) async {
+	@MainActor
+	init(from species: PokemonSpecies? = nil) async {
 		do {
-			startingSpecies = species
 			let evolutionChain = try await species?.evolutionChain?.request()
 			try await buildEvolutionChainPokemon(from: evolutionChain?.chain)
 		} catch {
@@ -23,7 +23,8 @@ struct EvolutionChainPokemonCollection {
 		}
 	}
 	
-	mutating func buildEvolutionChainPokemon(from chain: ChainLink?) async throws {
+	@MainActor
+	func buildEvolutionChainPokemon(from chain: ChainLink?) async throws {
 		if let currSpecies = chain?.species {
 			chainPokemon.append(await EvolutionChainPokemon(from: currSpecies))
 		}
@@ -38,13 +39,17 @@ struct EvolutionChainPokemonCollection {
 	}
 }
 
-struct EvolutionChainPokemon {
+struct EvolutionChainPokemon: Identifiable, Equatable {
 	/// URL for front sprite
 	var frontSprite: String?
+	/// Species
 	var species: PokemonSpecies?
 	/// URL for `Pokemon` object associated with thie species
 	var pokemonURL: String?
 	
+	let id: UUID
+	
+	@MainActor
 	init(from species: NamedAPIResource<PokemonSpecies>?) async {
 		do {
 			self.species = try await species?.request()
@@ -57,5 +62,11 @@ struct EvolutionChainPokemon {
 		} catch {
 			print(error.localizedDescription)
 		}
+		self.id = UUID()
+	}
+	
+	static func == (lhs: EvolutionChainPokemon,
+					rhs: EvolutionChainPokemon) -> Bool {
+		return lhs.id == rhs.id
 	}
 }

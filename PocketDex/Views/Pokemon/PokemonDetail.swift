@@ -16,31 +16,6 @@ struct PokemonDetail: View {
 		ScrollView {
 			ScrollViewReader { proxy in
 				LazyVStack {
-					//Back Button
-//					HStack {
-//						Button {
-//							presentationMode.wrappedValue.dismiss()
-//						} label: {
-//							Image(systemName: "chevron.left")
-//								.resizable()
-//								.scaledToFit()
-//								.frame(height: 20)
-//								.foregroundColor(.black)
-//						}
-//
-//						Spacer()
-//					}
-//					.padding()
-					
-					//Name & Genus
-//					HStack {
-//						Text(viewModel.pokemonName.capitalizingFirstLetter())
-//							.font(.system(size: 48))
-//
-//						Text(viewModel.pokemonID)
-//							.font(.system(size: 48))
-//					}
-					
 					Text(viewModel.pokemonGenus)
 						.font(.largeTitle)
 					
@@ -49,12 +24,15 @@ struct PokemonDetail: View {
 						.environmentObject(viewModel)
 						.padding(.horizontal)
 					
-					//Sprite
+					//Sprites and Evolutions
 					SpriteGallery()
+						.frame(height: 200)
 						.environmentObject(viewModel)
 					
 					PokemonEvolutionChainView()
 						.environmentObject(viewModel)
+						.frame(height: 200)
+						.padding(.bottom)
 					
 					//Abilities
 					PokemonAbilitiesStack()

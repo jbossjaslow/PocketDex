@@ -12,34 +12,22 @@ struct PokemonEvolutionChainView: View {
 	@EnvironmentObject var viewModel: PokemonViewModel
 	
     var body: some View {
-		VStack(spacing: 0) {
-			HStack {
-				Text("Evolution Line")
-					.font(.system(.title))
-				
-				Spacer()
+		CarouselView($viewModel.chainPokemonCollection.chainPokemon,
+					 selectedItemScale: .medium) { evo, selected in
+			if let sprite = evo.frontSprite,
+			   let url = evo.pokemonURL,
+			   let speciesName = evo.species?.name {
+				let viewModel = PokemonViewModel(url: url)
+				let isCurrentSpecies = checkIsCurrentSpecies(species: evo.species)
+
+				PokemonImageView(sprite: sprite,
+								 name: speciesName,
+								 textEmphasized: isCurrentSpecies)
+					.navigableTo(disabled: isCurrentSpecies || !selected,
+								 PokemonDetail(viewModel: viewModel))
+			} else {
+				Text("Error")
 			}
-			.padding(.leading)
-			
-			ScrollView(.horizontal) {
-				HStack {
-					ForEach(viewModel.chainPokemon?.chainPokemon ?? [], id: \.frontSprite) { evo in
-						if let sprite = evo.frontSprite,
-						   let url = evo.pokemonURL,
-						   let speciesName = evo.species?.name {
-							let viewModel = PokemonViewModel(url: url)
-							let isCurrentSpecies = checkIsCurrentSpecies(species: evo.species)
-							
-							PokemonImageView(sprite: sprite,
-											 name: speciesName,
-											 textEmphasized: isCurrentSpecies)
-								.navigableTo(disabled: isCurrentSpecies,
-											 PokemonDetail(viewModel: viewModel))
-						}
-					}
-				}
-			}
-			.frame(height: 200)
 		}
     }
 	

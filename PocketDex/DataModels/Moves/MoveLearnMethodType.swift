@@ -11,6 +11,7 @@ enum MoveLearnMethodType: String {
 	case levelUp = "Level Up"
 	case machine = "TM/HM"
 	case tutor = "Move Tutor"
+	case egg = "Egg"
 	
 	init?(name: String? = nil) {
 		switch name {
@@ -20,6 +21,8 @@ enum MoveLearnMethodType: String {
 				self = .tutor
 			case "machine":
 				self = .machine
+			case "egg":
+				self = .egg
 			default:
 				print("Move method: " + (name ?? "not found"))
 				return nil
