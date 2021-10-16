@@ -9,14 +9,15 @@ import SwiftUI
 
 struct PopOutMoveList: View {
 	@State var title: String
-	@Binding var resources: [PokemonMoveData]
+	@State var selectedGen: String
+	@Binding var resources: [String: [PokemonMoveData]]
 	
 	@State private var searchText: String = ""
 	private var filteredResources: [PokemonMoveData] {
 		if !searchText.isEmpty {
-			return resources.filter { $0.moveName.contains(searchText.lowercased()) }
+			return resources[selectedGen]?.filter { $0.moveName.contains(searchText.lowercased()) } ?? []
 		} else {
-			return resources
+			return resources[selectedGen] ?? []
 		}
 	}
 	
@@ -49,6 +50,22 @@ struct PopOutMoveList: View {
 		}
 		.navigationTitle(title)
 		.searchable(text: $searchText)
+		.onAppear {
+			selectedGen = resources.keys.sorted().first ?? "none"
+		}
+		.toolbar {
+			Menu {
+				Picker("", selection: $selectedGen) {
+					ForEach(resources.keys.sorted(), id: \.self) { gen in
+						Text(gen).tag(gen)
+					}
+				}
+			} label: {
+				Image(systemName: "arrow.up.and.down")
+					.foregroundColor(.blue)
+					.padding(.trailing, 10)
+			}
+		}
 	}
 }
 

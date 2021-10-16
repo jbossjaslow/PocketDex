@@ -44,4 +44,23 @@ struct VersionGroupName {
 		static let SM = "sun-moon"
 		static let USUM = "ultra-sun-ultra-moon"
 	}
+	
+	static let all = [
+		Gen1.redBlue,
+		Gen1.yellow,
+		Gen2.GS,
+		Gen2.crystal,
+		Gen3.RS,
+		Gen3.emerald,
+		Gen3.FRLG,
+		Gen4.DP,
+		Gen4.platinum,
+		Gen4.HGSS,
+		Gen5.BW,
+		Gen5.B2W2,
+		Gen6.XY,
+		Gen6.ORAS,
+		Gen7.SM,
+		Gen7.USUM
+	]
 }

@@ -53,7 +53,8 @@ struct PokemonDetail: View {
 					
 					// Moves
 					PopOutMoveList(title: "Moves learned by this Pokemon",
-								   resources: $viewModel.movesLearned)
+								   selectedGen: viewModel.movesLearnedDict.keys.first ?? "none",
+								   resources: $viewModel.movesLearnedDict)
 						.padding(.horizontal)
 					
 					Spacer()
