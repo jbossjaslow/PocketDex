@@ -52,7 +52,7 @@ struct PokemonDetail: View {
 						}
 					
 					// Moves
-					PopOutMoveList(title: "Moves learned by this Pokemon",
+					PopOutMoveList(title: "Moves Learned",
 								   resources: $viewModel.movesLearned)
 						.padding(.horizontal)
 					

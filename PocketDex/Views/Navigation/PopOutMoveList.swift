@@ -9,15 +9,30 @@ import SwiftUI
 
 struct PopOutMoveList: View {
 	@State var title: String
+	@State var selectedGen: String = ""
 	@Binding var resources: [PokemonMoveData]
 	
 	@State private var searchText: String = ""
+	
+	private var genSet: GenerationSet {
+		GenerationSet(gens: self.resources.map { $0.generation })
+	}
+	private var filteredGenResources: [PokemonMoveData] {
+		resources.filter { $0.generation == selectedGen }
+	}
 	private var filteredResources: [PokemonMoveData] {
 		if !searchText.isEmpty {
-			return resources.filter { $0.moveName.contains(searchText.lowercased()) }
+			return filteredGenResources.filter { $0.moveName.contains(searchText.lowercased()) }
 		} else {
-			return resources
+			return filteredGenResources
 		}
+	}
+	
+	init(title: String,
+		 resources: Binding<[PokemonMoveData]>) {
+		self.title = title
+		self._resources = resources
+		self.selectedGen = genSet.sortedSet.first?.rawValue ?? "none"
 	}
 	
 	var body: some View {
@@ -49,6 +64,23 @@ struct PopOutMoveList: View {
 		}
 		.navigationTitle(title)
 		.searchable(text: $searchText)
+		.onAppear {
+			selectedGen = genSet.sortedSet.first?.rawValue ?? "none"
+		}
+		.toolbar {
+			Menu {
+				Picker("", selection: $selectedGen) {
+					ForEach(genSet.sortedSet, id: \.self) { gen in
+						Text(gen.rawValue)
+							.tag(gen.rawValue)
+					}
+				}
+			} label: {
+				Image(systemName: "arrow.up.and.down")
+					.foregroundColor(.blue)
+					.padding(.trailing, 10)
+			}
+		}
 	}
 }
 

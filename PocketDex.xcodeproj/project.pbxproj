@@ -28,7 +28,6 @@
 		39C282072688EF2F004C9C3A /* PopOutList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C282062688EF2E004C9C3A /* PopOutList.swift */; };
 		39C2820A26893D16004C9C3A /* MoveDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C2820926893D16004C9C3A /* MoveDetail.swift */; };
 		39C2820C26893D28004C9C3A /* MoveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C2820B26893D28004C9C3A /* MoveViewModel.swift */; };
-		39CA6890264D99DB00F005C5 /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = 39CA688F264D99DB00F005C5 /* swiftgen.yml */; };
 		39CA6892264D9AC500F005C5 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CA6891264D9AC500F005C5 /* Assets.swift */; };
 		39CA6897264F46D200F005C5 /* TypeDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CA6896264F46D200F005C5 /* TypeDetail.swift */; };
 		39CA689B26501E8F00F005C5 /* StringEntensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CA689A26501E8F00F005C5 /* StringEntensions.swift */; };
@@ -108,7 +107,6 @@
 		39C282062688EF2E004C9C3A /* PopOutList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopOutList.swift; sourceTree = "<group>"; };
 		39C2820926893D16004C9C3A /* MoveDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveDetail.swift; sourceTree = "<group>"; };
 		39C2820B26893D28004C9C3A /* MoveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveViewModel.swift; sourceTree = "<group>"; };
-		39CA688F264D99DB00F005C5 /* swiftgen.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
 		39CA6891264D9AC500F005C5 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		39CA6896264F46D200F005C5 /* TypeDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeDetail.swift; sourceTree = "<group>"; };
 		39CA689A26501E8F00F005C5 /* StringEntensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringEntensions.swift; sourceTree = "<group>"; };
@@ -181,7 +179,6 @@
 		393C6270263F023A00EBE6B4 = {
 			isa = PBXGroup;
 			children = (
-				39CA688F264D99DB00F005C5 /* swiftgen.yml */,
 				393C627B263F023A00EBE6B4 /* PocketDex */,
 				393C628D263F023D00EBE6B4 /* PocketDexTests */,
 				393C6298263F023D00EBE6B4 /* PocketDexUITests */,
@@ -564,7 +561,6 @@
 			files = (
 				393C6284263F023D00EBE6B4 /* Preview Assets.xcassets in Resources */,
 				393C6281263F023D00EBE6B4 /* Assets.xcassets in Resources */,
-				39CA6890264D99DB00F005C5 /* swiftgen.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

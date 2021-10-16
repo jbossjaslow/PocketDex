@@ -57,6 +57,7 @@ struct StaticList<T: Requestable & ResourceLimit>: View {
 					}
 				} label: {
 					Image(systemName: "arrow.up.and.down")
+						.foregroundColor(.blue)
 						.padding(.trailing, 10)
 				}
 			}

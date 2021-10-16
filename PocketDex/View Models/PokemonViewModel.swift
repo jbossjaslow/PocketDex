@@ -16,7 +16,7 @@ class PokemonViewModel: ObservableObject {
 	@Published var pokemonSprites: [SpriteReference] = [] // (Sprite name, url)
 	@Published var pokemonTypes: [Type] = []
 	@Published var backgroundGradient: [Color] = [.white]
-//	@Published var movesLearned: [NamedAPIResource<Move>] = []
+//	@Published var movesLearned: [PokemonMoveData] = []
 	@Published var movesLearned: [PokemonMoveData] = []
 	@Published var abilities: [PokemonAbility] = []
 	@Published var stats: [(name: String,
@@ -110,7 +110,12 @@ class PokemonViewModel: ObservableObject {
 	@MainActor
 	private func fetchMoves(from fetchedPokemon: Pokemon) {
 		if let moves = fetchedPokemon.moves {
-			movesLearned = moves.compactMap { PokemonMoveData(move: $0) }
+			for gen in VersionGroupName.allCases {
+				movesLearned.append(contentsOf: moves.compactMap {
+					PokemonMoveData(move: $0,
+									gen: gen.rawValue)
+				})
+			}
 		}
 	}
 	
