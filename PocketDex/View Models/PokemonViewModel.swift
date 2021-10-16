@@ -17,7 +17,7 @@ class PokemonViewModel: ObservableObject {
 	@Published var pokemonTypes: [Type] = []
 	@Published var backgroundGradient: [Color] = [.white]
 //	@Published var movesLearned: [PokemonMoveData] = []
-	@Published var movesLearnedDict: [String: [PokemonMoveData]] = [:]
+	@Published var movesLearned: [PokemonMoveData] = []
 	@Published var abilities: [PokemonAbility] = []
 	@Published var stats: [(name: String,
 							value: Int)] = []
@@ -110,14 +110,13 @@ class PokemonViewModel: ObservableObject {
 	@MainActor
 	private func fetchMoves(from fetchedPokemon: Pokemon) {
 		if let moves = fetchedPokemon.moves {
-			for gen in VersionGroupName.all {
-				movesLearnedDict[gen] = moves.compactMap {
+			for gen in VersionGroupName.allCases {
+				movesLearned.append(contentsOf: moves.compactMap {
 					PokemonMoveData(move: $0,
-									gen: gen)
-				}
+									gen: gen.rawValue)
+				})
 			}
 		}
-//		movesLearned = moves.compactMap { PokemonMoveData(move: $0) }
 	}
 	
 	@MainActor

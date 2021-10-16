@@ -12,16 +12,16 @@ struct PokemonMoveData {
 	let moveURL: String
 	let learnMethod: MoveLearnMethodType
 	let minLevel: Int
-//	let generation: String
+	let generation: String
 	
 	init?(move: PokemonMove,
 		  gen: String) {
 //		let minGen = VersionGroupName.Gen7.USUM
-//		self.generation = gen
+		self.generation = gen
 		
 		guard let moveName = move.move?.name,
 			  let moveURL = move.move?.url,
-			  let moveVersion = move.getVersion(gen),
+			  let moveVersion = move.getVersion(generation),
 			  let learnMethod = MoveLearnMethodType(name: moveVersion.moveLearnMethod?.name),
 			  let minLevel = moveVersion.levelLearnedAt else {
 				  return nil
