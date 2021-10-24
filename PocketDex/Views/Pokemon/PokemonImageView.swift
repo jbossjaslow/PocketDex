@@ -30,7 +30,7 @@ struct PokemonImageView: View {
 					.clipped()
 					.shadow(radius: 4)
 			} placeholder: {
-				PlaceholderImageView()
+				LoadingView()
 			}
 			
 			Text(name)

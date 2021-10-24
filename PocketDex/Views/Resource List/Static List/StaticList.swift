@@ -17,39 +17,46 @@ struct StaticList<T: Requestable & ResourceLimit>: View {
 	
     var body: some View {
 		NavigationView {
-			List {
-				ForEach(viewModel.arrangedResources, id: \.name) { resource in
-					let name = resource.name
-					switch T.self {
-						case is Pokemon.Type:
-							let viewModel = PokemonViewModel(url: resource.url,
-															 name: name)
-							Text(name)
-								.navigationTitle("Pokemon")
-								.navigableTo(PokemonDetail(viewModel: viewModel))
-							
-						case is Move.Type:
-							let viewModel = MoveViewModel(moveName: name)
-							
-							Text(name)
-								.navigationTitle("Moves")
-								.navigableTo(MoveDetail(viewModel: viewModel))
-						case is Ability.Type:
-							let viewModel = AbilityViewModel(name: name)
-							
-							Text(name)
-								.navigationTitle("Abilities")
-								.navigableTo(AbilityDetail(viewModel: viewModel))
-						default:
-							Text(name)
+			// placeholder vstack to allow for menu to appear while using if statement
+			ZStack {
+				List {
+					ForEach(viewModel.arrangedResources, id: \.name) { resource in
+						let name = resource.name
+						switch T.self {
+							case is Pokemon.Type:
+								let viewModel = PokemonViewModel(url: resource.url,
+																 name: name)
+								Text(name)
+									.navigationTitle("Pokemon")
+									.navigableTo(PokemonDetail(viewModel: viewModel))
+								
+							case is Move.Type:
+								let viewModel = MoveViewModel(moveName: name)
+								
+								Text(name)
+									.navigationTitle("Moves")
+									.navigableTo(MoveDetail(viewModel: viewModel))
+							case is Ability.Type:
+								let viewModel = AbilityViewModel(name: name)
+								
+								Text(name)
+									.navigationTitle("Abilities")
+									.navigableTo(AbilityDetail(viewModel: viewModel))
+							default:
+								Text(name)
+						}
 					}
 				}
+	//			.loadingResource(isLoading: $viewModel.isLoading)
+				.searchable(text: $viewModel.searchText)
+				.disableAutocorrection(true)
+	//			.navigationTitle(String(describing: T.self)) // Causes UIViewAlertForUnsatisfiableConstraints warning
+				.listStyle(PlainListStyle())
+				
+				if viewModel.isLoading {
+					LoadingView(fillEntireBackground: true)
+				}
 			}
-//			.loadingResource(isLoading: $viewModel.isLoading)
-			.searchable(text: $viewModel.searchText)
-			.disableAutocorrection(true)
-//			.navigationTitle(String(describing: T.self)) // Causes UIViewAlertForUnsatisfiableConstraints warning
-			.listStyle(PlainListStyle())
 			.toolbar {
 				Menu {
 					Picker("", selection: $viewModel.ordering) {
@@ -63,7 +70,7 @@ struct StaticList<T: Requestable & ResourceLimit>: View {
 				}
 			}
 		}
-		.accentColor(.black)
+//		.accentColor(.black)
 		.task {
 			await viewModel.populateResourceList()
 		}

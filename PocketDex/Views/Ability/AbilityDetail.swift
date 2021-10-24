@@ -14,8 +14,14 @@ struct AbilityDetail: View {
     var body: some View {
 		ScrollView(.vertical, showsIndicators: true) {
 			VStack(spacing: 10) {
-				Text(viewModel.abilityNameCapitalized)
-					.font(.largeTitle)
+				HStack {
+					Spacer()
+					
+					Text(viewModel.abilityNameCapitalized)
+						.font(.largeTitle)
+					
+					Spacer()
+				}
 				
 				Text(viewModel.abilityEffectEnglish)
 					.font(.title)
@@ -29,6 +35,13 @@ struct AbilityDetail: View {
 				await viewModel.fetchAbility()
 			}
 		}
+		.overlay(
+			VStack {
+				if viewModel.makingRequest {
+					LoadingView()
+				}
+			}
+		)
     }
 }
 

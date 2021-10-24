@@ -12,6 +12,7 @@ class MoveViewModel: ObservableObject {
 	@Published var move: Move? = nil
 	@Published var type: Type? = nil
 	@Published var learnedByPokemon: [NamedAPIResource<Pokemon>] = []
+	@Published var makingRequest: Bool = false
 	
 	var moveNameCapitalized: String {
 		moveName.capitalizingFirstLetter()
@@ -33,6 +34,10 @@ class MoveViewModel: ObservableObject {
 		type?.mapAdditionalInfo()
 	}
 	
+	var backgroundColor: Color {
+		Color(typeMap?.color ?? .white)
+	}
+	
 	private var moveName: String
 	
 	init(moveName: String) {
@@ -41,6 +46,13 @@ class MoveViewModel: ObservableObject {
 	
 	@MainActor
 	func fetchMove() async {
+		guard !makingRequest else {
+			return
+		}
+		
+		makingRequest = true
+		defer { makingRequest = false }
+		
 		do {
 			let fetchedMove = try await Move.request(using: .name(moveName))
 			self.move = fetchedMove

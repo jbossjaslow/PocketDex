@@ -50,6 +50,7 @@ class StaticListViewModel<ResourceType: Requestable & ResourceLimit>: Observable
 		}
 		
 		isLoading = true
+		defer { isLoading = false }
 		
 		do {
 			let pagedList: PagedList<ResourceType> = try await ResourceType.requestStaticList(resourceLimit: ResourceType.totalLimit)

@@ -14,8 +14,14 @@ struct MoveDetail: View {
 	var body: some View {
 		ScrollView(.vertical, showsIndicators: true) {
 			VStack(spacing: 10) {
-				Text(viewModel.moveNameCapitalized)
-					.font(.largeTitle)
+				HStack {
+					Spacer()
+					
+					Text(viewModel.moveNameCapitalized)
+						.font(.largeTitle)
+					
+					Spacer()
+				}
 				
 				Text("PP: \(viewModel.move?.pp ?? 0)")
 					.font(.title)
@@ -49,8 +55,17 @@ struct MoveDetail: View {
 			await viewModel.fetchMove()
 		}
 		.background(
-			Color(viewModel.typeMap?.color ?? .white)
+			viewModel.backgroundColor
 				.edgesIgnoringSafeArea([.top, .leading, .trailing])
+				.animation(.linear(duration: 0.5),
+						   value: viewModel.backgroundColor)
+		)
+		.overlay(
+			VStack {
+				if viewModel.makingRequest {
+					LoadingView()
+				}
+			}
 		)
 	}
 }

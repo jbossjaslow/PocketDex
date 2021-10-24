@@ -69,9 +69,23 @@ struct PokemonDetail: View {
 						   startPoint: .top,
 						   endPoint: .bottom)
 				.edgesIgnoringSafeArea([.top, .leading, .trailing])
+				.overlay(
+					Color.white
+						.edgesIgnoringSafeArea(.all)
+						.opacity(viewModel.makingRequest ? 1 : 0)
+						.animation(.linear(duration: 0.5),
+								   value: viewModel.makingRequest)
+				)
 		)
 //		.navigationBarHidden(true)
 		.navigationTitle(viewModel.speciesInfo.name.capitalizingFirstLetter() + " " +  viewModel.speciesInfo.id.description)
+		.overlay(
+			VStack {
+				if viewModel.makingRequest {
+					LoadingView()
+				}
+			}
+		)
 	}
 }
 

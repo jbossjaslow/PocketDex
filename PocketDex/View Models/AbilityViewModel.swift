@@ -11,9 +11,10 @@ import PokeSwift
 class AbilityViewModel: ObservableObject {
 	@Published var ability: Ability? = nil
 	@Published var pokemonWithThisAbility: [NamedAPIResource<Pokemon>] = []
+	@Published var makingRequest: Bool = false
 	
 	var abilityNameCapitalized: String {
-		ability?.name?.capitalizingFirstLetter() ?? "ERROR: No ability name"
+		abilityName.capitalizingFirstLetter()
 	}
 	
 	var abilityEffectEnglish: String {
@@ -36,6 +37,13 @@ class AbilityViewModel: ObservableObject {
 	
 	@MainActor
 	func fetchAbility() async {
+		guard !makingRequest else {
+			return
+		}
+		
+		makingRequest = true
+		defer { makingRequest = false }
+		
 		do {
 			let fetchedAbility = try await Ability.request(using: .name(abilityName))
 			self.ability = fetchedAbility

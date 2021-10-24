@@ -10,9 +10,9 @@ import PokeSwift
 
 class TypeViewModel: ObservableObject {
 	@Published var typeMap: TypeMap? = TypeMap(color: Asset.PokemonType.Color.normal.color,
-									  iconCircular: Asset.PokemonType.Icons.normalCircular.image,
-									  iconRectangular: Asset.PokemonType.Icons.normalRectangular.image,
-									  name: "normal")
+											   iconCircular: Asset.PokemonType.Icons.normalCircular.image,
+											   iconRectangular: Asset.PokemonType.Icons.normalRectangular.image,
+											   name: "normal")
 	@Published var pokemonType: Type?
 	@Published var showingDamageRelations: Bool = false
 	
@@ -21,7 +21,11 @@ class TypeViewModel: ObservableObject {
 	@Published var pokemonWithThisType: [NamedAPIResource<Pokemon>] = []
 	@Published var movesWithThisType: [NamedAPIResource<Move>] = []
 	
-	private var typeName: String
+	let typeName: String
+	
+	var backgroundColor: Color {
+		Color(typeMap?.color ?? .white)
+	}
 	
 	init(typeName: String) {
 		self.typeName = typeName
@@ -43,6 +47,13 @@ class TypeViewModel: ObservableObject {
 	
 	@MainActor
 	func fetchTypes(from name: String) async {
+		guard !makingRequest else {
+			return
+		}
+		
+		makingRequest = true
+		defer { makingRequest = false }
+		
 		do {
 			let fetchedType = try await Type.request(using: .name(name))
 			self.pokemonType = fetchedType

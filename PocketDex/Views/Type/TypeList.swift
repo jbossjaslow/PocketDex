@@ -14,11 +14,13 @@ struct TypeList: View {
 	
 	var body: some View {
 		NavigationView {
-			if !makingRequest && !typeMapList.isEmpty {
+			ZStack {
 				List {
 					ForEach(typeMapList) { typeMap in
-						NavigationLink(
-							destination: TypeDetail().environmentObject(TypeViewModel(typeMap: typeMap))) {
+						NavigationLink(destination:
+										TypeDetail()
+										.environmentObject(TypeViewModel(typeMap: typeMap))
+						) {
 							Image(uiImage: typeMap.iconRectangular)
 								.resizable()
 								.aspectRatio(contentMode: .fit)
@@ -28,11 +30,12 @@ struct TypeList: View {
 				}
 				.navigationTitle("Types")
 				.listStyle(PlainListStyle())
-			} else {
-				Text("Loading...")
+				
+				if makingRequest {
+					LoadingView(fillEntireBackground: true)
+				}
 			}
 		}
-//		.loadingResource(isLoading: $makingRequest)
 		.task {
 			await requestTypes()
 		}

@@ -23,7 +23,7 @@ struct TypeDetail: View {
 					}
 					
 					//Name
-					Text(viewModel.pokemonType?.name?.capitalizingFirstLetter() ?? "Pokemon Type")
+					Text(viewModel.typeName.capitalizingFirstLetter())
 						.font(.largeTitle)
 						.id("typeName")
 						.onAppear {
@@ -84,7 +84,19 @@ struct TypeDetail: View {
 				.padding(.bottom)
 			}
 		}
-		.background(Color(viewModel.typeMap?.color ?? .white).edgesIgnoringSafeArea([.top, .leading, .trailing]))
+		.background(
+			viewModel.backgroundColor
+				.edgesIgnoringSafeArea([.top, .leading, .trailing])
+				.animation(.linear(duration: 0.5),
+						   value: viewModel.backgroundColor)
+		)
+		.overlay(
+			VStack {
+				if viewModel.makingRequest {
+					LoadingView()
+				}
+			}
+		)
 		.task {
 			await viewModel.fetchTypes()
 		}

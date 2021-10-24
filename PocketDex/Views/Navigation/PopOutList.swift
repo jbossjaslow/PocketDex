@@ -36,7 +36,7 @@ struct PopOutList<T: Requestable>: View {
 		}
 		.buttonStyle(.bordered)
 		.controlSize(.large)
-		.tint(.black)
+//		.tint(.black)
 		.onTapGesture {
 			print("Tapped")
 		}

@@ -14,7 +14,6 @@ class PokemonViewModel: ObservableObject {
 	@Published var pokemonSprites: [SpriteReference] = [] // (Sprite name, url)
 	@Published var pokemonTypes: [Type] = []
 	@Published var backgroundGradient: [Color] = [.white]
-//	@Published var movesLearned: [PokemonMoveData] = []
 	@Published var movesLearned: [PokemonMoveData] = []
 	@Published var abilities: [PokemonAbility] = []
 	@Published var stats: [(name: String,
@@ -88,8 +87,19 @@ class PokemonViewModel: ObservableObject {
 				  let type1 = try await fetchedPokemon.types?[1].type?.request() {
 			pokemonTypes.append(contentsOf: [type0, type1])
 		}
-		backgroundGradient = [.white]
+		
 		self.backgroundGradient = getPokemonTypeGradient()
+	}
+	
+	@MainActor
+	func getPokemonTypeGradient() -> [Color] {
+		guard !pokemonTypes.isEmpty else {
+			return [.white]
+		}
+		
+		return pokemonTypes.map {
+			Color($0.mapAdditionalInfo()?.color ?? .white)
+		}
 	}
 	
 	@MainActor
@@ -159,17 +169,6 @@ class PokemonViewModel: ObservableObject {
 				return (name: $0.stat?.name ?? "ERROR",
 						value: $0.baseStat ?? 0)
 			}
-		}
-	}
-	
-	@MainActor
-	func getPokemonTypeGradient() -> [Color] {
-		guard !pokemonTypes.isEmpty else {
-			return [.white]
-		}
-		
-		return pokemonTypes.map {
-			Color($0.mapAdditionalInfo()?.color ?? .white)
 		}
 	}
 }
