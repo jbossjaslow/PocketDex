@@ -125,7 +125,7 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 	}
 	
 	private var dragGesture: some Gesture {
-		DragGesture()
+		DragGesture(minimumDistance: 0)
 			.onChanged {
 				calculateOnChanged(distance: $0.translation.width)
 			}

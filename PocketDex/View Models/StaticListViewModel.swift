@@ -8,7 +8,7 @@
 import SwiftUI
 import PokeSwift
 
-enum Ordering: String {
+enum PokemonOrdering: String {
 	case alphabetical = "A to Z"
 	case `default` = "Default"
 }
@@ -17,7 +17,7 @@ class StaticListViewModel<ResourceType: Requestable & ResourceLimit>: Observable
 	@Published var resourceList: [NamedAPIResource<ResourceType>] = []
 	@Published var isLoading: Bool = false
 	@Published var searchText: String = ""
-	@Published var ordering: Ordering = .default
+	@Published var ordering: PokemonOrdering = .default
 	
 	var arrangedResources: [NamedAPIResource<ResourceType>] {
 		var resources = resourceList

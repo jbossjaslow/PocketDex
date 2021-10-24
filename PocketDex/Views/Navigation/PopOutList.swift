@@ -61,6 +61,7 @@ struct PopOutList<T: Requestable>: View {
 		}
 		.navigationTitle(title)
 		.searchable(text: $searchText)
+		.disableAutocorrection(true)
 	}
 }
 

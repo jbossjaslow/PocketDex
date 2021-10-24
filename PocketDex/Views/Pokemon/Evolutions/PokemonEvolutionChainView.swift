@@ -23,7 +23,8 @@ struct PokemonEvolutionChainView: View {
 				PokemonImageView(sprite: sprite,
 								 name: speciesName,
 								 textEmphasized: isCurrentSpecies)
-					.navigableTo(disabled: isCurrentSpecies || !selected,
+					.navigableTo(disabled: isCurrentSpecies,
+								 showTouchDown: false,
 								 PokemonDetail(viewModel: viewModel))
 			} else {
 				Text("Error")
@@ -32,7 +33,7 @@ struct PokemonEvolutionChainView: View {
     }
 	
 	private func checkIsCurrentSpecies(species: PokemonSpecies?) -> Bool {
-		species?.name ?? "ERROR: NO NAME FOUND" == viewModel.species?.name ?? ""
+		species?.name ?? "ERROR: NO NAME FOUND" == viewModel.speciesInfo.name
 	}
 }
 

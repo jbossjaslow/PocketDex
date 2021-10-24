@@ -23,13 +23,19 @@ extension View {
 
 // MARK: - Navigation
 extension View {
+	@ViewBuilder
 	func navigableTo<ToView: View>(disabled: Bool = false,
+								   showTouchDown: Bool = true,
 								   _ goingToView: @autoclosure () -> ToView) -> some View {
-		NavigationLink(destination: goingToView) {
-			self
+		switch (disabled, showTouchDown) {
+			case (true, _):
+				self
+			case (_, true):
+				NavigationLink(destination: goingToView) {
+					self
+				}
+			case (_, false):
+				self.modifier(NavigationModifier(goingToView: goingToView))
 		}
-		.disabled(disabled)
-//		self.modifier(NavigationModifier(disabled: disabled,
-//										 goingToView: goingToView))
 	}
 }

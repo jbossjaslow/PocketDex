@@ -13,6 +13,19 @@ enum MoveLearnMethodType: String {
 	case tutor = "Move Tutor"
 	case egg = "Egg"
 	
+	var weight: Int {
+		switch self {
+			case .levelUp:
+				return 0
+			case .machine:
+				return 1
+			case .tutor:
+				return 2
+			case .egg:
+				return 3
+		}
+	}
+	
 	init?(name: String? = nil) {
 		switch name {
 			case "level-up":

@@ -7,12 +7,20 @@
 
 import SwiftUI
 
+enum MoveOrdering: String, CaseIterable {
+	case alphabetical = "A to Z"
+	case `default` = "Default"
+	case level = "Level learned at"
+	case type = "Learn method"
+}
+
 struct PopOutMoveList: View {
 	@State var title: String
-	@State var selectedGen: String = ""
 	@Binding var resources: [PokemonMoveData]
-	
 	@State private var searchText: String = ""
+	
+	@State var selectedGen: String = ""
+	@State var ordering: MoveOrdering = .default
 	
 	private var genSet: GenerationSet {
 		GenerationSet(gens: self.resources.map { $0.generation })
@@ -27,12 +35,30 @@ struct PopOutMoveList: View {
 			return filteredGenResources
 		}
 	}
+	private var orderedFilteredResources: [PokemonMoveData] {
+		switch ordering {
+			case .alphabetical:
+				return filteredResources.sorted {
+					$0.moveName < $1.moveName
+				}
+			case .default:
+				return filteredResources
+			case .level:
+				return filteredResources.sorted {
+					$0.minLevel < $1.minLevel
+				}
+			case .type:
+				return filteredResources.sorted {
+					$0.learnMethod.weight < $1.learnMethod.weight
+				}
+		}
+	}
 	
 	init(title: String,
 		 resources: Binding<[PokemonMoveData]>) {
 		self.title = title
 		self._resources = resources
-		self.selectedGen = genSet.sortedSet.first?.rawValue ?? "none"
+		self.selectedGen = genSet.sortedSet.first?.rawValue ?? VersionGroupName.redBlue.rawValue
 	}
 	
 	var body: some View {
@@ -48,7 +74,7 @@ struct PopOutMoveList: View {
 	
 	var listView: some View {
 		List {
-			ForEach(filteredResources, id: \.moveName) { resource in
+			ForEach(orderedFilteredResources) { resource in
 				let viewModel = MoveViewModel(moveName: resource.moveName)
 				
 				VStack {
@@ -64,21 +90,37 @@ struct PopOutMoveList: View {
 		}
 		.navigationTitle(title)
 		.searchable(text: $searchText)
+		.disableAutocorrection(true)
 		.onAppear {
 			selectedGen = genSet.sortedSet.first?.rawValue ?? "none"
 		}
 		.toolbar {
-			Menu {
-				Picker("", selection: $selectedGen) {
-					ForEach(genSet.sortedSet, id: \.self) { gen in
-						Text(gen.rawValue)
-							.tag(gen.rawValue)
+			HStack {
+				Menu {
+					Picker("", selection: $ordering) {
+						ForEach(MoveOrdering.allCases, id: \.self) { ordering in
+							Text(ordering.rawValue)
+								.tag(ordering.rawValue)
+						}
 					}
+				} label: {
+					Image(systemName: "arrow.up.and.down")
+						.foregroundColor(.blue)
+						.padding(.trailing, 10)
 				}
-			} label: {
-				Image(systemName: "arrow.up.and.down")
-					.foregroundColor(.blue)
-					.padding(.trailing, 10)
+				
+				Menu {
+					Picker("", selection: $selectedGen) {
+						ForEach(genSet.sortedSet, id: \.self) { gen in
+							Text(gen.rawValue)
+								.tag(gen.rawValue)
+						}
+					}
+				} label: {
+					Text("Gen")
+						.foregroundColor(.blue)
+						.padding(.trailing, 10)
+				}
 			}
 		}
 	}

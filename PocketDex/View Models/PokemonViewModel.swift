@@ -10,9 +10,7 @@ import PokeSwift
 
 class PokemonViewModel: ObservableObject {
 	@Published var pokemon: Pokemon?
-	@Published var pokemonName: String = "Pokemon Name"
-	@Published var pokemonID: String = "-1"
-	@Published var pokemonGenus: String = "Pokemon Genus"
+	@Published var speciesInfo: SpeciesInfo
 	@Published var pokemonSprites: [SpriteReference] = [] // (Sprite name, url)
 	@Published var pokemonTypes: [Type] = []
 	@Published var backgroundGradient: [Color] = [.white]
@@ -22,7 +20,6 @@ class PokemonViewModel: ObservableObject {
 	@Published var stats: [(name: String,
 							value: Int)] = []
 	
-	@Published var species: PokemonSpecies?
 	@Published var chainPokemonCollection: EvolutionChainPokemonCollection
 	
 	@Published var showingStats: Bool = false
@@ -38,13 +35,11 @@ class PokemonViewModel: ObservableObject {
 	init(url: String,
 		 name: String? = nil) {
 		self.requestURL = url
-		if let name = name {
-			self.pokemonName = name
-			#if !DEBUG
-			pokemonID = ""
-			#endif
-		}
 		self.chainPokemonCollection = EvolutionChainPokemonCollection()
+		self.speciesInfo = SpeciesInfo()
+		if let name = name {
+			speciesInfo.name = name
+		}
 	}
 	
 	@MainActor
@@ -54,8 +49,6 @@ class PokemonViewModel: ObservableObject {
 		
 		do {
 			let fetchedPokemon = try await Pokemon.request(using: .url(requestURL))
-			
-			fetchNameAndID(from: fetchedPokemon)
 			
 			try await fetchSpeciesAndEvolutions(from: fetchedPokemon)
 			
@@ -74,22 +67,14 @@ class PokemonViewModel: ObservableObject {
 	}
 	
 	@MainActor
-	private func fetchNameAndID(from fetchedPokemon: Pokemon) {
-		pokemonName = fetchedPokemon.name ?? "POKEMON NAME ERROR"
-		let id = fetchedPokemon.id ?? -1
-		pokemonID = "#" + id.description
-	}
-	
-	@MainActor
 	private func fetchSpeciesAndEvolutions(from fetchedPokemon: Pokemon) async throws {
-		self.species = try await fetchedPokemon.species?.request()
-		if let genusList = self.species?.genera {
-			let genusEnglish = genusList.filter {
-				$0.language?.name == "en"
-			}
-			pokemonGenus = genusEnglish.first?.genus ?? "GENUS ERROR"
+		guard let species = fetchedPokemon.species else {
+			return
 		}
-		self.chainPokemonCollection = await EvolutionChainPokemonCollection(from: self.species)
+		
+		let fetchedSpecies = try await species.request()
+		self.speciesInfo = SpeciesInfo(from: fetchedSpecies)
+		self.chainPokemonCollection = await EvolutionChainPokemonCollection(from: fetchedSpecies)
 	}
 	
 	@MainActor

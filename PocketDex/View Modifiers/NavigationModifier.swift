@@ -8,19 +8,23 @@
 import SwiftUI
 
 struct NavigationModifier<ToView: View>: ViewModifier {
-	var goingToView: () -> ToView
-	var disabled: Bool
+	@State private var goingToDestination: Bool = false
+	private let goingToView: ToView
 	
-	init(disabled: Bool = false,
-		 goingToView: @escaping () -> ToView) {
-		self.goingToView = goingToView
-		self.disabled = disabled
+	init(@ViewBuilder goingToView: () -> ToView) {
+		self.goingToView = goingToView()
 	}
 	
 	func body(content: Content) -> some View {
-		NavigationLink(destination: goingToView) {
-			content
-		}
-		.disabled(disabled)
+		content
+			.onTapGesture {
+				goingToDestination = true
+			}
+			.background(
+				NavigationLink(destination: goingToView,
+							   isActive: $goingToDestination) {
+					EmptyView()
+				}
+			)
 	}
 }

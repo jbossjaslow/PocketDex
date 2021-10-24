@@ -34,6 +34,24 @@ struct PokemonMoveData {
 	}
 }
 
+extension PokemonMoveData: Identifiable {
+	var id: String {
+		moveName + "-" + generation
+	}
+}
+
+//extension SortDescriptor {
+//	static func learnMethod(_ moveData: PokemonMoveData) -> Self {
+//		Self { move0, move1 in
+//			guard move0 != move1 else {
+//				return .orderedSame
+//			}
+//
+//			return move0 < move1 ? .orderedAscending : .orderedDescending
+//		}
+//	}
+//}
+
 extension PokemonMove {
 	func getVersion(_ minGen: String) -> PokemonMoveVersion? {
 		self.versionGroupDetails?.first {

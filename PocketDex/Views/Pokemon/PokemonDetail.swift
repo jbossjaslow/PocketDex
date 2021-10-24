@@ -16,30 +16,30 @@ struct PokemonDetail: View {
 		ScrollView {
 			ScrollViewReader { proxy in
 				LazyVStack {
-					Text(viewModel.pokemonGenus)
+					Text(viewModel.speciesInfo.genus)
 						.font(.largeTitle)
 					
-					//Types
+					// MARK: - Types
 					PokemonTypesStack()
 						.environmentObject(viewModel)
 						.padding(.horizontal)
 					
-					//Sprites and Evolutions
+					// MARK: - Sprites and Evolutions
 					SpriteGallery()
 						.frame(height: 200)
 						.environmentObject(viewModel)
 					
 					PokemonEvolutionChainView()
-						.environmentObject(viewModel)
 						.frame(height: 200)
 						.padding(.bottom)
+						.environmentObject(viewModel)
 					
-					//Abilities
+					// MARK: - Abilities
 					PokemonAbilitiesStack()
 						.environmentObject(viewModel)
 						.padding(.horizontal)
 					
-					// Stats
+					// MARK: - Stats
 					StatsView()
 						.padding()
 						.environmentObject(viewModel)
@@ -51,7 +51,7 @@ struct PokemonDetail: View {
 //							}
 						}
 					
-					// Moves
+					// MARK: - Moves
 					PopOutMoveList(title: "Moves Learned",
 								   resources: $viewModel.movesLearned)
 						.padding(.horizontal)
@@ -71,7 +71,7 @@ struct PokemonDetail: View {
 				.edgesIgnoringSafeArea([.top, .leading, .trailing])
 		)
 //		.navigationBarHidden(true)
-		.navigationTitle(viewModel.pokemonName.capitalizingFirstLetter() + " " +  viewModel.pokemonID)
+		.navigationTitle(viewModel.speciesInfo.name.capitalizingFirstLetter() + " " +  viewModel.speciesInfo.id.description)
 	}
 }
 

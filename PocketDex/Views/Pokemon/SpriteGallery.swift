@@ -14,10 +14,8 @@ struct SpriteGallery: View {
 	var body: some View {
 		CarouselView($viewModel.pokemonSprites,
 					 selectedItemScale: .medium) { sprite, _ in
-			VStack(spacing: 0) {
-				PokemonImageView(sprite: sprite.url,
-								 name: sprite.name)
-			}
+			PokemonImageView(sprite: sprite.url,
+							 name: sprite.name)
 		}
 	}
 }

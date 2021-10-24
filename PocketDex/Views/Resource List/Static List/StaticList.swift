@@ -47,13 +47,14 @@ struct StaticList<T: Requestable & ResourceLimit>: View {
 			}
 //			.loadingResource(isLoading: $viewModel.isLoading)
 			.searchable(text: $viewModel.searchText)
+			.disableAutocorrection(true)
 //			.navigationTitle(String(describing: T.self)) // Causes UIViewAlertForUnsatisfiableConstraints warning
 			.listStyle(PlainListStyle())
 			.toolbar {
 				Menu {
 					Picker("", selection: $viewModel.ordering) {
-						Text(Ordering.default.rawValue).tag(Ordering.default)
-						Text(Ordering.alphabetical.rawValue).tag(Ordering.alphabetical)
+						Text(PokemonOrdering.default.rawValue).tag(PokemonOrdering.default)
+						Text(PokemonOrdering.alphabetical.rawValue).tag(PokemonOrdering.alphabetical)
 					}
 				} label: {
 					Image(systemName: "arrow.up.and.down")
