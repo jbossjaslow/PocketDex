@@ -22,10 +22,10 @@ struct PokemonEvolutionChainView: View {
 
 				PokemonImageView(sprite: sprite,
 								 name: speciesName,
-								 textEmphasized: isCurrentSpecies)
-					.navigableTo(disabled: isCurrentSpecies,
-								 showTouchDown: false,
-								 PokemonDetail(viewModel: viewModel))
+								 textEmphasized: isCurrentSpecies,
+								 navigationDisabled: isCurrentSpecies) {
+					PokemonDetail(viewModel: viewModel)
+				}
 			} else {
 				Text("Error")
 			}

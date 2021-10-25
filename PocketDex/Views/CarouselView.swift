@@ -33,6 +33,8 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 	
 	let content: (T, Bool) -> Content
 	
+	private let generator = UISelectionFeedbackGenerator()
+	
 	private var indexAtBeginning: Bool {
 		currentIndex == 0
 	}
@@ -125,7 +127,7 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 	}
 	
 	private var dragGesture: some Gesture {
-		DragGesture(minimumDistance: 0)
+		DragGesture(minimumDistance: 5)
 			.onChanged {
 				calculateOnChanged(distance: $0.translation.width)
 			}
@@ -179,12 +181,15 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 				currentIndex -= 1
 				offset += (containerSize.height + spacing)
 		}
+		
+		generator.selectionChanged()
 	}
 	
 	private func getScale(for item: T) -> CGFloat {
 		guard let index = items.firstIndex(of: item),
 			  currentIndex == index,
-			  let scaleSize = selectedItemScale else {
+			  let scaleSize = selectedItemScale,
+			  containerSize.height > 0 else {
 				  return 1
 			  }
 		

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PokeSwift
+import Collections
 
 enum PokemonOrdering: String {
 	case alphabetical = "A to Z"
@@ -39,6 +40,11 @@ class StaticListViewModel<ResourceType: Requestable & ResourceLimit>: Observable
 		return resources
 	}
 	
+	var alphabeticalResources: OrderedDictionary<String, [NamedAPIResource<ResourceType>]> {
+		OrderedDictionary(grouping: arrangedResources,
+						  by: { String($0.name.prefix(1)) })
+	}
+	
 	func reset() {
 		resourceList.removeAll()
 	}
@@ -55,7 +61,6 @@ class StaticListViewModel<ResourceType: Requestable & ResourceLimit>: Observable
 		do {
 			let pagedList: PagedList<ResourceType> = try await ResourceType.requestStaticList(resourceLimit: ResourceType.totalLimit)
 			resourceList = pagedList.results
-			isLoading = false
 		} catch {
 			print("ERROR: \(error.localizedDescription)")
 		}

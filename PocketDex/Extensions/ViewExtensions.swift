@@ -38,4 +38,27 @@ extension View {
 				self.modifier(NavigationModifier(goingToView: goingToView))
 		}
 	}
+	
+	@ViewBuilder
+	func navButtonTo<ToView: View>(disabled: Bool = false,
+								   _ goingToView: @autoclosure () -> ToView) -> some View {
+		if !disabled {
+			self
+				.overlay {
+					HStack {
+						Spacer()
+						
+						VStack {
+							NavigationLink(destination: goingToView) {
+								Image(systemName: "circle.circle.fill")
+							}
+							
+							Spacer()
+						}
+					}
+				}
+		} else {
+			self
+		}
+	}
 }

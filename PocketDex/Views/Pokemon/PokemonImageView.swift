@@ -8,17 +8,23 @@
 import SwiftUI
 import PokeSwift
 
-struct PokemonImageView: View {
+struct PokemonImageView<Content: View>: View {
 	let sprite: String
 	let name: String
 	let textEmphasized: Bool
+	let navigationDisabled: Bool
+	let navigateToView: Content
 	
 	init(sprite: String,
 		 name: String,
-		 textEmphasized: Bool = false) {
+		 textEmphasized: Bool = false,
+		 navigationDisabled: Bool = true,
+		 _ content: @escaping () -> Content) {
 		self.sprite = sprite
 		self.name = name
 		self.textEmphasized = textEmphasized
+		self.navigationDisabled = navigationDisabled
+		self.navigateToView = content()
 	}
 	
     var body: some View {
@@ -40,6 +46,8 @@ struct PokemonImageView: View {
 				}
 				.padding(.top, -10)
 				.padding(.bottom)
+				.navigableTo(disabled: navigationDisabled,
+							 navigateToView)
 		}
 	}
 }
@@ -47,6 +55,9 @@ struct PokemonImageView: View {
 struct PokemonImageView_Previews: PreviewProvider {
     static var previews: some View {
 		PokemonImageView(sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
-						 name: "Bulbasaur")
+						 name: "Bulbasaur",
+						 textEmphasized: true) {
+			EmptyView()
+		}
     }
 }

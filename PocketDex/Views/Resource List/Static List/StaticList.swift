@@ -19,39 +19,30 @@ struct StaticList<T: Requestable & ResourceLimit>: View {
 		NavigationView {
 			// placeholder vstack to allow for menu to appear while using if statement
 			ZStack {
-				List {
-					ForEach(viewModel.arrangedResources, id: \.name) { resource in
-						let name = resource.name
-						switch T.self {
-							case is Pokemon.Type:
-								let viewModel = PokemonViewModel(url: resource.url,
-																 name: name)
-								Text(name)
-									.navigationTitle("Pokemon")
-									.navigableTo(PokemonDetail(viewModel: viewModel))
-								
-							case is Move.Type:
-								let viewModel = MoveViewModel(moveName: name)
-								
-								Text(name)
-									.navigationTitle("Moves")
-									.navigableTo(MoveDetail(viewModel: viewModel))
-							case is Ability.Type:
-								let viewModel = AbilityViewModel(name: name)
-								
-								Text(name)
-									.navigationTitle("Abilities")
-									.navigableTo(AbilityDetail(viewModel: viewModel))
-							default:
-								Text(name)
+				ScrollViewReader { proxy in
+					List {
+						if viewModel.ordering == .alphabetical {
+							ForEach(viewModel.alphabeticalResources.keys,
+									id: \.self) { section in
+								Section {
+									InnerList(viewModel.alphabeticalResources[section] ?? [])
+								} header: {
+									Text(section.description)
+								}
+								.id(section)
+							}
+						} else {
+							InnerList(viewModel.arrangedResources)
 						}
 					}
+					.searchable(text: $viewModel.searchText)
+					.disableAutocorrection(true)
+		//			.navigationTitle(String(describing: T.self)) // Causes UIViewAlertForUnsatisfiableConstraints warning
+					.listStyle(PlainListStyle())
+					.sectionIndices(from: viewModel.alphabeticalResources.keys.elements,
+									hidden: viewModel.ordering != .alphabetical,
+									proxy: proxy)
 				}
-	//			.loadingResource(isLoading: $viewModel.isLoading)
-				.searchable(text: $viewModel.searchText)
-				.disableAutocorrection(true)
-	//			.navigationTitle(String(describing: T.self)) // Causes UIViewAlertForUnsatisfiableConstraints warning
-				.listStyle(PlainListStyle())
 				
 				if viewModel.isLoading {
 					LoadingView(fillEntireBackground: true)
@@ -75,6 +66,43 @@ struct StaticList<T: Requestable & ResourceLimit>: View {
 			await viewModel.populateResourceList()
 		}
     }
+	
+	private struct InnerList: View {
+		let resources: [NamedAPIResource<T>]
+		
+		init(_ resources: [NamedAPIResource<T>]) {
+			self.resources = resources
+		}
+		
+		var body: some View {
+			ForEach(resources, id: \.name) { resource in
+				let name = resource.name
+				switch T.self {
+					case is Pokemon.Type:
+						let viewModel = PokemonViewModel(url: resource.url,
+														 name: name)
+						Text(name)
+							.navigationTitle("Pokemon")
+							.navigableTo(PokemonDetail(viewModel: viewModel))
+						
+					case is Move.Type:
+						let viewModel = MoveViewModel(moveName: name)
+						
+						Text(name)
+							.navigationTitle("Moves")
+							.navigableTo(MoveDetail(viewModel: viewModel))
+					case is Ability.Type:
+						let viewModel = AbilityViewModel(name: name)
+						
+						Text(name)
+							.navigationTitle("Abilities")
+							.navigableTo(AbilityDetail(viewModel: viewModel))
+					default:
+						Text(name)
+				}
+			}
+		}
+	}
 }
 
 struct StaticList_Previews: PreviewProvider {
