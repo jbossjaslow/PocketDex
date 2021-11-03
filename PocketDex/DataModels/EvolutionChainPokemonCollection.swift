@@ -44,8 +44,8 @@ struct EvolutionChainPokemon: Identifiable, Equatable {
 	var frontSprite: String?
 	/// Species
 	var species: PokemonSpecies?
-	/// URL for `Pokemon` object associated with thie species
-	var pokemonURL: String?
+	/// URL for `PokemonSpecies` object associated with thie species
+	var pokemonSpeciesURL: String?
 	
 	let id: UUID
 	
@@ -53,9 +53,9 @@ struct EvolutionChainPokemon: Identifiable, Equatable {
 	init(from species: NamedAPIResource<PokemonSpecies>?) async {
 		do {
 			self.species = try await species?.request()
+			self.pokemonSpeciesURL = species?.url
 			if let varieties = self.species?.varieties,
 			   let defaultPokemon = varieties.first(where: { $0.isDefault ?? false })?.pokemon {
-				self.pokemonURL = defaultPokemon.url
 				let pokemon = try await defaultPokemon.request()
 				self.frontSprite = pokemon.sprites?.frontDefault
 			}

@@ -6,6 +6,7 @@
 //
 
 import PokeSwift
+import Foundation
 
 struct GenerationalResource<ResourceType: Requestable & ResourceLimit> {
 	let resource: NamedAPIResource<ResourceType>
@@ -21,5 +22,12 @@ extension String {
 		}
 		
 		return intId
+	}
+	
+	var speciesIdPadded: String {
+		let formatter = NumberFormatter()
+		formatter.minimumIntegerDigits = 3
+		
+		return formatter.string(from: NSNumber(value: self.speciesId)) ?? "-1"
 	}
 }

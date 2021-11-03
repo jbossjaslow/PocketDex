@@ -32,7 +32,10 @@ class StaticListViewModel<ResourceType: Requestable & ResourceLimit>: Observable
 		}
 		
 		if !searchText.isEmpty {
-			resources = resources.filter { $0.resource.name.contains(searchText.lowercased()) }
+			resources = resources.filter {
+				$0.resource.name.contains(searchText.lowercased()) ||
+				$0.resource.url.speciesIdPadded.contains(searchText.lowercased())
+			}
 		}
 		
 		switch ordering {

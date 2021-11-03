@@ -100,7 +100,10 @@ struct StaticList<T: Requestable & ResourceLimit>: View {
 						let url = genResource.resource.url
 						let viewModel = PokemonViewModel(url: url,
 														 name: name)
-						Text(url.speciesId.description + " | " + name)
+						
+						Text(url.speciesIdPadded + " | " + name)
+							.font(.system(size: 16,
+										  design: .monospaced))
 							.navigationTitle("Pokemon")
 							.navigableTo(PokemonDetail(viewModel: viewModel))
 						
@@ -108,12 +111,16 @@ struct StaticList<T: Requestable & ResourceLimit>: View {
 						let viewModel = MoveViewModel(moveName: name)
 						
 						Text(name)
+							.font(.system(size: 16,
+										  design: .monospaced))
 							.navigationTitle("Moves")
 							.navigableTo(MoveDetail(viewModel: viewModel))
 					case is Ability.Type:
 						let viewModel = AbilityViewModel(name: name)
 						
 						Text(name)
+							.font(.system(size: 16,
+										  design: .monospaced))
 							.navigationTitle("Abilities")
 							.navigableTo(AbilityDetail(viewModel: viewModel))
 					default:

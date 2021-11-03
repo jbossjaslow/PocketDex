@@ -25,14 +25,19 @@ struct PokemonDetail: View {
 						.padding(.horizontal)
 					
 					// MARK: - Sprites and Evolutions
-					SpriteGallery()
+					SpriteGallery(viewModel: viewModel)
 						.frame(height: 200)
-						.environmentObject(viewModel)
 					
-					PokemonEvolutionChainView()
+					PokemonEvolutionChainView(viewModel: viewModel)
 						.frame(height: 200)
-						.padding(.bottom)
-						.environmentObject(viewModel)
+						.padding(.bottom, 20)
+					
+					if !viewModel.variantSprites.isEmpty {
+						PokemonVariantsGallery(viewModel: viewModel)
+							.frame(height: 200)
+							.padding(.bottom, 20)
+							.padding(.top, -20)
+					}
 					
 					// MARK: - Abilities
 					PokemonAbilitiesStack()

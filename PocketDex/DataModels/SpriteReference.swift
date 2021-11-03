@@ -8,7 +8,7 @@
 import Foundation
 
 struct SpriteReference {
-	let name: String
+	var name: String
 	let url: String
 	let id: UUID
 	

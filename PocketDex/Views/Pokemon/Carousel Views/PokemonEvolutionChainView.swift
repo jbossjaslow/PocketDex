@@ -9,22 +9,29 @@ import SwiftUI
 import PokeSwift
 
 struct PokemonEvolutionChainView: View {
-	@EnvironmentObject var viewModel: PokemonViewModel
+	@ObservedObject var viewModel: PokemonViewModel
 	
     var body: some View {
 		CarouselView($viewModel.chainPokemonCollection.chainPokemon,
-					 selectedItemScale: .medium) { evo, selected in
+					 selectedItemScale: .medium) { evo, _ in
 			if let sprite = evo.frontSprite,
-			   let url = evo.pokemonURL,
+			   let url = evo.pokemonSpeciesURL,
 			   let speciesName = evo.species?.name {
 				let viewModel = PokemonViewModel(url: url)
 				let isCurrentSpecies = checkIsCurrentSpecies(species: evo.species)
 
-				PokemonImageView(sprite: sprite,
-								 name: speciesName,
-								 textEmphasized: isCurrentSpecies,
-								 navigationDisabled: isCurrentSpecies) {
-					PokemonDetail(viewModel: viewModel)
+				VStack(spacing: 0) {
+					PokemonImageView(sprite: sprite)
+					
+					Text(speciesName)
+						.foregroundColor(.black)
+						.if(isCurrentSpecies) {
+							$0.bold().underline()
+						}
+						.padding(.top, -10)
+						.padding(.bottom)
+						.navigableTo(disabled: isCurrentSpecies,
+									 PokemonDetail(viewModel: viewModel))
 				}
 			} else {
 				Text("Error")
@@ -42,8 +49,7 @@ struct PokemonEvolutionChain_Previews: PreviewProvider {
 		let viewModel = PokemonViewModel(url: Pokemon.url + "60")
 		
 		NavigationView {
-			PokemonEvolutionChainView()
-				.environmentObject(viewModel)
+			PokemonEvolutionChainView(viewModel: viewModel)
 				.task {
 					await viewModel.fetchPokemon()
 				}

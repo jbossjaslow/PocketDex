@@ -33,7 +33,7 @@ struct SpeciesInfo {
 //	let palParkEncounters:
 //	let pokedexNumbers:
 //	let shape:
-//	let varieties:
+	let varieties: [SpeciesVariety]
 	
 	init(from species: PokemonSpecies) {
 		self.baseHappiness = species.baseHappiness ?? 0
@@ -58,6 +58,15 @@ struct SpeciesInfo {
 		} else {
 			self.genus = "Unknown genus"
 		}
+		
+		self.varieties = (species.varieties ?? []).compactMap {
+			guard let isDefault = $0.isDefault,
+				  let pokemon = $0.pokemon else {
+					  return nil
+				  }
+			return SpeciesVariety(isDefault: isDefault,
+								  pokemon: pokemon)
+		}
 	}
 	
 	init() {
@@ -74,5 +83,6 @@ struct SpeciesInfo {
 		self.isMythical = false
 		self.name = ""
 		self.order = 0
+		self.varieties = []
 	}
 }

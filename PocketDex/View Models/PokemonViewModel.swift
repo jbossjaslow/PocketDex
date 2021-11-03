@@ -11,7 +11,6 @@ import PokeSwift
 class PokemonViewModel: ObservableObject {
 //	@Published var pokemon: Pokemon?
 	@Published var speciesInfo: SpeciesInfo
-	@Published var pokemonSprites: [SpriteReference] = [] // (Sprite name, url)
 	@Published var pokemonTypes: [Type] = []
 	@Published var backgroundGradient: [Color] = [.white]
 	@Published var movesLearned: [PokemonMoveData] = []
@@ -22,6 +21,9 @@ class PokemonViewModel: ObservableObject {
 	@Published var chainPokemonCollection: EvolutionChainPokemonCollection
 	
 	@Published var showingStats: Bool = false
+	
+	@Published var pokemonSprites: [SpriteReference] = [] // (Sprite name, url)
+	@Published var variantSprites: [SpriteReference] = []
 	
 	var typeMaps: [TypeMap] {
 		pokemonTypes.compactMap { $0.mapAdditionalInfo() }
@@ -47,6 +49,11 @@ class PokemonViewModel: ObservableObject {
 	
 	@MainActor
 	func fetchPokemon() async {
+		guard !makingRequest,
+			  pokemonTypes.isEmpty else {
+				  return
+			  }
+		
 		makingRequest = true
 		defer { makingRequest = false }
 		
@@ -63,6 +70,8 @@ class PokemonViewModel: ObservableObject {
 			
 			fetchSprites(from: fetchedPokemon)
 			
+			try await fetchVariantSprites()
+			
 			fetchStats(from: fetchedPokemon)
 		} catch {
 			print("ERROR: \(error.localizedDescription)")
@@ -74,12 +83,10 @@ class PokemonViewModel: ObservableObject {
 		let fetchedSpecies = try await PokemonSpecies.request(using: .url(requestURL))
 		self.speciesInfo = SpeciesInfo(from: fetchedSpecies)
 		self.chainPokemonCollection = await EvolutionChainPokemonCollection(from: fetchedSpecies)
-		if let varieties = fetchedSpecies.varieties,
-		   let defaultPokemon = varieties.first(where: { $0.isDefault ?? false })?.pokemon {
-			   return defaultPokemon
-		   } else {
-			   throw RequestErrors.noDefaultPokemonFound
-		   }
+		guard speciesInfo.varieties.count > 0 else {
+			throw RequestErrors.noDefaultPokemonFound
+		}
+		return speciesInfo.varieties[0].pokemon
 	}
 	
 	@MainActor
@@ -164,6 +171,30 @@ class PokemonViewModel: ObservableObject {
 		}
 		pokemonSprites.removeAll {
 			$0.url.isEmpty
+		}
+	}
+	
+	@MainActor
+	private func fetchVariantSprites() async throws {
+		if speciesInfo.varieties.count > 1,
+		   var defaultVariant = pokemonSprites.first {
+			variantSprites = try await speciesInfo.varieties.parallelMap(parallelism: 4) {
+				guard !$0.isDefault else {
+					return SpriteReference(name: "",
+										   url: "")
+				}
+				let fetchedVariant = try await $0.pokemon.request()
+				return SpriteReference(name: fetchedVariant.name ?? "",
+									   url: fetchedVariant.sprites?.frontDefault ?? defaultVariant.url)
+			}
+			
+			defaultVariant.name = "Default"
+			variantSprites.insert(defaultVariant,
+								  at: 0)
+
+			variantSprites.removeAll {
+				$0.url.isEmpty
+			}
 		}
 	}
 	
