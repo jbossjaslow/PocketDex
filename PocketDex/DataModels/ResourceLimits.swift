@@ -17,6 +17,11 @@ extension Pokemon: ResourceLimit {
 	static var totalLimit = 1118
 }
 
+extension PokemonSpecies: ResourceLimit {
+	static var normalLimit = 898
+	static var totalLimit = 1118
+}
+
 extension Ability: ResourceLimit {
 	/// Abilities from 268-327 have the tag `is_main_series: false`
 	static var normalLimit = 267

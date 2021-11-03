@@ -9,7 +9,7 @@ import SwiftUI
 import PokeSwift
 
 class PokemonViewModel: ObservableObject {
-	@Published var pokemon: Pokemon?
+//	@Published var pokemon: Pokemon?
 	@Published var speciesInfo: SpeciesInfo
 	@Published var pokemonSprites: [SpriteReference] = [] // (Sprite name, url)
 	@Published var pokemonTypes: [Type] = []
@@ -31,6 +31,10 @@ class PokemonViewModel: ObservableObject {
 	
 	private var requestURL: String
 	
+	private enum RequestErrors: Error {
+		case noDefaultPokemonFound
+	}
+	
 	init(url: String,
 		 name: String? = nil) {
 		self.requestURL = url
@@ -47,9 +51,9 @@ class PokemonViewModel: ObservableObject {
 		defer { makingRequest = false }
 		
 		do {
-			let fetchedPokemon = try await Pokemon.request(using: .url(requestURL))
+			let defaultPokemon = try await fetchSpeciesAndEvolutions()
 			
-			try await fetchSpeciesAndEvolutions(from: fetchedPokemon)
+			let fetchedPokemon = try await defaultPokemon.request()
 			
 			try await fetchTypes(from: fetchedPokemon)
 			
@@ -66,14 +70,16 @@ class PokemonViewModel: ObservableObject {
 	}
 	
 	@MainActor
-	private func fetchSpeciesAndEvolutions(from fetchedPokemon: Pokemon) async throws {
-		guard let species = fetchedPokemon.species else {
-			return
-		}
-		
-		let fetchedSpecies = try await species.request()
+	private func fetchSpeciesAndEvolutions() async throws -> NamedAPIResource<Pokemon> {
+		let fetchedSpecies = try await PokemonSpecies.request(using: .url(requestURL))
 		self.speciesInfo = SpeciesInfo(from: fetchedSpecies)
 		self.chainPokemonCollection = await EvolutionChainPokemonCollection(from: fetchedSpecies)
+		if let varieties = fetchedSpecies.varieties,
+		   let defaultPokemon = varieties.first(where: { $0.isDefault ?? false })?.pokemon {
+			   return defaultPokemon
+		   } else {
+			   throw RequestErrors.noDefaultPokemonFound
+		   }
 	}
 	
 	@MainActor

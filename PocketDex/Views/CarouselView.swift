@@ -44,11 +44,11 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 	}
 	
 	private var lowerDragBound: CGFloat {
-		return -snapThreshold - spacing / 2
+		-snapThreshold - spacing / 2
 	}
 	
 	private var upperDragBound: CGFloat {
-		return snapThreshold + spacing / 2
+		snapThreshold + spacing / 2
 	}
 	
 	init(_ items: Binding<[T]>,
@@ -90,7 +90,8 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 			.gesture(dragGesture)
 			.overlay(
 				HStack {
-					if showingScrollArrows && currentIndex > 0 {
+					if showingScrollArrows,
+					   !indexAtBeginning {
 						Button {
 							scroll(to: .left)
 						} label: {
@@ -105,7 +106,7 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 					Spacer()
 					
 					if showingScrollArrows,
-					   currentIndex < items.count - 1 {
+					   !indexAtEnd {
 						Button {
 							scroll(to: .right)
 						} label: {

@@ -12,7 +12,7 @@ struct TabBar: View {
 	
 	var body: some View {
 		TabView {
-			StaticList<Pokemon>()
+			StaticList<PokemonSpecies>()
 				.tag(TabIcon.pokemon)
 				.tabItem {
 					Image(uiImage: getTabIcon(.pokemon))

@@ -55,7 +55,8 @@ struct SectionIndexModifier: ViewModifier {
 	
 	private func dragObserver(title: String) -> some View {
 		GeometryReader { geometry in
-			dragObserver(geometry: geometry, title: title)
+			dragObserver(geometry: geometry,
+						 title: title)
 		}
 	}
 	

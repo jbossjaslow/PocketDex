@@ -49,15 +49,33 @@ struct StaticList<T: Requestable & ResourceLimit>: View {
 				}
 			}
 			.toolbar {
-				Menu {
-					Picker("", selection: $viewModel.ordering) {
-						Text(PokemonOrdering.default.rawValue).tag(PokemonOrdering.default)
-						Text(PokemonOrdering.alphabetical.rawValue).tag(PokemonOrdering.alphabetical)
+				HStack {
+					Menu {
+						Picker("", selection: $viewModel.ordering) {
+							Text(PokemonOrdering.default.rawValue).tag(PokemonOrdering.default)
+							Text(PokemonOrdering.alphabetical.rawValue).tag(PokemonOrdering.alphabetical)
+						}
+					} label: {
+						Image(systemName: "arrow.up.and.down")
+							.foregroundColor(.blue)
+							.padding(.trailing, 10)
 					}
-				} label: {
-					Image(systemName: "arrow.up.and.down")
-						.foregroundColor(.blue)
-						.padding(.trailing, 10)
+					
+					Menu {
+						Picker("", selection: $viewModel.selectedGen) {
+							Text("National Dex")
+								.tag("national")
+							
+							ForEach(1...8, id: \.self) { genNum in
+								Text("Generation \(genNum)")
+									.tag(genNum.description)
+							}
+						}
+					} label: {
+						Text("Gen")
+							.foregroundColor(.blue)
+							.padding(.trailing, 10)
+					}
 				}
 			}
 		}
@@ -68,20 +86,21 @@ struct StaticList<T: Requestable & ResourceLimit>: View {
     }
 	
 	private struct InnerList: View {
-		let resources: [NamedAPIResource<T>]
+		let resources: [GenerationalResource<T>]
 		
-		init(_ resources: [NamedAPIResource<T>]) {
+		init(_ resources: [GenerationalResource<T>]) {
 			self.resources = resources
 		}
 		
 		var body: some View {
-			ForEach(resources, id: \.name) { resource in
-				let name = resource.name
+			ForEach(resources, id: \.resource.name) { genResource in
+				let name = genResource.resource.name
 				switch T.self {
-					case is Pokemon.Type:
-						let viewModel = PokemonViewModel(url: resource.url,
+					case is PokemonSpecies.Type:
+						let url = genResource.resource.url
+						let viewModel = PokemonViewModel(url: url,
 														 name: name)
-						Text(name)
+						Text(url.speciesId.description + " | " + name)
 							.navigationTitle("Pokemon")
 							.navigableTo(PokemonDetail(viewModel: viewModel))
 						
