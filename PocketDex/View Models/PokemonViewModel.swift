@@ -216,10 +216,11 @@ extension PokemonViewModel {
 	func loadVariant(url: String?,
 					 name: String?) async {
 		guard let url = url,
+			  requestURL != url,
 			  let name = name,
 			  !makingRequest else {
-			return
-		}
+				  return
+			  }
 		
 		self.requestURL = url
 		self.speciesInfo.name = name
@@ -241,8 +242,6 @@ extension PokemonViewModel {
 			fetchAbilities(from: fetchedPokemon)
 			
 			fetchSprites(from: fetchedPokemon)
-			
-			try await fetchVariantSprites()
 			
 			fetchStats(from: fetchedPokemon)
 			

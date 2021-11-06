@@ -13,31 +13,24 @@ struct PokemonVariantsGallery: View {
 	
 	var body: some View {
 		CarouselView($viewModel.variantSprites,
-					 selectedItemScale: .medium) { sprite, _ in
+					 selectedItemScale: .medium) { sprite, isCurrentlySelected in
 			VStack(spacing: 0) {
 				PokemonImageView(sprite: sprite.spriteUrl)
-				
-				Button {
-					Task {
-						await viewModel.loadVariant(url: sprite.pokemonUrl,
-													name: sprite.name)
-					}
-				} label: {
-					Text(sprite.name)
-						.foregroundColor(.black)
-						.if(isCurrentSpecies(spriteName: sprite.name)) {
-							$0.bold().underline()
+					.onChange(of: isCurrentlySelected) { newValue in
+						Task {
+							if newValue {
+								await viewModel.loadVariant(url: sprite.pokemonUrl,
+															name: sprite.name)
+							}
 						}
-						.padding(.top, -10)
-						.padding(.bottom)
-				}
-				.disabled(isCurrentSpecies(spriteName: sprite.name))
+					}
+				
+				Text(sprite.name)
+					.foregroundColor(.black)
+					.padding(.top, -10)
+					.padding(.bottom)
 			}
 		}
-	}
-	
-	func isCurrentSpecies(spriteName: String) -> Bool {
-		spriteName == viewModel.displayName
 	}
 }
 

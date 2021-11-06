@@ -67,7 +67,8 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 		GeometryReader { geo in
 			HStack(spacing: spacing) {
 				ForEach(items) { item in
-					content(item, itemIsSelected(item))
+					content(item,
+							itemIsSelected(item))
 						.frame(width: geo.size.height,
 							   height: geo.size.height)
 						.scaledToFill()
@@ -187,8 +188,7 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 	}
 	
 	private func getScale(for item: T) -> CGFloat {
-		guard let index = items.firstIndex(of: item),
-			  currentIndex == index,
+		guard itemIsSelected(item),
 			  let scaleSize = selectedItemScale,
 			  containerSize.height > 0 else {
 				  return 1
