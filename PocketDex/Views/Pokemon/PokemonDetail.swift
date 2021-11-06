@@ -25,19 +25,21 @@ struct PokemonDetail: View {
 						.padding(.horizontal)
 					
 					// MARK: - Sprites and Evolutions
-					SpriteGallery(viewModel: viewModel)
-						.frame(height: 200)
-					
-					PokemonEvolutionChainView(viewModel: viewModel)
-						.frame(height: 200)
-						.padding(.bottom, 20)
-					
-					if viewModel.variantSprites.count > 1 {
-						PokemonVariantsGallery(viewModel: viewModel)
+					VStack(spacing: 0) {
+						SpriteGallery(viewModel: viewModel)
 							.frame(height: 200)
-							.padding(.bottom, 20)
-							.padding(.top, -20)
+						
+						if viewModel.chainPokemonCollection.chainPokemon.count > 1 {
+							PokemonEvolutionChainView(viewModel: viewModel)
+								.frame(height: 200)
+						}
+						
+						if viewModel.variantSprites.count > 1 {
+							PokemonVariantsGallery(viewModel: viewModel)
+								.frame(height: 200)
+						}
 					}
+					.padding(.bottom, 20)
 					
 					// MARK: - Abilities
 					PokemonAbilitiesStack()
@@ -45,9 +47,8 @@ struct PokemonDetail: View {
 						.padding(.horizontal)
 					
 					// MARK: - Stats
-					StatsView()
+					StatsView(viewModel: viewModel)
 						.padding()
-						.environmentObject(viewModel)
 						.id("stats")
 						.onChange(of: viewModel.showingStats) { value in
 //							withAnimation(.easeOut(duration: 0.25)) {

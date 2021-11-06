@@ -9,7 +9,7 @@ import SwiftUI
 import PokeSwift
 
 struct StatsView: View {
-	@EnvironmentObject var viewModel: PokemonViewModel
+	@ObservedObject var viewModel: PokemonViewModel
 	
 	internal let timer = Timer.publish(every: 0.1,
 									   tolerance: 0.25,
@@ -51,10 +51,9 @@ struct StatsView: View {
 					   value: viewModel.showingStats)
 			
 			if viewModel.showingStats {
-				ForEach(viewModel.stats, id: \.name) { stat in
-					StatCapsule(name: stat.name,
-								value: stat.value,
-								indexNum: viewModel.stats.firstIndex(where: { $0 == stat }) ?? -1,
+				ForEach($viewModel.stats, id: \.statType.rawValue) { stat in
+					StatCapsule(stat: stat,
+								indexNum: viewModel.stats.firstIndex(where: { $0 == stat.wrappedValue }) ?? -1,
 								currentTick: $tick)
 						.transition(.opacity.animation(.easeOut(duration: 0.1)))
 				}
@@ -73,23 +72,22 @@ struct StatsView: View {
     }
 	
 	private struct StatCapsule: View {
-		@State var name: String
-		@State var value: Int
+		@Binding var stat: PokemonStat
 		let indexNum: Int
 		@Binding var currentTick: Int
 		
-		@State private var tempValue: Int = 0
 		private let color: Color = .green
 		private let height: CGFloat = 15
+		@State private var capsuleWidth: CGFloat = 0
 		
 		var body: some View {
 			HStack(spacing: 5) {
-				Text(name + ":")
+				Text(stat.statType.rawValue + ":")
 					.bold()
-					.frame(width: 75,
+					.frame(width: 45,
 						   alignment: .leading)
 				
-				Text(value.description)
+				Text(stat.value.description)
 					.bold()
 					.frame(width: 40,
 						   alignment: .leading)
@@ -104,36 +102,39 @@ struct StatsView: View {
 
 						Capsule(style: .continuous)
 							.fill(getColor(proxy: proxy))
-							.frame(width: getWidth(proxy: proxy),
+							.frame(width: capsuleWidth,
 								   height: height)
 							.shadow(radius: 2,
 									x: 2,
 									y: 0)
+							.onChange(of: currentTick) { tick in
+								if tick == indexNum {
+									updateWidth(proxy: proxy)
+								}
+							}
+							.onChange(of: stat.value) { _ in
+								updateWidth(proxy: proxy)
+							}
 					}
 				}
 				.frame(height: height)
 			}
-			.onChange(of: currentTick) { tick in
-				if tick == indexNum {
-					withAnimation(.spring(response: 0.3,
-										  dampingFraction: 0.5,
-										  blendDuration: 0.1)) {
-						value = tempValue
-					}
-				}
-			}
-			.onAppear {
-				tempValue = value
-				value = 0
+		}
+		
+		private func updateWidth(proxy: GeometryProxy) {
+			withAnimation(.spring(response: 0.3,
+								  dampingFraction: 0.5,
+								  blendDuration: 0.1)) {
+				capsuleWidth = getWidth(proxy: proxy)
 			}
 		}
 		
 		func getWidth(proxy: GeometryProxy) -> CGFloat {
-			proxy.size.width * (CGFloat(value) / 255)
+			proxy.size.width * (CGFloat(stat.value) / 255)
 		}
 		
 		func getColor(proxy: GeometryProxy) -> Color {
-			let normalizedValue = CGFloat(value) / 255
+			let normalizedValue = CGFloat(stat.value) / 255
 			
 			var green: Double = 0
 			var red: Double = 0
@@ -162,8 +163,7 @@ struct StatsView_Previews: PreviewProvider {
     static var previews: some View {
 		let viewModel = PokemonViewModel(url: Pokemon.url + "3")
 		
-		StatsView()
-			.environmentObject(viewModel)
+		StatsView(viewModel: viewModel)
 			.task {
 				await viewModel.fetchPokemon()
 			}

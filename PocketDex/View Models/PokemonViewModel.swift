@@ -16,8 +16,7 @@ class PokemonViewModel: ObservableObject {
 	@Published var backgroundGradient: [Color] = [.white]
 	@Published var movesLearned: [PokemonMoveData] = []
 	@Published var abilities: [PokemonAbility] = []
-	@Published var stats: [(name: String,
-							value: Int)] = []
+	@Published var stats: [PokemonStat] = []
 	
 	@Published var chainPokemonCollection: EvolutionChainPokemonCollection
 	
@@ -62,7 +61,9 @@ extension PokemonViewModel {
 		defer { makingRequest = false }
 		
 		do {
-			let defaultPokemon = try await fetchSpeciesAndEvolutions(from: requestURL)
+			let defaultPokemon = try await fetchSpecies(from: requestURL)
+			
+			await fetchEvolutions(from: requestURL)
 			
 			let fetchedPokemon = try await defaultPokemon.request()
 			
@@ -85,15 +86,19 @@ extension PokemonViewModel {
 	@MainActor
 	@discardableResult
 	/// Fetch the species and evolutions for the current pokemon
-	private func fetchSpeciesAndEvolutions(from url: String) async throws -> NamedAPIResource<Pokemon> {
+	private func fetchSpecies(from url: String) async throws -> NamedAPIResource<Pokemon> {
 		let fetchedSpecies = try await PokemonSpecies.request(using: .url(url))
 		self.speciesInfo = SpeciesInfo(from: fetchedSpecies)
 		self.displayName = speciesInfo.name
-		self.chainPokemonCollection = await EvolutionChainPokemonCollection(from: fetchedSpecies)
 		guard speciesInfo.varieties.count > 0 else {
 			throw RequestErrors.noDefaultPokemonFound
 		}
 		return speciesInfo.varieties[0].pokemon
+	}
+	
+	@MainActor
+	private func fetchEvolutions(from speciesURL: String) async {
+		self.chainPokemonCollection = await EvolutionChainPokemonCollection(from: speciesURL)
 	}
 	
 	@MainActor
@@ -195,6 +200,8 @@ extension PokemonViewModel {
 			variantSprites.removeAll {
 				$0.spriteUrl.isEmpty
 			}
+		} else {
+			variantSprites.removeAll()
 		}
 	}
 	
@@ -203,9 +210,53 @@ extension PokemonViewModel {
 		if let stats = fetchedPokemon.stats,
 		   stats.count == 6 {
 			self.stats = stats.map {
-				return (name: $0.stat?.name ?? "ERROR",
-						value: $0.baseStat ?? 0)
+				PokemonStat(statType: .init($0.stat?.name ?? "ERROR"),
+							value: $0.baseStat ?? 0)
 			}
+		}
+	}
+}
+
+// MARK: - Load evolution
+extension PokemonViewModel {
+	@MainActor
+	/// Load an evolution into the current view
+	/// - Parameters:
+	///   - url: The url of the evolution's `PokemonSpecies` object
+	///   - name: The name of the evolution
+	func loadEvolution(url: String?,
+					   name: String?) async {
+		guard let url = url,
+			  requestURL != url,
+			  let name = name,
+			  !makingRequest else {
+				  return
+			  }
+		
+		self.requestURL = url
+		self.speciesInfo.name = name
+		
+		makingRequest = true
+		defer { makingRequest = false }
+		
+		do {
+			let defaultPokemon = try await fetchSpecies(from: requestURL)
+			
+			let fetchedPokemon = try await defaultPokemon.request()
+			
+			try await fetchTypes(from: fetchedPokemon)
+			
+			fetchMoves(from: fetchedPokemon)
+			
+			fetchAbilities(from: fetchedPokemon)
+			
+			fetchSprites(from: fetchedPokemon)
+			
+			try await fetchVariantSprites()
+			
+			fetchStats(from: fetchedPokemon)
+		} catch {
+			print("ERROR: \(error.localizedDescription)")
 		}
 	}
 }
@@ -213,6 +264,10 @@ extension PokemonViewModel {
 // MARK: - Load variant
 extension PokemonViewModel {
 	@MainActor
+	/// Load a variant into the current view
+	/// - Parameters:
+	///   - url: The url of the variant's `Pokemon` object
+	///   - name: The name of the variant
 	func loadVariant(url: String?,
 					 name: String?) async {
 		guard let url = url,
@@ -232,7 +287,7 @@ extension PokemonViewModel {
 			let fetchedPokemon = try await Pokemon.request(using: .url(requestURL))
 			
 			if let speciesURL = fetchedPokemon.species?.url {
-				try await fetchSpeciesAndEvolutions(from: speciesURL)
+				try await fetchSpecies(from: speciesURL)
 			}
 			
 			try await fetchTypes(from: fetchedPokemon)

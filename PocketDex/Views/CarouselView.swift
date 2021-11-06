@@ -30,6 +30,7 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 	
 	private let spacing: CGFloat
 	private let showingScrollArrows: Bool
+	@Binding private var indexToScrollTo: Int?
 	
 	let content: (T, Bool) -> Content
 	
@@ -55,12 +56,14 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 		 selectedItemScale: ScaleSize?,
 		 spacing: CGFloat = 30,
 		 showingScrollArrows: Bool = true,
+		 indexToScrollTo: Binding<Int?> = .constant(nil),
 		 @ViewBuilder content: @escaping (T, Bool) -> Content) {
 		self._items = items
-		self.selectedItemScale = selectedItemScale
+		self._indexToScrollTo = indexToScrollTo
 		self.spacing = spacing
 		self.showingScrollArrows = showingScrollArrows
 		self.content = content
+		self.selectedItemScale = selectedItemScale
 	}
 	
 	var body: some View {
@@ -121,6 +124,9 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 				}
 					.padding(.horizontal)
 			)
+			.onChange(of: indexToScrollTo) { _ in
+				scrollToIndex()
+			}
 		}
 	}
 	
@@ -201,6 +207,22 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 	private func runOnAppear(geo: GeometryProxy) {
 		self.containerSize = geo.size
 		self.snapThreshold = (geo.size.height / 2)
+		
+		scrollToIndex()
+	}
+}
+
+//MARK: - Scroll to item
+extension CarouselView {
+	func scrollToIndex() {
+		guard let index = indexToScrollTo,
+			  index > 0,
+			  self.items.count > 1 else {
+				  return
+			  }
+		
+		offset -= (containerSize.height + spacing) * CGFloat(index)
+		currentIndex = index
 	}
 }
 

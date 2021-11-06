@@ -11,13 +11,24 @@ import PokeSwift
 class EvolutionChainPokemonCollection: ObservableObject {
 	@Published var chainPokemon: [EvolutionChainPokemon] = []
 	
-	init() {}
+	private let speciesURL: String
+	
+	@Published var currentPokemonIndex: Int? = nil
+	
+	init() {
+		speciesURL = ""
+	}
 	
 	@MainActor
-	init(from species: PokemonSpecies? = nil) async {
+	init(from speciesURL: String) async {
+		self.speciesURL = speciesURL
 		do {
-			let evolutionChain = try await species?.evolutionChain?.request()
+			let fetchedSpecies = try await PokemonSpecies.request(using: .url(self.speciesURL))
+			let evolutionChain = try await fetchedSpecies.evolutionChain?.request()
 			try await buildEvolutionChainPokemon(from: evolutionChain?.chain)
+			currentPokemonIndex = chainPokemon.firstIndex {
+				$0.pokemonSpeciesURL == self.speciesURL
+			}
 		} catch {
 			print(error.localizedDescription)
 		}

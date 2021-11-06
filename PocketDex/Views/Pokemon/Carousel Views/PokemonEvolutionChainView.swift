@@ -12,36 +12,35 @@ struct PokemonEvolutionChainView: View {
 	@ObservedObject var viewModel: PokemonViewModel
 	
     var body: some View {
+//		let evoToScrollTo = viewModel.chainPokemonCollection.chainPokemon.firstIndex(where: { $0.species?.name == viewModel.speciesInfo.name })
+		
 		CarouselView($viewModel.chainPokemonCollection.chainPokemon,
-					 selectedItemScale: .medium) { evo, _ in
+					 selectedItemScale: .medium,
+					 indexToScrollTo: $viewModel.chainPokemonCollection.currentPokemonIndex) { evo, isCurrentlySelected in
 			if let sprite = evo.frontSprite,
 			   let url = evo.pokemonSpeciesURL,
 			   let speciesName = evo.species?.name {
-				let viewModel = PokemonViewModel(url: url)
-				let isCurrentSpecies = checkIsCurrentSpecies(species: evo.species)
-
 				VStack(spacing: 0) {
 					PokemonImageView(sprite: sprite)
+						.onChange(of: isCurrentlySelected) { newValue in
+							Task {
+								if newValue {
+									await viewModel.loadEvolution(url: url,
+																  name: speciesName)
+								}
+							}
+						}
 					
 					Text(speciesName)
 						.foregroundColor(.black)
-						.if(isCurrentSpecies) {
-							$0.bold().underline()
-						}
 						.padding(.top, -10)
 						.padding(.bottom)
-						.navigableTo(disabled: isCurrentSpecies,
-									 PokemonDetail(viewModel: viewModel))
 				}
 			} else {
 				Text("Error")
 			}
 		}
     }
-	
-	private func checkIsCurrentSpecies(species: PokemonSpecies?) -> Bool {
-		species?.name ?? "ERROR: NO NAME FOUND" == viewModel.speciesInfo.name
-	}
 }
 
 struct PokemonEvolutionChain_Previews: PreviewProvider {
