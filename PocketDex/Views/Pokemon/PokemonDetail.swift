@@ -32,7 +32,7 @@ struct PokemonDetail: View {
 						.frame(height: 200)
 						.padding(.bottom, 20)
 					
-					if !viewModel.variantSprites.isEmpty {
+					if viewModel.variantSprites.count > 1 {
 						PokemonVariantsGallery(viewModel: viewModel)
 							.frame(height: 200)
 							.padding(.bottom, 20)
@@ -83,7 +83,7 @@ struct PokemonDetail: View {
 				)
 		)
 //		.navigationBarHidden(true)
-		.navigationTitle(viewModel.speciesInfo.name.capitalizingFirstLetter() + " " +  viewModel.speciesInfo.id.description)
+		.navigationTitle(viewModel.displayName.capitalizingFirstLetter() + " " +  viewModel.speciesInfo.id.description)
 		.overlay(
 			VStack {
 				if viewModel.makingRequest {

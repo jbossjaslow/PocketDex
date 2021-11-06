@@ -9,13 +9,16 @@ import Foundation
 
 struct SpriteReference {
 	var name: String
-	let url: String
+	let spriteUrl: String
+	var pokemonUrl: String?
 	let id: UUID
 	
 	init(name: String,
-		 url: String) {
+		 spriteUrl: String,
+		 pokemonUrl: String? = nil) {
 		self.name = name
-		self.url = url
+		self.spriteUrl = spriteUrl
+		self.pokemonUrl = pokemonUrl
 		self.id = UUID()
 	}
 }

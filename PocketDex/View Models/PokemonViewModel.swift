@@ -10,6 +10,7 @@ import PokeSwift
 
 class PokemonViewModel: ObservableObject {
 //	@Published var pokemon: Pokemon?
+	@Published var displayName: String = "Pokemon"
 	@Published var speciesInfo: SpeciesInfo
 	@Published var pokemonTypes: [Type] = []
 	@Published var backgroundGradient: [Color] = [.white]
@@ -46,7 +47,10 @@ class PokemonViewModel: ObservableObject {
 			speciesInfo.name = name
 		}
 	}
-	
+}
+
+//MARK: - Load pokemon
+extension PokemonViewModel {
 	@MainActor
 	func fetchPokemon() async {
 		guard !makingRequest,
@@ -58,7 +62,7 @@ class PokemonViewModel: ObservableObject {
 		defer { makingRequest = false }
 		
 		do {
-			let defaultPokemon = try await fetchSpeciesAndEvolutions()
+			let defaultPokemon = try await fetchSpeciesAndEvolutions(from: requestURL)
 			
 			let fetchedPokemon = try await defaultPokemon.request()
 			
@@ -79,9 +83,12 @@ class PokemonViewModel: ObservableObject {
 	}
 	
 	@MainActor
-	private func fetchSpeciesAndEvolutions() async throws -> NamedAPIResource<Pokemon> {
-		let fetchedSpecies = try await PokemonSpecies.request(using: .url(requestURL))
+	@discardableResult
+	/// Fetch the species and evolutions for the current pokemon
+	private func fetchSpeciesAndEvolutions(from url: String) async throws -> NamedAPIResource<Pokemon> {
+		let fetchedSpecies = try await PokemonSpecies.request(using: .url(url))
 		self.speciesInfo = SpeciesInfo(from: fetchedSpecies)
+		self.displayName = speciesInfo.name
 		self.chainPokemonCollection = await EvolutionChainPokemonCollection(from: fetchedSpecies)
 		guard speciesInfo.varieties.count > 0 else {
 			throw RequestErrors.noDefaultPokemonFound
@@ -141,59 +148,52 @@ class PokemonViewModel: ObservableObject {
 		   fetchedPokemon.sprites?.backFemale != nil {
 			pokemonSprites = [
 				SpriteReference(name: "Front Male",
-								url: fetchedPokemon.sprites?.frontDefault ?? ""),
+								spriteUrl: fetchedPokemon.sprites?.frontDefault ?? ""),
 				SpriteReference(name: "Front Male Shiny",
-								url: fetchedPokemon.sprites?.frontShiny ?? ""),
+								spriteUrl: fetchedPokemon.sprites?.frontShiny ?? ""),
 				SpriteReference(name: "Front Female",
-								url: fetchedPokemon.sprites?.frontFemale ?? ""),
+								spriteUrl: fetchedPokemon.sprites?.frontFemale ?? ""),
 				SpriteReference(name: "Front Female Shiny",
-								url: fetchedPokemon.sprites?.frontShinyFemale ?? ""),
+								spriteUrl: fetchedPokemon.sprites?.frontShinyFemale ?? ""),
 				SpriteReference(name: "Back Male",
-								url: fetchedPokemon.sprites?.backDefault ?? ""),
+								spriteUrl: fetchedPokemon.sprites?.backDefault ?? ""),
 				SpriteReference(name: "Back Male Shiny",
-								url: fetchedPokemon.sprites?.backShiny ?? ""),
+								spriteUrl: fetchedPokemon.sprites?.backShiny ?? ""),
 				SpriteReference(name: "Back Female",
-								url: fetchedPokemon.sprites?.backFemale ?? ""),
+								spriteUrl: fetchedPokemon.sprites?.backFemale ?? ""),
 				SpriteReference(name: "Back Female Shiny",
-								url: fetchedPokemon.sprites?.backShinyFemale ?? "")
+								spriteUrl: fetchedPokemon.sprites?.backShinyFemale ?? "")
 			]
 		} else {
 			pokemonSprites = [
 				SpriteReference(name: "Front",
-								url: fetchedPokemon.sprites?.frontDefault ?? ""),
+								spriteUrl: fetchedPokemon.sprites?.frontDefault ?? ""),
 				SpriteReference(name: "Front Shiny",
-								url: fetchedPokemon.sprites?.frontShiny ?? ""),
+								spriteUrl: fetchedPokemon.sprites?.frontShiny ?? ""),
 				SpriteReference(name: "Back",
-								url: fetchedPokemon.sprites?.backDefault ?? ""),
+								spriteUrl: fetchedPokemon.sprites?.backDefault ?? ""),
 				SpriteReference(name: "Back Shiny",
-								url: fetchedPokemon.sprites?.backShiny ?? "")
+								spriteUrl: fetchedPokemon.sprites?.backShiny ?? "")
 			]
 		}
 		pokemonSprites.removeAll {
-			$0.url.isEmpty
+			$0.spriteUrl.isEmpty
 		}
 	}
 	
 	@MainActor
 	private func fetchVariantSprites() async throws {
 		if speciesInfo.varieties.count > 1,
-		   var defaultVariant = pokemonSprites.first {
+		   let defaultVariantSprite = try await speciesInfo.varieties[0].pokemon.request().sprites?.frontDefault {
 			variantSprites = try await speciesInfo.varieties.parallelMap(parallelism: 4) {
-				guard !$0.isDefault else {
-					return SpriteReference(name: "",
-										   url: "")
-				}
 				let fetchedVariant = try await $0.pokemon.request()
 				return SpriteReference(name: fetchedVariant.name ?? "",
-									   url: fetchedVariant.sprites?.frontDefault ?? defaultVariant.url)
+									   spriteUrl: fetchedVariant.sprites?.frontDefault ?? defaultVariantSprite,
+									   pokemonUrl: $0.pokemon.url)
 			}
-			
-			defaultVariant.name = "Default"
-			variantSprites.insert(defaultVariant,
-								  at: 0)
 
 			variantSprites.removeAll {
-				$0.url.isEmpty
+				$0.spriteUrl.isEmpty
 			}
 		}
 	}
@@ -206,6 +206,49 @@ class PokemonViewModel: ObservableObject {
 				return (name: $0.stat?.name ?? "ERROR",
 						value: $0.baseStat ?? 0)
 			}
+		}
+	}
+}
+
+// MARK: - Load variant
+extension PokemonViewModel {
+	@MainActor
+	func loadVariant(url: String?,
+					 name: String?) async {
+		guard let url = url,
+			  let name = name,
+			  !makingRequest else {
+			return
+		}
+		
+		self.requestURL = url
+		self.speciesInfo.name = name
+		
+		makingRequest = true
+		defer { makingRequest = false }
+		
+		do {
+			let fetchedPokemon = try await Pokemon.request(using: .url(requestURL))
+			
+			if let speciesURL = fetchedPokemon.species?.url {
+				try await fetchSpeciesAndEvolutions(from: speciesURL)
+			}
+			
+			try await fetchTypes(from: fetchedPokemon)
+			
+			fetchMoves(from: fetchedPokemon)
+			
+			fetchAbilities(from: fetchedPokemon)
+			
+			fetchSprites(from: fetchedPokemon)
+			
+			try await fetchVariantSprites()
+			
+			fetchStats(from: fetchedPokemon)
+			
+			self.displayName = name
+		} catch {
+			print("ERROR: \(error.localizedDescription)")
 		}
 	}
 }

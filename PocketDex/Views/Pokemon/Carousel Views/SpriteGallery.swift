@@ -15,7 +15,7 @@ struct SpriteGallery: View {
 		CarouselView($viewModel.pokemonSprites,
 					 selectedItemScale: .medium) { sprite, currentlySelected in
 			VStack(spacing: 0) {
-				PokemonImageView(sprite: sprite.url)
+				PokemonImageView(sprite: sprite.spriteUrl)
 				
 				Text(sprite.name)
 					.foregroundColor(.black)
