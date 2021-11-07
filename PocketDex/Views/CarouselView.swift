@@ -14,6 +14,7 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 	}
 	
 	enum ScaleSize: CGFloat {
+		case unchanged = 0
 		case small = 0.5
 		case medium = 1
 		case large = 2
@@ -21,7 +22,7 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 	
 	@Binding var items: [T]
 	
-	@State private var selectedItemScale: ScaleSize?
+	@State private var selectedItemScale: ScaleSize
 	@State private var currentIndex: Int = 0
 	@State private var currentOffset: CGFloat = 0
 	@State private var offset: CGFloat = 0
@@ -54,7 +55,7 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 	}
 	
 	init(_ items: Binding<[T]>,
-		 selectedItemScale: ScaleSize?,
+		 selectedItemScale: ScaleSize,
 		 spacing: CGFloat = 30,
 		 showingScrollArrows: Bool = true,
 		 alwaysStartAtBeginning: Bool = false,
@@ -209,12 +210,12 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 	
 	private func getScale(for item: T) -> CGFloat {
 		guard itemIsSelected(item),
-			  let scaleSize = selectedItemScale,
+			  selectedItemScale != .unchanged,
 			  containerSize.height > 0 else {
 				  return 1
 			  }
 		
-		let spacingFactor = spacing * scaleSize.rawValue
+		let spacingFactor = spacing * selectedItemScale.rawValue
 		return 1 + (spacingFactor / containerSize.height)
 	}
 	
