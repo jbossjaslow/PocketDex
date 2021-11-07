@@ -8,89 +8,76 @@
 import SwiftUI
 import PokeSwift
 
-struct RemoteImageView: View {
-	@State private var image: UIImage?
+struct RemoteImageView<Content: View, Placeholder: View>: View {
+	@State private var fetchedImage: UIImage?
 	@State private var loading: Bool = false
-	@Binding var url: String
+	@State var url: String
 	
-	init(url: Binding<String>) {
-		self._url = url
+	let image: (Image) -> Content
+	let placeHolder: () -> Placeholder
+	
+	init(url: String,
+		 @ViewBuilder image: @escaping (Image) -> Content,
+		 @ViewBuilder placeholder: @escaping () -> Placeholder) {
+		self.url = url
+		self.image = image
+		self.placeHolder = placeholder
 	}
 	
     var body: some View {
 		VStack {
-			if let image = image {
-				Image(uiImage: image)
-					.resizable()
-					.aspectRatio(contentMode: .fit)
-					.loadingResource(isLoading: $loading)
+			if loading {
+				placeHolder()
+			} else if let fetchedImage = fetchedImage {
+				image(Image(uiImage: fetchedImage))
 			}
 		}
-		.onAppear {
-			loadImage(from: url)
-		}
-		.onChange(of: url) { _ in
-			loadImage(from: url)
+		.animation(.linear(duration: 0.25),
+				   value: fetchedImage)
+		.task {
+			await loadImage(from: url)
 		}
     }
 	
-	func loadImage(from url: String) {
-//		loading = true
+	@MainActor
+	func loadImage(from url: String) async {
+		guard !loading,
+			  let URL = URL(string: url) else {
+			return
+		}
+		
+		if let cachedImage = imageCache[url] {
+			self.fetchedImage = cachedImage
+			return
+		}
+		
+		loading = true
+		defer { loading = false }
+		
+		do {
+			let configuration = URLSessionConfiguration.default
+			configuration.urlCache = .shared
+			configuration.requestCachePolicy = .returnCacheDataElseLoad
+			let urlSession = URLSession(configuration: configuration)
+			
+			let (data, response) = try await urlSession.data(from: URL)
+			
+			if let uiImage = UIImage(data: data) {
+				self.fetchedImage = uiImage
+				imageCache[url] = uiImage
+			} else if let httpResponse = response as? HTTPURLResponse {
+				print("Failed to get remote image. Status code: \(httpResponse.statusCode)")
+			}
+		} catch {
+			print(error.localizedDescription)
+		}
+	}
+}
+
+//struct RemoteImageView_Previews: PreviewProvider {
+//	@State static var url = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/314.png"
 //
-//		SessionManager.requestImage(url: url) { result in
-//			DispatchQueue.main.async {
-//				if case .success(let image) = result {
-//					self.image = image
-//				}
-//				loading = false
-//			}
-//		}
-	}
-}
-
-extension View {
-	func loadingResource(isLoading: Binding<Bool>) -> some View {
-		self.modifier(LoadingRotationImageModifer(isLoading: isLoading))
-	}
-}
-
-struct LoadingRotationImageModifer: ViewModifier {
-	@Binding var isLoading: Bool
-	@State private var animating: Bool = false
-	
-	private var repeatForeverAnimation: Animation {
-		Animation.linear(duration: 3.0)
-			.repeatForever(autoreverses: false)
-	}
-	
-	func body(content: Content) -> some View {
-		content
-//			.overlay(
-//				HStack {
-//					if isLoading {
-//						Image(uiImage: Asset.Pokeball.pokeball.image)
-//							.resizable()
-//							.aspectRatio(contentMode: .fit)
-//							.frame(height: 150)
-//							.rotationEffect(Angle(degrees: animating ? 360 : 0.0))
-//							.animation(repeatForeverAnimation, value: $isLoading)
-//							.opacity(0.4)
-//							.onAppear {
-//								animating = true
-//							}
-//							.onDisappear {
-//								animating = false
-//							}
-//					}
-//				}
-//			)
-	}
-}
-
-struct RemoteImageView_Previews: PreviewProvider {
-	@State static var url = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/314.png"
-	
-    static var previews: some View {
-		RemoteImageView(url: $url)
-    }
-}
+//    static var previews: some View {
+//		RemoteImageView(url: $url)
+//    }
+//}

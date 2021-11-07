@@ -37,7 +37,6 @@ struct DynamicList<T: Requestable>: View {
 				}
 			}
 		}
-		.loadingResource(isLoading: $listProvider.fetchingResources)
 		.task {
 			await listProvider.fetchMoreItemsIfNeeded(currentIndex: 0)
 		}

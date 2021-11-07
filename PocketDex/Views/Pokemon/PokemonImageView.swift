@@ -16,7 +16,7 @@ struct PokemonImageView: View {
 	}
 	
     var body: some View {
-		AsyncImage(url: URL(string: sprite)) { image in
+		RemoteImageView(url: sprite) { image in
 			image
 				.resizable()
 				.frame(width: 200)
@@ -24,7 +24,9 @@ struct PokemonImageView: View {
 				.shadow(radius: 4)
 		} placeholder: {
 			LoadingView()
+				.frame(width: 200)
 		}
+
 	}
 }
 
