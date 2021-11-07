@@ -8,18 +8,6 @@
 import SwiftUI
 
 struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
-	private enum ScrollDirection: CGFloat {
-		case left = -1
-		case right = 1
-	}
-	
-	enum ScaleSize: CGFloat {
-		case unchanged = 0
-		case small = 0.5
-		case medium = 1
-		case large = 2
-	}
-	
 	@Binding var items: [T]
 	
 	@State private var selectedItemScale: ScaleSize
@@ -37,22 +25,6 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 	let content: (T, Bool) -> Content
 	
 	private let generator = UISelectionFeedbackGenerator()
-	
-	private var indexAtBeginning: Bool {
-		currentIndex == 0
-	}
-	
-	private var indexAtEnd: Bool {
-		currentIndex == items.count - 1
-	}
-	
-	private var lowerDragBound: CGFloat {
-		-snapThreshold - spacing / 2
-	}
-	
-	private var upperDragBound: CGFloat {
-		snapThreshold + spacing / 2
-	}
 	
 	init(_ items: Binding<[T]>,
 		 selectedItemScale: ScaleSize,
@@ -96,38 +68,7 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 			.animation(.easeOut,
 					   value: offset)
 			.gesture(dragGesture)
-			.overlay(
-				HStack {
-					if showingScrollArrows,
-					   !indexAtBeginning {
-						Button {
-							scroll(to: .left)
-						} label: {
-							Image(systemName: "arrow.left.circle.fill")
-								.resizable()
-								.scaledToFit()
-								.frame(width: 50)
-								.foregroundColor(.black.opacity(0.5))
-						}
-					}
-					
-					Spacer()
-					
-					if showingScrollArrows,
-					   !indexAtEnd {
-						Button {
-							scroll(to: .right)
-						} label: {
-							Image(systemName: "arrow.right.circle.fill")
-								.resizable()
-								.scaledToFit()
-								.frame(width: 50)
-								.foregroundColor(.black.opacity(0.5))
-						}
-					}
-				}
-					.padding(.horizontal)
-			)
+			.overlay(buttonOverlay)
 			.onChange(of: indexToScrollTo) { _ in
 				scrollToIndex()
 			}
@@ -139,14 +80,37 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 		}
 	}
 	
-	private func itemIsSelected(_ item: T) -> Bool {
-		guard items.contains(item),
-			  currentIndex < items.count else {
-			print("ERROR: array does not contain \(item)")
-			return false
+	private var buttonOverlay: some View {
+		HStack {
+			if showingScrollArrows,
+			   !indexAtBeginning {
+				Button {
+					scroll(to: .left)
+				} label: {
+					Image(systemName: "arrow.left.circle.fill")
+						.resizable()
+						.scaledToFit()
+						.frame(width: 50)
+						.foregroundColor(.black.opacity(0.5))
+				}
+			}
+			
+			Spacer()
+			
+			if showingScrollArrows,
+			   !indexAtEnd {
+				Button {
+					scroll(to: .right)
+				} label: {
+					Image(systemName: "arrow.right.circle.fill")
+						.resizable()
+						.scaledToFit()
+						.frame(width: 50)
+						.foregroundColor(.black.opacity(0.5))
+				}
+			}
 		}
-		
-		return items[currentIndex] == item
+			.padding(.horizontal)
 	}
 	
 	private var dragGesture: some Gesture {
@@ -157,6 +121,50 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 			.onEnded { _ in
 				calculateDirectionToScroll()
 			}
+	}
+}
+
+//MARK: - "ViewModel" variables
+extension CarouselView {
+	private enum ScrollDirection: CGFloat {
+		case left = -1
+		case right = 1
+	}
+	
+	enum ScaleSize: CGFloat {
+		case unchanged = 0
+		case small = 0.5
+		case medium = 1
+		case large = 2
+	}
+	
+	private var indexAtBeginning: Bool {
+		currentIndex == 0
+	}
+	
+	private var indexAtEnd: Bool {
+		currentIndex == items.count - 1
+	}
+	
+	private var lowerDragBound: CGFloat {
+		-snapThreshold - spacing / 2
+	}
+	
+	private var upperDragBound: CGFloat {
+		snapThreshold + spacing / 2
+	}
+}
+
+//MARK: - "ViewModel" functions
+extension CarouselView {
+	private func itemIsSelected(_ item: T) -> Bool {
+		guard items.contains(item),
+			  currentIndex < items.count else {
+			print("ERROR: array does not contain \(item)")
+			return false
+		}
+		
+		return items[currentIndex] == item
 	}
 	
 	private func calculateOnChanged(distance: CGFloat) {
@@ -225,10 +233,7 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 		
 		scrollToIndex()
 	}
-}
-
-//MARK: - Scroll to item
-extension CarouselView {
+	
 	func scrollToIndex() {
 		guard let index = indexToScrollTo,
 			  index < items.count,
@@ -246,35 +251,3 @@ extension CarouselView {
 		currentIndex = 0
 	}
 }
-
-#if debug
-struct CarouselTester: View {
-	@State var images = [
-		MyImage(imageName: "pencil.circle.fill"),
-		MyImage(imageName: "ticket.fill"),
-		MyImage(imageName: "swift"),
-		MyImage(imageName: "link"),
-		MyImage(imageName: "power.circle.fill"),
-		MyImage(imageName: "snowflake.circle.fill"),
-		MyImage(imageName: "snowflake.circle.fill"),
-		MyImage(imageName: "circle.inset.filled"),
-	]
-	
-	var body: some View {
-		CarouselView($images,
-					 selectedItemScale: .medium) { item in
-			Image(systemName: item.imageName)
-				.resizable()
-				.scaledToFit()
-		}
-			.frame(height: 150)
-	}
-}
-
-struct CarouselView_Previews: PreviewProvider {
-    static var previews: some View {
-        CarouselTester()
-    }
-}
-
-#endif
