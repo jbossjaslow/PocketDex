@@ -31,6 +31,7 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 	private let spacing: CGFloat
 	private let showingScrollArrows: Bool
 	@Binding private var indexToScrollTo: Int?
+	private let alwaysStartAtBeginning: Bool
 	
 	let content: (T, Bool) -> Content
 	
@@ -56,9 +57,11 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 		 selectedItemScale: ScaleSize?,
 		 spacing: CGFloat = 30,
 		 showingScrollArrows: Bool = true,
+		 alwaysStartAtBeginning: Bool = false,
 		 indexToScrollTo: Binding<Int?> = .constant(nil),
 		 @ViewBuilder content: @escaping (T, Bool) -> Content) {
 		self._items = items
+		self.alwaysStartAtBeginning = alwaysStartAtBeginning
 		self._indexToScrollTo = indexToScrollTo
 		self.spacing = spacing
 		self.showingScrollArrows = showingScrollArrows
@@ -127,11 +130,22 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 			.onChange(of: indexToScrollTo) { _ in
 				scrollToIndex()
 			}
+			.onChange(of: items) { _ in
+				if alwaysStartAtBeginning {
+					scrollToBeginning()
+				}
+			}
 		}
 	}
 	
 	private func itemIsSelected(_ item: T) -> Bool {
-		items[currentIndex] == item
+		guard items.contains(item),
+			  currentIndex < items.count else {
+			print("ERROR: array does not contain \(item)")
+			return false
+		}
+		
+		return items[currentIndex] == item
 	}
 	
 	private var dragGesture: some Gesture {
@@ -216,13 +230,19 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 extension CarouselView {
 	func scrollToIndex() {
 		guard let index = indexToScrollTo,
-			  index > 0,
+			  index < items.count,
+			  index >= 0,
 			  self.items.count > 1 else {
 				  return
 			  }
 		
-		offset -= (containerSize.height + spacing) * CGFloat(index)
+		offset = -(containerSize.height + spacing) * CGFloat(index)
 		currentIndex = index
+	}
+	
+	func scrollToBeginning() {
+		offset = 0
+		currentIndex = 0
 	}
 }
 

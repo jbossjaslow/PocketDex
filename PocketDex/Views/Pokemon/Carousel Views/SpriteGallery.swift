@@ -13,7 +13,8 @@ struct SpriteGallery: View {
 	
 	var body: some View {
 		CarouselView($viewModel.pokemonSprites,
-					 selectedItemScale: .medium) { sprite, currentlySelected in
+					 selectedItemScale: .medium,
+					 alwaysStartAtBeginning: true) { sprite, currentlySelected in
 			VStack(spacing: 0) {
 				PokemonImageView(sprite: sprite.spriteUrl)
 				

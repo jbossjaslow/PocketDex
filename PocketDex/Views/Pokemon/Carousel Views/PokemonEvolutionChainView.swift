@@ -12,8 +12,6 @@ struct PokemonEvolutionChainView: View {
 	@ObservedObject var viewModel: PokemonViewModel
 	
     var body: some View {
-//		let evoToScrollTo = viewModel.chainPokemonCollection.chainPokemon.firstIndex(where: { $0.species?.name == viewModel.speciesInfo.name })
-		
 		CarouselView($viewModel.chainPokemonCollection.chainPokemon,
 					 selectedItemScale: .medium,
 					 indexToScrollTo: $viewModel.chainPokemonCollection.currentPokemonIndex) { evo, isCurrentlySelected in
