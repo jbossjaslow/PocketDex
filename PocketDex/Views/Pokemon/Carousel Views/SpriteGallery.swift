@@ -29,7 +29,7 @@ struct SpriteGallery: View {
 
 struct SpriteGallery_Previews: PreviewProvider {
 	static var previews: some View {
-		let viewModel = PokemonViewModel(url: Pokemon.url + "3")
+		let viewModel = PokemonViewModel(speciesURL: Pokemon.url + "3")
 		
 		SpriteGallery(viewModel: viewModel)
 			.task {

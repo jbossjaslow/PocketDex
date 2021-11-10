@@ -43,7 +43,7 @@ struct PokemonEvolutionChainView: View {
 
 struct PokemonEvolutionChain_Previews: PreviewProvider {
     static var previews: some View {
-		let viewModel = PokemonViewModel(url: Pokemon.url + "60")
+		let viewModel = PokemonViewModel(speciesURL: Pokemon.url + "60")
 		
 		NavigationView {
 			PokemonEvolutionChainView(viewModel: viewModel)

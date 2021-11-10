@@ -76,7 +76,7 @@ struct PokemonDetail: View {
 						   endPoint: .bottom)
 				.edgesIgnoringSafeArea([.top, .leading, .trailing])
 				.overlay(
-					Color.white
+					Color("initialBackgroundColor")
 						.edgesIgnoringSafeArea(.all)
 						.opacity(viewModel.makingRequest ? 1 : 0)
 						.animation(.linear(duration: 0.5),
@@ -98,7 +98,7 @@ struct PokemonDetail: View {
 struct ContentView_Previews: PreviewProvider {
 	static var previews: some View {
 		NavigationView {
-			PokemonDetail(viewModel: PokemonViewModel(url: Pokemon.url + "3"))
+			PokemonDetail(viewModel: PokemonViewModel(speciesURL: Pokemon.url + "3"))
 		}
 	}
 }

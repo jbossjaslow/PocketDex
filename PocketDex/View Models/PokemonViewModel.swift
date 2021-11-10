@@ -13,7 +13,7 @@ class PokemonViewModel: ObservableObject {
 	@Published var displayName: String = "Pokemon"
 	@Published var speciesInfo: SpeciesInfo
 	@Published var pokemonTypes: [Type] = []
-	@Published var backgroundGradient: [Color] = [.white]
+	@Published var backgroundGradient: [Color] = [Color("initialBackgroundColor")]
 	@Published var movesLearned: [PokemonMoveData] = []
 	@Published var abilities: [PokemonAbility] = []
 	@Published var stats: [PokemonStat] = []
@@ -32,19 +32,34 @@ class PokemonViewModel: ObservableObject {
 	@Published var makingRequest: Bool = false
 	
 	private var requestURL: String
+	private var initFrom: initType
+	
+	private enum initType {
+		case species
+		case pokemon
+	}
 	
 	private enum RequestErrors: Error {
 		case noDefaultPokemonFound
 	}
 	
-	init(url: String,
+	init(speciesURL: String,
 		 name: String? = nil) {
-		self.requestURL = url
+		self.requestURL = speciesURL
+		self.initFrom = .species
 		self.chainPokemonCollection = EvolutionChainPokemonCollection()
 		self.speciesInfo = SpeciesInfo()
 		if let name = name {
 			speciesInfo.name = name
 		}
+	}
+	
+	init(pokemonURL: String,
+		 name: String? = nil) {
+		self.requestURL = pokemonURL
+		self.initFrom = .pokemon
+		self.chainPokemonCollection = EvolutionChainPokemonCollection()
+		self.speciesInfo = SpeciesInfo()
 	}
 }
 
@@ -61,11 +76,22 @@ extension PokemonViewModel {
 		defer { makingRequest = false }
 		
 		do {
-			let defaultPokemon = try await fetchSpecies(from: requestURL)
-			
-			await fetchEvolutions(from: requestURL)
-			
-			let fetchedPokemon = try await defaultPokemon.request()
+			var fetchedPokemon: Pokemon
+			switch initFrom {
+				case .species:
+					let defaultPokemon = try await fetchSpecies(from: requestURL)
+					
+					await fetchEvolutions(from: requestURL)
+					
+					fetchedPokemon = try await defaultPokemon.request()
+				case .pokemon:
+					fetchedPokemon = try await Pokemon.request(using: .url(requestURL))
+					
+					if let speciesURL = fetchedPokemon.species?.url {
+						try await fetchSpecies(from: speciesURL)
+						await fetchEvolutions(from: speciesURL)
+					}
+			}
 			
 			try await fetchTypes(from: fetchedPokemon)
 			

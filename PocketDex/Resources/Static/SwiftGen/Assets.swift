@@ -85,6 +85,7 @@ internal enum Asset {
       internal static let waterRectangular = ImageAsset(name: "WaterRectangular")
     }
   }
+  internal static let initialBackgroundColor = ColorAsset(name: "initialBackgroundColor")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 

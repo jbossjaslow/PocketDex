@@ -98,7 +98,7 @@ struct StaticList<T: Requestable & ResourceLimit>: View {
 				switch T.self {
 					case is PokemonSpecies.Type:
 						let url = genResource.resource.url
-						let viewModel = PokemonViewModel(url: url,
+						let viewModel = PokemonViewModel(speciesURL: url,
 														 name: name)
 						
 						Text(url.speciesIdPadded + " | " + name)

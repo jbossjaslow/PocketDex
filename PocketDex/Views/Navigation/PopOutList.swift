@@ -47,11 +47,13 @@ struct PopOutList<T: Requestable>: View {
 			ForEach(filteredResources, id: \.name) { resource in
 				switch T.self {
 					case is Move.Type:
-						NavigationLink(destination: MoveDetail(viewModel: MoveViewModel(moveName: resource.name))) {
+						let vm = MoveViewModel(moveName: resource.name)
+						NavigationLink(destination: MoveDetail(viewModel: vm)) {
 							Text(resource.name)
 						}
 					case is Pokemon.Type:
-						NavigationLink(destination: PokemonDetail(viewModel: PokemonViewModel(url: resource.url))) {
+						let vm = PokemonViewModel(pokemonURL: resource.url)
+						NavigationLink(destination: PokemonDetail(viewModel: vm)) {
 							Text(resource.name)
 						}
 					default:

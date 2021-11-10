@@ -28,7 +28,7 @@ struct PokemonTypesStack: View {
 
 struct PokemonTypesStack_Previews: PreviewProvider {
     static var previews: some View {
-		let viewModel1Type = PokemonViewModel(url: Pokemon.url + "6")
+		let viewModel1Type = PokemonViewModel(speciesURL: Pokemon.url + "6")
 		
 		PokemonTypesStack()
 			.environmentObject(viewModel1Type)
