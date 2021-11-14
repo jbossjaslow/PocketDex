@@ -156,12 +156,11 @@ extension PokemonViewModel {
 	@MainActor
 	private func fetchMoves(from fetchedPokemon: Pokemon) {
 		if let moves = fetchedPokemon.moves {
-			for gen in VersionGroupName.allCases {
-				movesLearned.append(contentsOf: moves.compactMap {
-					PokemonMoveData(move: $0,
-									gen: gen.rawValue)
-				})
+			var movesList: [PokemonMoveData] = []
+			moves.forEach {
+				movesList.append(contentsOf: $0.getAllMoveDataCombinations())
 			}
+			movesLearned = movesList
 		}
 	}
 	

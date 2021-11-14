@@ -5,57 +5,44 @@
 //  Created by Josh Jaslow on 9/19/21.
 //
 
+import Foundation
 import PokeSwift
 
-struct PokemonMoveData {
+struct PokemonMoveData: Identifiable {
 	let moveName: String
 	let moveURL: String
 	let learnMethod: MoveLearnMethodType
-	let minLevel: Int
-	let generation: String
+	let levelLearned: Int
+	let version: VersionGroupName
+	let id: UUID
 	
-	init?(move: PokemonMove,
-		  gen: String) {
-//		let minGen = VersionGroupName.Gen7.USUM
-		self.generation = gen
-		
-		guard let moveName = move.move?.name,
-			  let moveURL = move.move?.url,
-			  let moveVersion = move.getVersion(generation),
+	init?(moveName: String?,
+		  moveURL: String?,
+		  moveVersion: PokemonMoveVersion) {
+		guard let moveName = moveName,
+			  let moveURL = moveURL,
 			  let learnMethod = MoveLearnMethodType(name: moveVersion.moveLearnMethod?.name),
-			  let minLevel = moveVersion.levelLearnedAt else {
+			  let levelLearned = moveVersion.levelLearnedAt,
+			  let name = moveVersion.versionGroup?.name,
+			  let version = VersionGroupName(rawValue: name) else {
 				  return nil
 			  }
 		
+		self.learnMethod = learnMethod
+		self.levelLearned = levelLearned
+		self.version = version
 		self.moveName = moveName
 		self.moveURL = moveURL
-		self.learnMethod = learnMethod
-		self.minLevel = minLevel
+		self.id = UUID()
 	}
 }
-
-extension PokemonMoveData: Identifiable {
-	var id: String {
-		moveName + "-" + generation
-	}
-}
-
-//extension SortDescriptor {
-//	static func learnMethod(_ moveData: PokemonMoveData) -> Self {
-//		Self { move0, move1 in
-//			guard move0 != move1 else {
-//				return .orderedSame
-//			}
-//
-//			return move0 < move1 ? .orderedAscending : .orderedDescending
-//		}
-//	}
-//}
 
 extension PokemonMove {
-	func getVersion(_ minGen: String) -> PokemonMoveVersion? {
-		self.versionGroupDetails?.first {
-			$0.versionGroup?.name == minGen
-		}
+	func getAllMoveDataCombinations() -> [PokemonMoveData] {
+		self.versionGroupDetails?.compactMap {
+			PokemonMoveData(moveName: self.move?.name,
+							moveURL: self.move?.url,
+							moveVersion: $0)
+		} ?? []
 	}
 }
