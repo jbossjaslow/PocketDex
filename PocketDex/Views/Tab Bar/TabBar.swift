@@ -40,11 +40,7 @@ struct TabBar: View {
 					Text(TabIcon.ability.rawValue)
 				}
 			
-			Button {
-				//
-			} label: {
-				Text("More")
-			}
+			Text("More updates are coming in the future. Stay Tuned!")
 			.tag(TabIcon.more)
 			.tabItem {
 				Image(uiImage: getTabIcon(.more))
