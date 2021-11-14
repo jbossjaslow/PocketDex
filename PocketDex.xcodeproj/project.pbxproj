@@ -21,6 +21,8 @@
 		393C628F263F023D00EBE6B4 /* PocketDexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C628E263F023D00EBE6B4 /* PocketDexTests.swift */; };
 		393C629A263F023D00EBE6B4 /* PocketDexUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393C6299263F023D00EBE6B4 /* PocketDexUITests.swift */; };
 		393C62A9263F030100EBE6B4 /* PokeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 393C62A8263F030100EBE6B4 /* PokeSwift */; };
+		396B52242741B5E500FCE82D /* PopOutMoveListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396B52232741B5E500FCE82D /* PopOutMoveListViewModel.swift */; };
+		396B52272741B61A00FCE82D /* MoveListOrderingEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 396B52262741B61A00FCE82D /* MoveListOrderingEnum.swift */; };
 		398BF389267FAF6B00AABD5C /* PokemonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398BF388267FAF6B00AABD5C /* PokemonViewModel.swift */; };
 		399BD61C266582E3001CA60C /* DynamicList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399BD61B266582E3001CA60C /* DynamicList.swift */; };
 		39A56A4F2725C43F00A65138 /* BerryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A56A4E2725C43F00A65138 /* BerryModel.swift */; };
@@ -113,6 +115,8 @@
 		393C6295263F023D00EBE6B4 /* PocketDexUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PocketDexUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		393C6299263F023D00EBE6B4 /* PocketDexUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PocketDexUITests.swift; sourceTree = "<group>"; };
 		393C629B263F023D00EBE6B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		396B52232741B5E500FCE82D /* PopOutMoveListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopOutMoveListViewModel.swift; sourceTree = "<group>"; };
+		396B52262741B61A00FCE82D /* MoveListOrderingEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveListOrderingEnum.swift; sourceTree = "<group>"; };
 		398BF388267FAF6B00AABD5C /* PokemonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonViewModel.swift; sourceTree = "<group>"; };
 		399BD61B266582E3001CA60C /* DynamicList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicList.swift; sourceTree = "<group>"; };
 		39A56A4E2725C43F00A65138 /* BerryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BerryModel.swift; sourceTree = "<group>"; };
@@ -226,6 +230,7 @@
 			isa = PBXGroup;
 			children = (
 				39A5B27226476289007F55C3 /* DataModels */,
+				396B52252741B60200FCE82D /* Enums */,
 				39CA689926501E7000F005C5 /* Extensions */,
 				39A5B26D26475BF2007F55C3 /* Important */,
 				39A5B26E26475C08007F55C3 /* Resources */,
@@ -262,6 +267,14 @@
 			path = PocketDexUITests;
 			sourceTree = "<group>";
 		};
+		396B52252741B60200FCE82D /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				396B52262741B61A00FCE82D /* MoveListOrderingEnum.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
 		399BD61A266582CA001CA60C /* Dynamic List */ = {
 			isa = PBXGroup;
 			children = (
@@ -296,6 +309,7 @@
 				398BF388267FAF6B00AABD5C /* PokemonViewModel.swift */,
 				39C2820B26893D28004C9C3A /* MoveViewModel.swift */,
 				3903E3E226A34118000DE4B2 /* AbilityViewModel.swift */,
+				396B52232741B5E500FCE82D /* PopOutMoveListViewModel.swift */,
 			);
 			path = "View Models";
 			sourceTree = "<group>";
@@ -696,6 +710,7 @@
 				39CB74BF26E526A000CF0C3A /* PokemonImageView.swift in Sources */,
 				39D31B3F2640E54300BB3DD9 /* RemoteImageView.swift in Sources */,
 				39C323142737428F00280BAF /* PokemonStat.swift in Sources */,
+				396B52242741B5E500FCE82D /* PopOutMoveListViewModel.swift in Sources */,
 				39CEAE1D266C4DB500941036 /* StaticList.swift in Sources */,
 				39CEAE19266C46FF00941036 /* ResourceLimits.swift in Sources */,
 				39B0DC0126A4CD5D000EB871 /* SpriteGallery.swift in Sources */,
@@ -710,6 +725,7 @@
 				39CB750226F80F7E00CF0C3A /* VersionGroupName.swift in Sources */,
 				39CA68A326519ED200F005C5 /* TypeViewModel.swift in Sources */,
 				39CB750426F81AAA00CF0C3A /* PopOutMoveList.swift in Sources */,
+				396B52272741B61A00FCE82D /* MoveListOrderingEnum.swift in Sources */,
 				39CEAE28266D4AEB00941036 /* TabBarIcons.swift in Sources */,
 				39CEAE24266C544B00941036 /* SearchBar.swift in Sources */,
 				39CA68A12651810900F005C5 /* TypeList.swift in Sources */,

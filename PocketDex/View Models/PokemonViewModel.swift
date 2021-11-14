@@ -156,19 +156,11 @@ extension PokemonViewModel {
 	@MainActor
 	private func fetchMoves(from fetchedPokemon: Pokemon) {
 		if let moves = fetchedPokemon.moves {
-			movesLearned = moves.compactMap {
-				PokemonMoveData(move: $0)
+			var movesList: [PokemonMoveData] = []
+			moves.forEach {
+				movesList.append(contentsOf: $0.getAllMoveDataCombinations())
 			}
-//			var movesList: [PokemonMoveData] = []
-//			for gen in VersionGroupName.allCases {
-//				movesList.append(contentsOf: moves.compactMap {
-//					PokemonMoveData(move: $0,
-//									gen: gen.rawValue)
-//				})
-//			}
-			// we need to have PMD be a dict of gens to learn methods,
-			// and iterate though that mess on the list
-//			movesLearned = movesList
+			movesLearned = movesList
 		}
 	}
 	
