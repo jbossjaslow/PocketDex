@@ -12,17 +12,25 @@ struct SpriteGallery: View {
 	@ObservedObject var viewModel: PokemonViewModel
 	
 	var body: some View {
-		CarouselView($viewModel.pokemonSprites,
-					 selectedItemScale: .medium,
-					 alwaysStartAtBeginning: true) { sprite, currentlySelected in
-			VStack(spacing: 0) {
-				PokemonImageView(sprite: sprite.spriteUrl)
-				
-				Text(sprite.name)
-					.foregroundColor(.black)
-					.padding(.top, -10)
-					.padding(.bottom)
+		VStack(alignment: .leading) {
+			Text("Sprites")
+				.font(.title2)
+				.bold()
+				.padding(.horizontal)
+			
+			CarouselView($viewModel.pokemonSprites,
+						 selectedItemScale: .medium,
+						 alwaysStartAtBeginning: true) { sprite, currentlySelected in
+				VStack(spacing: 0) {
+					PokemonImageView(sprite: sprite.spriteUrl)
+					
+					Text(sprite.name)
+						.foregroundColor(.black)
+						.padding(.top, -10)
+						.padding(.bottom)
+				}
 			}
+						 .frame(height: 175)
 		}
 	}
 }

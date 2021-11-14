@@ -12,31 +12,39 @@ struct PokemonEvolutionChainView: View {
 	@ObservedObject var viewModel: PokemonViewModel
 	
     var body: some View {
-		CarouselView($viewModel.chainPokemonCollection.chainPokemon,
-					 selectedItemScale: .medium,
-					 indexToScrollTo: $viewModel.chainPokemonCollection.currentPokemonIndex) { evo, isCurrentlySelected in
-			if let sprite = evo.frontSprite,
-			   let url = evo.pokemonSpeciesURL,
-			   let speciesName = evo.species?.name {
-				VStack(spacing: 0) {
-					PokemonImageView(sprite: sprite)
-						.onChange(of: isCurrentlySelected) { newValue in
-							Task {
-								if newValue {
-									await viewModel.loadEvolution(url: url,
-																  name: speciesName)
+		VStack(alignment: .leading) {
+			Text("Evolutions")
+				.font(.title2)
+				.bold()
+				.padding(.horizontal)
+			
+			CarouselView($viewModel.chainPokemonCollection.chainPokemon,
+						 selectedItemScale: .medium,
+						 indexToScrollTo: $viewModel.chainPokemonCollection.currentPokemonIndex) { evo, isCurrentlySelected in
+				if let sprite = evo.frontSprite,
+				   let url = evo.pokemonSpeciesURL,
+				   let speciesName = evo.species?.name {
+					VStack(spacing: 0) {
+						PokemonImageView(sprite: sprite)
+							.onChange(of: isCurrentlySelected) { newValue in
+								Task {
+									if newValue {
+										await viewModel.loadEvolution(url: url,
+																	  name: speciesName)
+									}
 								}
 							}
-						}
-					
-					Text(speciesName)
-						.foregroundColor(.black)
-						.padding(.top, -10)
-						.padding(.bottom)
+						
+						Text(speciesName)
+							.foregroundColor(.black)
+							.padding(.top, -10)
+							.padding(.bottom)
+					}
+				} else {
+					Text("Error")
 				}
-			} else {
-				Text("Error")
 			}
+						 .frame(height: 175)
 		}
     }
 }

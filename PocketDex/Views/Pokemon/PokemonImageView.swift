@@ -19,7 +19,8 @@ struct PokemonImageView: View {
 		RemoteImageView(url: sprite) { image in
 			image
 				.resizable()
-				.frame(width: 200)
+				.scaledToFit()
+//				.frame(width: 200)
 				.clipped()
 				.shadow(radius: 4)
 		} placeholder: {

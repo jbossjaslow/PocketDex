@@ -60,7 +60,7 @@ struct CarouselView<Content: View, T: Identifiable & Equatable>: View {
 			.onAppear {
 				runOnAppear(geo: geo)
 			}
-			.position(x: containerSize.width - (geo.size.height / 2),
+			.position(x: geo.size.width - (geo.size.height / 2),
 					  y: geo.size.height / 2)
 			.offset(x: offset + currentOffset)
 			.animation(.interactiveSpring(),
@@ -229,7 +229,7 @@ extension CarouselView {
 	
 	private func runOnAppear(geo: GeometryProxy) {
 		self.containerSize = geo.size
-		self.snapThreshold = (geo.size.height / 2)
+		self.snapThreshold = geo.size.height / 2
 		
 		scrollToIndex()
 	}

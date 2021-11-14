@@ -27,16 +27,13 @@ struct PokemonDetail: View {
 					// MARK: - Sprites and Evolutions
 					VStack(spacing: 0) {
 						SpriteGallery(viewModel: viewModel)
-							.frame(height: 200)
 						
 						if viewModel.chainPokemonCollection.chainPokemon.count > 1 {
 							PokemonEvolutionChainView(viewModel: viewModel)
-								.frame(height: 200)
 						}
 						
 						if viewModel.variantSprites.count > 1 {
 							PokemonVariantsGallery(viewModel: viewModel)
-								.frame(height: 200)
 						}
 					}
 					.padding(.bottom, 20)

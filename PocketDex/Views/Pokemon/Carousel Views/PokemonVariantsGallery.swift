@@ -12,24 +12,32 @@ struct PokemonVariantsGallery: View {
 	@ObservedObject var viewModel: PokemonViewModel
 	
 	var body: some View {
-		CarouselView($viewModel.variantSprites,
-					 selectedItemScale: .medium) { sprite, isCurrentlySelected in
-			VStack(spacing: 0) {
-				PokemonImageView(sprite: sprite.spriteUrl)
-					.onChange(of: isCurrentlySelected) { newValue in
-						Task {
-							if newValue {
-								await viewModel.loadVariant(url: sprite.pokemonUrl,
-															name: sprite.name)
+		VStack(alignment: .leading) {
+			Text("Forms")
+				.font(.title2)
+				.bold()
+				.padding(.horizontal)
+			
+			CarouselView($viewModel.variantSprites,
+						 selectedItemScale: .medium) { sprite, isCurrentlySelected in
+				VStack(spacing: 0) {
+					PokemonImageView(sprite: sprite.spriteUrl)
+						.onChange(of: isCurrentlySelected) { newValue in
+							Task {
+								if newValue {
+									await viewModel.loadVariant(url: sprite.pokemonUrl,
+																name: sprite.name)
+								}
 							}
 						}
-					}
-				
-				Text(sprite.name)
-					.foregroundColor(.black)
-					.padding(.top, -10)
-					.padding(.bottom)
+					
+					Text(sprite.name)
+						.foregroundColor(.black)
+						.padding(.top, -10)
+						.padding(.bottom)
+				}
 			}
+						 .frame(height: 175)
 		}
 	}
 }
