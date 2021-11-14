@@ -19,40 +19,51 @@ struct PopOutMoveList: View {
 	@Binding var resources: [PokemonMoveData]
 	@State private var searchText: String = ""
 	
-	@State var selectedGen: String = ""
+	@State var selectedVersion: VersionGroupName = .redBlue
 	@State var ordering: MoveOrdering = .default
 	
 	private var genSet: GenerationSet {
-		GenerationSet(gens: self.resources.map { $0.generation })
+//		GenerationSet(gens: self.resources.map { $0.generation })
+		let allVersionsFromAllMoves = self.resources.map {
+			$0.getAllVersions()
+		}
+		let reducedVersionArr = allVersionsFromAllMoves.reduce([], +)
+		return GenerationSet(gens: reducedVersionArr)
 	}
-	private var filteredGenResources: [PokemonMoveData] {
-		resources.filter { $0.generation == selectedGen }
+	private var filteredResourcesForVersion: [PokemonMoveData] {
+//		resources.filter { $0.generation == selectedGen }
+		resources.filter {
+			$0.hasDataForVersion(selectedVersion)
+		}
 	}
-	private var filteredResources: [PokemonMoveData] {
+	private var filteredResourcesForMoveName: [PokemonMoveData] {
 		if !searchText.isEmpty {
-			return filteredGenResources.filter { $0.moveName.contains(searchText.lowercased()) }
+			return filteredResourcesForVersion.filter { $0.moveName.contains(searchText.lowercased()) }
 		} else {
-			return filteredGenResources
+			return filteredResourcesForVersion
 		}
 	}
-	private var orderedFilteredResources: [PokemonMoveData] {
-		switch ordering {
-			case .alphabetical:
-				return filteredResources.sorted {
-					$0.moveName < $1.moveName
-				}
-			case .default:
-				return filteredResources
-			case .level:
-				return filteredResources.sorted {
-					$0.minLevel < $1.minLevel
-				}
-			case .type:
-				return filteredResources.sorted {
-					$0.learnMethod.weight < $1.learnMethod.weight
-				}
-		}
+	private var orderedFilteredMoves: interMEdiateObject {
+		
 	}
+//	private var orderedFilteredResources: [PokemonMoveData] {
+//		switch ordering {
+//			case .alphabetical:
+//				return filteredResources.sorted {
+//					$0.moveName < $1.moveName
+//				}
+//			case .default:
+//				return filteredResources
+//			case .level:
+//				return filteredResources.sorted {
+//					$0.minLevel < $1.minLevel
+//				}
+//			case .type:
+//				return filteredResources.sorted {
+//					$0.learnMethod.weight < $1.learnMethod.weight
+//				}
+//		}
+//	}
 	
 	init(title: String,
 		 resources: Binding<[PokemonMoveData]>) {

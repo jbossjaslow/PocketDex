@@ -82,11 +82,8 @@ struct GenerationSet {
 		genSet.sorted()
 	}
 	
-	init(gens: [String]) {
-		gens.forEach {
-			let gen = VersionGroupName(rawValue: $0) ?? .USUM
-			genSet.insert(gen)
-		}
+	init(gens: [VersionGroupName]) {
+		genSet = Set<VersionGroupName>(gens)
 	}
 }
 
